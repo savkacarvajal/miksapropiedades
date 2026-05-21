@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Publicar propiedad — miksapropiedades</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { font-family: 'Outfit', sans-serif; box-sizing: border-box; }
+    body { background-color: #FDF8F4; color: #1C1009; -webkit-font-smoothing: antialiased; margin: 0; }
+    :root { --ease-out: cubic-bezier(0.23, 1, 0.32, 1); }
+
+    /* Nav */
+    .nav-link { position: relative; transition: color 180ms var(--ease-out); text-decoration: none; }
+    .nav-link::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 2px; background: #E8631A; transition: width 200ms var(--ease-out); border-radius: 1px; }
+    .nav-link:hover { color: #E8631A; }
+    .nav-link:hover::after { width: 100%; }
+
+    /* Step indicator */
+    .step-circle {
+      width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.85rem; flex-shrink: 0; transition: background 250ms ease, color 250ms ease, border-color 250ms ease;
+    }
+    .step-circle.done    { background: #E8631A; color: white; border: 2px solid #E8631A; }
+    .step-circle.active  { background: white; color: #E8631A; border: 2px solid #E8631A; }
+    .step-circle.pending { background: white; color: #B0A09A; border: 2px solid #EDE4DC; }
+    .step-label { font-size: 0.72rem; font-weight: 600; margin-top: 4px; transition: color 250ms ease; }
+    .step-label.done, .step-label.active { color: #E8631A; }
+    .step-label.pending { color: #B0A09A; }
+    .step-line { flex: 1; height: 2px; background: #EDE4DC; transition: background 250ms ease; }
+    .step-line.done { background: #E8631A; }
+
+    /* Form */
+    .form-card { background: white; border-radius: 22px; border: 1px solid rgba(232,99,26,0.09); box-shadow: 0 8px 32px rgba(28,16,9,0.06); }
+    .field-wrap { display: flex; flex-direction: column; gap: 5px; }
+    .field-label { font-size: 0.78rem; font-weight: 700; color: #7A6355; letter-spacing: 0.04em; }
+    .field-req { color: #E8631A; }
+    .field-input, .field-select, .field-textarea {
+      width: 100%; padding: 11px 14px; border: 1.5px solid #EDE4DC; border-radius: 12px;
+      font-size: 0.9rem; font-family: 'Outfit', sans-serif; color: #1C1009; background: white;
+      transition: border-color 150ms ease, box-shadow 150ms ease; outline: none;
+    }
+    .field-select { appearance: none; -webkit-appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237A6355' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
+    .field-textarea { resize: vertical; min-height: 110px; }
+    .field-input:focus, .field-select:focus, .field-textarea:focus { border-color: #E8631A; box-shadow: 0 0 0 3px rgba(232,99,26,0.10); }
+    .field-input.error, .field-select.error, .field-textarea.error { border-color: #DC2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.08); }
+    .field-error { font-size: 0.74rem; color: #DC2626; font-weight: 500; display: none; }
+    .field-error.show { display: block; }
+    .field-hint { font-size: 0.74rem; color: #B0A09A; }
+
+    /* Option cards (tipo/operación) */
+    .opt-card { border: 1.5px solid #EDE4DC; border-radius: 14px; padding: 14px 16px; cursor: pointer; transition: border-color 200ms ease, background 200ms ease, box-shadow 200ms ease; display: flex; align-items: center; gap: 12px; }
+    .opt-card:hover { border-color: rgba(232,99,26,0.4); background: rgba(232,99,26,0.03); }
+    .opt-card.selected { border-color: #E8631A; background: rgba(232,99,26,0.06); box-shadow: 0 0 0 3px rgba(232,99,26,0.08); }
+    .opt-icon { width: 40px; height: 40px; border-radius: 10px; background: #FDF8F4; display: flex; align-items: center; justify-content: center; color: #B0A09A; flex-shrink: 0; transition: background 200ms ease, color 200ms ease; }
+    .opt-card.selected .opt-icon { background: #E8631A; color: white; }
+    .opt-title { font-weight: 700; font-size: 0.9rem; color: #1C1009; }
+    .opt-sub   { font-size: 0.75rem; color: #7A6355; }
+
+    /* Buttons */
+    .btn-primary { padding: 13px 28px; background: #E8631A; color: white; font-weight: 700; font-size: 0.9rem; border: none; border-radius: 12px; cursor: pointer; transition: background 150ms ease, transform 100ms ease; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary:hover { background: #C84E0F; }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-secondary { padding: 13px 28px; background: white; color: #7A6355; font-weight: 600; font-size: 0.9rem; border: 1.5px solid #EDE4DC; border-radius: 12px; cursor: pointer; transition: border-color 150ms ease, color 150ms ease, transform 100ms ease; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-secondary:hover { border-color: #E8631A; color: #E8631A; }
+    .btn-secondary:active { transform: scale(0.98); }
+
+    /* Photo upload */
+    .upload-zone { border: 2px dashed #EDE4DC; border-radius: 14px; padding: 32px; text-align: center; cursor: pointer; transition: border-color 200ms ease, background 200ms ease; }
+    .upload-zone:hover, .upload-zone.drag { border-color: #E8631A; background: rgba(232,99,26,0.03); }
+    .photo-preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px,1fr)); gap: 10px; margin-top: 14px; }
+    .photo-thumb { position: relative; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: #EDE4DC; }
+    .photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .photo-remove { position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; background: rgba(28,16,9,0.7); border: none; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; line-height: 1; transition: background 150ms ease; }
+    .photo-remove:hover { background: #DC2626; }
+
+    /* Stepper panels */
+    .step-panel { display: none; }
+    .step-panel.active { display: block; }
+
+    /* Section title */
+    .section-title { font-size: 1.1rem; font-weight: 800; color: #1C1009; margin: 0 0 4px; }
+    .section-sub   { font-size: 0.85rem; color: #7A6355; margin: 0 0 22px; }
+
+    /* Success screen */
+    .success-screen { display: none; text-align: center; padding: 48px 32px; }
+    .success-screen.show { display: block; }
+
+    /* Number input no arrows */
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+
+    /* Alert */
+    .alert { padding: 12px 16px; border-radius: 10px; font-size: 0.85rem; font-weight: 500; display: none; margin-bottom: 16px; }
+    .alert.show { display: block; }
+    .alert-error { background: rgba(220,38,38,0.08); color: #DC2626; border: 1px solid rgba(220,38,38,0.15); }
+
+    /* UF badge */
+    .uf-prefix { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-weight: 700; color: #7A6355; font-size: 0.9rem; pointer-events: none; }
+    .uf-input { padding-left: 46px !important; }
+
+    /* Footer link */
+    .footer-link { color: rgba(255,255,255,0.5); font-size: 0.85rem; text-decoration: none; transition: color 150ms ease; }
+    .footer-link:hover { color: rgba(255,255,255,0.9); }
+
+    @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+    .fade-in { animation: fadeUp 0.45s cubic-bezier(0.23,1,0.32,1) both; }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav style="position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(253,248,244,0.90);backdrop-filter:blur(14px);border-bottom:1px solid rgba(232,99,26,0.10);">
+  <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px;">
+    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <div style="width:34px;height:34px;background:#E8631A;border-radius:10px;display:flex;align-items:center;justify-content:center;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <span style="font-size:1.1rem;font-weight:800;color:#1C1009;letter-spacing:-0.03em;">miksapropiedades<span style="color:#E8631A;">.</span></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:32px;" class="hidden md:flex">
+      <a href="index.html" class="nav-link" style="font-size:0.875rem;font-weight:500;color:#7A6355;">Inicio</a>
+      <a href="index.html" class="nav-link" style="font-size:0.875rem;font-weight:500;color:#7A6355;">Propiedades</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <a href="ingresar.html" style="font-size:0.875rem;font-weight:600;color:#7A6355;text-decoration:none;transition:color 150ms ease;" class="hidden md:block" onmouseover="this.style.color='#E8631A'" onmouseout="this.style.color='#7A6355'">Ingresar</a>
+      <a href="publicar.html" style="background:#E8631A;color:white;font-size:0.8rem;font-weight:700;padding:10px 18px;border-radius:12px;text-decoration:none;">Publicar propiedad</a>
+    </div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main style="max-width:760px;margin:0 auto;padding:100px 24px 80px;">
+  <div class="fade-in">
+
+    <!-- Header -->
+    <div style="margin-bottom:32px;">
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(232,99,26,0.10);border:1px solid rgba(232,99,26,0.22);color:#E8631A;font-size:0.7rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:5px 12px;border-radius:999px;margin-bottom:12px;">
+        <span style="width:5px;height:5px;border-radius:50%;background:#E8631A;"></span>
+        Nueva publicación
+      </div>
+      <h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;color:#1C1009;letter-spacing:-0.04em;line-height:1;margin:0 0 6px;">Publica tu propiedad</h1>
+      <p style="color:#7A6355;font-size:0.9rem;margin:0;">Completa los pasos y tu aviso estará disponible en minutos.</p>
+    </div>
+
+    <!-- Step indicator -->
+    <div style="display:flex;align-items:center;gap:0;margin-bottom:32px;" id="step-indicator">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div class="step-circle active" id="sc1">1</div>
+        <span class="step-label active" id="sl1">Tipo</span>
+      </div>
+      <div class="step-line" id="line1" style="margin-bottom:18px;"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div class="step-circle pending" id="sc2">2</div>
+        <span class="step-label pending" id="sl2">Detalles</span>
+      </div>
+      <div class="step-line" id="line2" style="margin-bottom:18px;"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div class="step-circle pending" id="sc3">3</div>
+        <span class="step-label pending" id="sl3">Fotos</span>
+      </div>
+      <div class="step-line" id="line3" style="margin-bottom:18px;"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+        <div class="step-circle pending" id="sc4">4</div>
+        <span class="step-label pending" id="sl4">Contacto</span>
+      </div>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="form-card" style="padding:32px;">
+
+      <!-- Alert -->
+      <div class="alert alert-error" id="form-alert"></div>
+
+      <!-- ─── STEP 1: Tipo y Operación ─── -->
+      <div class="step-panel active" id="step1">
+        <p class="section-title">¿Qué tipo de propiedad tienes?</p>
+        <p class="section-sub">Selecciona el tipo y la operación que deseas realizar.</p>
+
+        <p class="field-label" style="margin-bottom:10px;">Tipo de propiedad <span class="field-req">*</span></p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;" id="tipo-grid">
+          <div class="opt-card selected" onclick="selectOpt('tipo','depto',this)">
+            <div class="opt-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <div><div class="opt-title">Departamento</div><div class="opt-sub">Unidad en edificio</div></div>
+          </div>
+          <div class="opt-card" onclick="selectOpt('tipo','casa',this)">
+            <div class="opt-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div><div class="opt-title">Casa</div><div class="opt-sub">Casa o villa</div></div>
+          </div>
+          <div class="opt-card" onclick="selectOpt('tipo','oficina',this)">
+            <div class="opt-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+            </div>
+            <div><div class="opt-title">Oficina</div><div class="opt-sub">Espacio comercial</div></div>
+          </div>
+          <div class="opt-card" onclick="selectOpt('tipo','terreno',this)">
+            <div class="opt-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+            </div>
+            <div><div class="opt-title">Terreno</div><div class="opt-sub">Sitio o parcela</div></div>
+          </div>
+        </div>
+
+        <p class="field-label" style="margin-bottom:10px;">Tipo de operación <span class="field-req">*</span></p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" id="op-grid">
+          <div class="opt-card selected" onclick="selectOpt('op','arriendo',this)">
+            <div class="opt-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+            </div>
+            <div><div class="opt-title">Arriendo</div><div class="opt-sub">Precio mensual en UF</div></div>
+          </div>
+          <div class="opt-card" onclick="selectOpt('op','temporal',this)">
+            <div class="opt-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <div><div class="opt-title">Temporal</div><div class="opt-sub">Arriendo por días</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── STEP 2: Detalles ─── -->
+      <div class="step-panel" id="step2">
+        <p class="section-title">Datos de la propiedad</p>
+        <p class="section-sub">Cuéntanos las características principales.</p>
+
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div class="field-wrap">
+            <label class="field-label" for="titulo">Título del aviso <span class="field-req">*</span></label>
+            <input class="field-input" type="text" id="titulo" placeholder="Ej: Departamento con vista al mar en El Faro" maxlength="80" />
+            <span class="field-hint" id="titulo-count">0 / 80 caracteres</span>
+            <span class="field-error" id="err-titulo">Ingresa un título para el aviso.</span>
+          </div>
+
+          <div class="field-wrap">
+            <label class="field-label" for="descripcion">Descripción <span class="field-req">*</span></label>
+            <textarea class="field-textarea" id="descripcion" placeholder="Describe la propiedad: características, equipamiento, estado, acceso a servicios..." maxlength="800"></textarea>
+            <span class="field-hint" id="desc-count">0 / 800 caracteres</span>
+            <span class="field-error" id="err-descripcion">Agrega una descripción.</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="field-wrap">
+              <label class="field-label" for="precio">Precio <span class="field-req">*</span></label>
+              <div style="position:relative;">
+                <span class="uf-prefix">UF</span>
+                <input class="field-input uf-input" type="number" id="precio" placeholder="0" min="0" step="0.5" />
+              </div>
+              <span class="field-error" id="err-precio">Ingresa el precio.</span>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label" for="superficie">Superficie total <span class="field-req">*</span></label>
+              <div style="position:relative;">
+                <input class="field-input" type="number" id="superficie" placeholder="0" min="1" style="padding-right:44px;" />
+                <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:0.82rem;font-weight:600;color:#7A6355;pointer-events:none;">m²</span>
+              </div>
+              <span class="field-error" id="err-superficie">Ingresa la superficie.</span>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;" id="rooms-row">
+            <div class="field-wrap">
+              <label class="field-label" for="dormitorios">Dormitorios</label>
+              <select class="field-select" id="dormitorios">
+                <option value="">—</option>
+                <option>1</option><option>2</option><option>3</option><option>4</option><option value="5+">5+</option>
+              </select>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label" for="banos">Baños</label>
+              <select class="field-select" id="banos">
+                <option value="">—</option>
+                <option>1</option><option>2</option><option>3</option><option value="4+">4+</option>
+              </select>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label" for="estacionamientos">Estacionam.</label>
+              <select class="field-select" id="estacionamientos">
+                <option value="0">0</option>
+                <option>1</option><option>2</option><option value="3+">3+</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="field-wrap">
+              <label class="field-label" for="sector">Sector <span class="field-req">*</span></label>
+              <select class="field-select" id="sector">
+                <option value="">Selecciona...</option>
+                <optgroup label="La Serena">
+                  <option>Av. del Mar</option>
+                  <option>El Faro</option>
+                  <option>Peñuelas</option>
+                  <option>Las Compañías</option>
+                  <option>Centro La Serena</option>
+                  <option>Serena Golf</option>
+                  <option>Valle del Sol</option>
+                  <option>Antofagasta (La Serena)</option>
+                </optgroup>
+                <optgroup label="Coquimbo">
+                  <option>Guayacán</option>
+                  <option>La Herradura</option>
+                  <option>Centro Coquimbo</option>
+                  <option>Pan de Azúcar</option>
+                  <option>Puerto Aldea</option>
+                </optgroup>
+              </select>
+              <span class="field-error" id="err-sector">Selecciona un sector.</span>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label" for="direccion">Dirección aproximada</label>
+              <input class="field-input" type="text" id="direccion" placeholder="Calle o referencia" />
+            </div>
+          </div>
+
+          <!-- Amenidades -->
+          <div>
+            <p class="field-label" style="margin-bottom:10px;">Amenidades</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;" id="amenidades-grid">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── STEP 3: Fotos ─── -->
+      <div class="step-panel" id="step3">
+        <p class="section-title">Fotos de la propiedad</p>
+        <p class="section-sub">Las propiedades con fotos reciben hasta 5x más consultas. Agrega al menos 1.</p>
+
+        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+          <div style="width:52px;height:52px;background:rgba(232,99,26,0.10);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#E8631A;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <p style="font-weight:700;color:#1C1009;font-size:0.9rem;margin:0 0 4px;">Haz clic o arrastra tus fotos aquí</p>
+          <p style="color:#B0A09A;font-size:0.8rem;margin:0;">JPG, PNG o WebP · Máximo 10 fotos</p>
+          <input type="file" id="file-input" accept="image/*" multiple style="display:none;" onchange="handleFiles(this.files)" />
+        </div>
+
+        <div class="photo-preview" id="photo-preview"></div>
+
+        <span class="field-error" id="err-fotos" style="margin-top:8px;display:none;">Agrega al menos una foto.</span>
+
+        <div style="background:rgba(232,99,26,0.06);border-radius:12px;padding:14px 16px;margin-top:18px;display:flex;gap:10px;align-items:flex-start;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E8631A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <p style="font-size:0.8rem;color:#7A6355;margin:0;line-height:1.5;">La primera foto será la imagen principal del aviso. Puedes reordenarlas arrastrando.</p>
+        </div>
+      </div>
+
+      <!-- ─── STEP 4: Contacto ─── -->
+      <div class="step-panel" id="step4">
+        <p class="section-title">Datos de contacto</p>
+        <p class="section-sub">¿Cómo te contactarán los interesados?</p>
+
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="field-wrap">
+              <label class="field-label" for="c-nombre">Nombre <span class="field-req">*</span></label>
+              <input class="field-input" type="text" id="c-nombre" placeholder="Tu nombre" autocomplete="given-name" />
+              <span class="field-error" id="err-c-nombre">Ingresa tu nombre.</span>
+            </div>
+            <div class="field-wrap">
+              <label class="field-label" for="c-apellido">Apellido <span class="field-req">*</span></label>
+              <input class="field-input" type="text" id="c-apellido" placeholder="Tu apellido" autocomplete="family-name" />
+              <span class="field-error" id="err-c-apellido">Ingresa tu apellido.</span>
+            </div>
+          </div>
+
+          <div class="field-wrap">
+            <label class="field-label" for="c-email">Correo electrónico <span class="field-req">*</span></label>
+            <input class="field-input" type="email" id="c-email" placeholder="tu@correo.cl" autocomplete="email" />
+            <span class="field-error" id="err-c-email">Ingresa un correo válido.</span>
+          </div>
+
+          <div class="field-wrap">
+            <label class="field-label" for="c-tel">Teléfono <span class="field-req">*</span></label>
+            <input class="field-input" type="tel" id="c-tel" placeholder="+56 9 1234 5678" autocomplete="tel" />
+            <span class="field-error" id="err-c-tel">Ingresa tu teléfono.</span>
+          </div>
+
+          <div class="field-wrap">
+            <label class="field-label" for="c-tipo-contacto">Medio de contacto preferido</label>
+            <select class="field-select" id="c-tipo-contacto">
+              <option>WhatsApp y correo</option>
+              <option>Solo correo</option>
+              <option>Solo teléfono</option>
+              <option>Cualquiera</option>
+            </select>
+          </div>
+
+          <!-- Resumen -->
+          <div style="background:#FDF8F4;border-radius:14px;padding:18px;border:1px solid rgba(232,99,26,0.09);">
+            <p style="font-size:0.78rem;font-weight:700;color:#7A6355;letter-spacing:0.04em;text-transform:uppercase;margin:0 0 12px;">Resumen del aviso</p>
+            <div id="resumen-content" style="display:flex;flex-direction:column;gap:8px;font-size:0.875rem;color:#1C1009;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation buttons -->
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:20px;border-top:1px solid #EDE4DC;" id="nav-buttons">
+        <button class="btn-secondary" id="btn-back" onclick="goBack()" style="display:none;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          Atrás
+        </button>
+        <div id="btn-back-placeholder"></div>
+        <button class="btn-primary" id="btn-next" onclick="goNext()">
+          Siguiente
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- SUCCESS SCREEN -->
+    <div class="form-card success-screen" id="success-screen" style="padding:48px 32px;">
+      <div style="width:72px;height:72px;background:rgba(22,163,74,0.10);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h2 style="font-size:1.6rem;font-weight:900;color:#1C1009;margin:0 0 8px;">¡Propiedad publicada!</h2>
+      <p style="color:#7A6355;font-size:0.9rem;line-height:1.6;max-width:340px;margin:0 auto 24px;">Tu aviso ha sido guardado exitosamente. Nuestro equipo lo revisará y estará disponible en breve.</p>
+      <div style="background:#FDF8F4;border-radius:12px;padding:16px;display:inline-block;text-align:left;margin-bottom:24px;" id="success-id"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
+        <a href="publicar.html" style="background:#E8631A;color:white;font-weight:700;font-size:0.875rem;padding:12px 22px;border-radius:12px;text-decoration:none;">Publicar otra propiedad</a>
+        <a href="index.html" style="background:white;color:#7A6355;font-weight:600;font-size:0.875rem;padding:12px 22px;border-radius:12px;text-decoration:none;border:1.5px solid #EDE4DC;">Volver al inicio</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer style="background:#1C1009;padding:24px;">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
+    <p style="color:rgba(255,255,255,0.24);font-size:0.75rem;margin:0;">© 2026 miksapropiedades SpA. Todos los derechos reservados.</p>
+    <div style="display:flex;gap:20px;">
+      <a href="#" class="footer-link">Privacidad</a>
+      <a href="#" class="footer-link">Términos</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ─── STATE ───
+  let currentStep = 1;
+  const totalSteps = 4;
+  const state = { tipo: 'depto', op: 'arriendo', fotos: [] };
+
+  // ─── AMENIDADES ───
+  const AMENIDADES = ['Amoblado','Estacionamiento','Bodega','Piscina','Quincho','Lavandería','Gimnasio','Conserje','Mascotas permitidas','Calefacción central','Vista al mar','Terraza/Balcón'];
+  const selectedAmenidades = new Set();
+
+  function renderAmenidades() {
+    const container = document.getElementById('amenidades-grid');
+    container.innerHTML = '';
+    AMENIDADES.forEach(a => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = a;
+      btn.style.cssText = `padding:7px 14px;border-radius:999px;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 150ms ease;border:1.5px solid ${selectedAmenidades.has(a)?'#E8631A':'#EDE4DC'};background:${selectedAmenidades.has(a)?'rgba(232,99,26,0.08)':'white'};color:${selectedAmenidades.has(a)?'#E8631A':'#7A6355'};`;
+      btn.onclick = () => {
+        if (selectedAmenidades.has(a)) selectedAmenidades.delete(a);
+        else selectedAmenidades.add(a);
+        renderAmenidades();
+      };
+      container.appendChild(btn);
+    });
+  }
+  renderAmenidades();
+
+  // ─── OPT CARDS ───
+  function selectOpt(group, value, el) {
+    state[group] = value;
+    const grid = document.getElementById(group === 'tipo' ? 'tipo-grid' : 'op-grid');
+    grid.querySelectorAll('.opt-card').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  // ─── CHARACTER COUNTERS ───
+  document.getElementById('titulo').addEventListener('input', function() {
+    document.getElementById('titulo-count').textContent = this.value.length + ' / 80 caracteres';
+  });
+  document.getElementById('descripcion').addEventListener('input', function() {
+    document.getElementById('desc-count').textContent = this.value.length + ' / 800 caracteres';
+  });
+
+  // ─── PHOTO UPLOAD ───
+  function handleFiles(files) {
+    const remaining = 10 - state.fotos.length;
+    Array.from(files).slice(0, remaining).forEach(file => {
+      if (!file.type.startsWith('image/')) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        state.fotos.push({ name: file.name, src: e.target.result });
+        renderPhotos();
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+  function renderPhotos() {
+    const preview = document.getElementById('photo-preview');
+    preview.innerHTML = '';
+    state.fotos.forEach((f, i) => {
+      const div = document.createElement('div');
+      div.className = 'photo-thumb';
+      div.innerHTML = `
+        <img src="${f.src}" alt="Foto ${i+1}" />
+        <button class="photo-remove" onclick="removePhoto(${i})" aria-label="Eliminar foto">×</button>
+        ${i === 0 ? '<div style="position:absolute;bottom:4px;left:4px;background:rgba(232,99,26,0.9);color:white;font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:4px;">Principal</div>' : ''}
+      `;
+      preview.appendChild(div);
+    });
+  }
+  function removePhoto(i) {
+    state.fotos.splice(i, 1);
+    renderPhotos();
+  }
+  function onDragOver(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('drag'); }
+  function onDragLeave()  { document.getElementById('upload-zone').classList.remove('drag'); }
+  function onDrop(e)      { e.preventDefault(); onDragLeave(); handleFiles(e.dataTransfer.files); }
+
+  // ─── STEP INDICATOR ───
+  function updateStepUI() {
+    for (let i = 1; i <= totalSteps; i++) {
+      const sc = document.getElementById('sc' + i);
+      const sl = document.getElementById('sl' + i);
+      let state2;
+      if (i < currentStep) state2 = 'done';
+      else if (i === currentStep) state2 = 'active';
+      else state2 = 'pending';
+      sc.className = 'step-circle ' + state2;
+      sl.className = 'step-label ' + state2;
+      if (state2 === 'done') sc.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+      else sc.textContent = i;
+      if (i < totalSteps) document.getElementById('line' + i).className = 'step-line ' + (i < currentStep ? 'done' : '');
+    }
+    // Buttons
+    document.getElementById('btn-back').style.display = currentStep > 1 ? 'inline-flex' : 'none';
+    document.getElementById('btn-back-placeholder').style.display = currentStep > 1 ? 'none' : 'block';
+    const btnNext = document.getElementById('btn-next');
+    if (currentStep === totalSteps) {
+      btnNext.innerHTML = 'Publicar propiedad <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
+    } else {
+      btnNext.innerHTML = 'Siguiente <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
+    }
+  }
+
+  // ─── VALIDATE STEP ───
+  function validateStep(step) {
+    let valid = true;
+    const setErr = (id, show) => {
+      const el = document.getElementById(id);
+      const err = document.getElementById('err-' + id);
+      if (el) el.classList.toggle('error', show);
+      if (err) { err.style.display = show ? 'block' : 'none'; }
+      if (show) valid = false;
+    };
+    if (step === 2) {
+      setErr('titulo', !document.getElementById('titulo').value.trim());
+      setErr('descripcion', !document.getElementById('descripcion').value.trim());
+      setErr('precio', !document.getElementById('precio').value);
+      setErr('superficie', !document.getElementById('superficie').value);
+      setErr('sector', !document.getElementById('sector').value);
+    }
+    if (step === 3) {
+      const errFotos = document.getElementById('err-fotos');
+      if (state.fotos.length === 0) { errFotos.style.display = 'block'; valid = false; }
+      else errFotos.style.display = 'none';
+    }
+    if (step === 4) {
+      setErr('c-nombre', !document.getElementById('c-nombre').value.trim());
+      setErr('c-apellido', !document.getElementById('c-apellido').value.trim());
+      const email = document.getElementById('c-email').value.trim();
+      setErr('c-email', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
+      setErr('c-tel', !document.getElementById('c-tel').value.trim());
+    }
+    return valid;
+  }
+
+  // ─── BUILD RESUMEN ───
+  function buildResumen() {
+    const tipoLabel = { depto:'Departamento', casa:'Casa', oficina:'Oficina', terreno:'Terreno' };
+    const opLabel   = { arriendo:'Arriendo', temporal:'Arriendo temporal' };
+    const rows = [
+      ['Tipo',      tipoLabel[state.tipo] + ' — ' + opLabel[state.op]],
+      ['Título',    document.getElementById('titulo').value],
+      ['Precio',    'UF ' + document.getElementById('precio').value + (state.op === 'arriendo' ? ' / mes' : '')],
+      ['Superficie',document.getElementById('superficie').value + ' m²'],
+      ['Sector',    document.getElementById('sector').value],
+      ['Fotos',     state.fotos.length + ' foto(s)'],
+    ];
+    const amenArr = [...selectedAmenidades];
+    if (amenArr.length) rows.push(['Amenidades', amenArr.join(', ')]);
+    document.getElementById('resumen-content').innerHTML = rows.map(([k,v]) =>
+      `<div style="display:flex;justify-content:space-between;gap:12px;padding:4px 0;border-bottom:1px solid #EDE4DC;">
+        <span style="color:#7A6355;font-size:0.82rem;">${k}</span>
+        <span style="font-weight:600;font-size:0.82rem;text-align:right;">${v}</span>
+      </div>`
+    ).join('');
+  }
+
+  // ─── NAVIGATION ───
+  function goNext() {
+    clearAlert();
+    if (!validateStep(currentStep)) {
+      showAlert('Completa los campos requeridos antes de continuar.');
+      return;
+    }
+    if (currentStep === totalSteps) { submitForm(); return; }
+    document.getElementById('step' + currentStep).classList.remove('active');
+    currentStep++;
+    document.getElementById('step' + currentStep).classList.add('active');
+    if (currentStep === 4) buildResumen();
+    updateStepUI();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goBack() {
+    document.getElementById('step' + currentStep).classList.remove('active');
+    currentStep--;
+    document.getElementById('step' + currentStep).classList.add('active');
+    updateStepUI();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ─── SUBMIT ───
+  function submitForm() {
+    const aviso = {
+      id: 'MIKSA-' + Date.now(),
+      tipo: state.tipo,
+      op: state.op,
+      titulo: document.getElementById('titulo').value.trim(),
+      descripcion: document.getElementById('descripcion').value.trim(),
+      precio: document.getElementById('precio').value,
+      superficie: document.getElementById('superficie').value,
+      dormitorios: document.getElementById('dormitorios').value,
+      banos: document.getElementById('banos').value,
+      estacionamientos: document.getElementById('estacionamientos').value,
+      sector: document.getElementById('sector').value,
+      direccion: document.getElementById('direccion').value.trim(),
+      amenidades: [...selectedAmenidades],
+      fotos: state.fotos.map(f => f.name),
+      contacto: {
+        nombre:   document.getElementById('c-nombre').value.trim(),
+        apellido: document.getElementById('c-apellido').value.trim(),
+        email:    document.getElementById('c-email').value.trim(),
+        tel:      document.getElementById('c-tel').value.trim(),
+        medio:    document.getElementById('c-tipo-contacto').value,
+      },
+      fecha: new Date().toISOString(),
+    };
+
+    const avisos = JSON.parse(localStorage.getItem('miksa_avisos') || '[]');
+    avisos.push(aviso);
+    localStorage.setItem('miksa_avisos', JSON.stringify(avisos));
+
+    // Show success
+    document.querySelector('.form-card:not(#success-screen)').style.display = 'none';
+    document.getElementById('step-indicator').style.display = 'none';
+    document.getElementById('success-id').innerHTML =
+      `<p style="font-size:0.75rem;color:#7A6355;margin:0 0 4px;font-weight:600;">Código de tu aviso</p>
+       <p style="font-size:1rem;font-weight:800;color:#E8631A;margin:0;">${aviso.id}</p>`;
+    document.getElementById('success-screen').classList.add('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ─── ALERT ───
+  function showAlert(msg) {
+    const el = document.getElementById('form-alert');
+    el.textContent = msg;
+    el.classList.add('show');
+  }
+  function clearAlert() {
+    const el = document.getElementById('form-alert');
+    el.textContent = '';
+    el.classList.remove('show');
+  }
+
+  // ─── PRE-FILL from session ───
+  window.addEventListener('DOMContentLoaded', () => {
+    const session = JSON.parse(localStorage.getItem('miksa_session') || 'null');
+    if (session) {
+      const parts = (session.nombre || '').split(' ');
+      if (parts[0]) document.getElementById('c-nombre').value = parts[0];
+      if (parts[1]) document.getElementById('c-apellido').value = parts[1];
+      document.getElementById('c-email').value = session.email || '';
+    }
+  });
+
+  updateStepUI();
+</script>
+</body>
+</html>
