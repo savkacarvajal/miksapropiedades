@@ -11,7 +11,7 @@
     const ph = el('div', { class: 'ph' }, [el('img', { src: p.fotos[0], alt: p.nombre, loading: 'lazy' }), el('span', { class: 'tag', text: LABEL_PROY[p.estado] })]);
     const body = el('div', { class: 'pb' }, [
       el('div', { class: 'price', text: 'Desde UF ' + desde(p).toLocaleString('es-CL') }),
-      el('h3', { text: p.nombre }),
+      el('h2', { text: p.nombre }),
       el('div', { class: 'loc', text: p.sector + ', ' + comunaDe(p.sector) + ' · ' + p.inmobiliaria }),
       el('div', { class: 'specs' }, [el('span', { text: 'Entrega ' + fechaEntrega(p.entrega) }), el('span', { text: p.tipologias.reduce((t, x) => t + x.disp, 0) + ' unidades' })]),
       el('div', { class: 'progress', style: 'margin-top:12px' }, [el('div', { style: 'width:' + p.avance + '%' })]),

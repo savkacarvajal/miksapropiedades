@@ -19,10 +19,11 @@
 
   const badges = $id('d-badges');
   [LABEL_OP[a.op], LABEL_TIPO[a.tipo]].filter(Boolean).forEach(t => badges.appendChild(el('span', { class: 'chip', text: t })));
+  if (a.cesionDerechos) badges.appendChild(el('span', { class: 'chip', text: 'Cesión de derechos' }));
   if (!disponible) badges.appendChild(el('span', { class: 'chip', style: 'background:#B45309;color:#fff', text: LABEL_ESTADO[a.estado] || a.estado }));
 
   // Vistas (una por sesión de navegador)
-  try { if (!sessionStorage.getItem('v_' + a.id)) { sessionStorage.setItem('v_' + a.id, '1'); if (!a.demo) sumarStat(a.id, 'vistas'); } } catch (e) {}
+  if (marcarVista(a.id) && !a.demo) sumarStat(a.id, 'vistas');
 
   // Galería
   const fotos = a.fotos || [], main = $id('g-main'), thumbs = $id('g-thumbs');
@@ -35,7 +36,7 @@
   if (fotos.length) {
     if (fotos.length > 1) fotos.forEach((f, i) => thumbs.appendChild(el('button', { type: 'button', 'data-act': 'verFoto', 'data-args': JSON.stringify([i]), 'aria-label': 'Ver foto ' + (i + 1) }, [el('img', { src: f, alt: '' })])));
     mostrar(0);
-  } else main.appendChild(el('div', { style: 'height:100%;display:flex;align-items:center;justify-content:center;color:rgba(232,99,26,.5);font-weight:700', text: 'Sin fotos' }));
+  } else main.appendChild(el('div', { style: 'height:100%;display:flex;align-items:center;justify-content:center;color:rgba(245,134,53,.5);font-weight:700', text: 'Sin fotos' }));
 
   // Datos principales
   const facts = [
@@ -52,12 +53,36 @@
     a.anio && ['Año de construcción', String(a.anio)],
     a.orientacion && ['Orientación', a.orientacion],
     (a.op === 'venta' && typeof a.subsidio === 'boolean') && ['Acepta subsidio', a.subsidio ? 'Sí' : 'No'],
+    a.cesionDerechos && ['Tipo de venta', 'Cesión de derechos'],
+    a.comision && ['Comisión', a.comision + '% del precio'],
   ].filter(Boolean);
   extra.forEach(([k, v]) => $id('d-extra').appendChild(el('div', {}, [el('dt', { text: k }), el('dd', { text: v })])));
   if (!extra.length) $id('d-extra-wrap').hidden = true;
   const amen = a.amenidades || [];
   amen.forEach(x => $id('d-amen').appendChild(el('span', { class: 'chip', text: x })));
   if (!amen.length) $id('d-amen-wrap').hidden = true;
+
+  // Mapa de ubicación: punto exacto si el aviso lo trae; si no, la zona aproximada del sector
+  const pos = coordsDe(a);
+  if (pos && window.L) {
+    $id('d-map-wrap').hidden = false;
+    const exacta = tienePunto(a);
+    const map = L.map('d-map', { scrollWheelZoom: false }).setView(pos, exacta ? 16 : 14);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '© <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>' }).addTo(map);
+    const note = $id('d-map-note');
+    const osm = 'https://www.openstreetmap.org/?mlat=' + pos[0].toFixed(5) + '&mlon=' + pos[1].toFixed(5) + '#map=' + (exacta ? 17 : 15) + '/' + pos[0].toFixed(5) + '/' + pos[1].toFixed(5);
+    if (exacta) {
+      L.marker(pos, { alt: a.titulo || 'Propiedad', title: a.titulo || '' }).addTo(map);
+      note.appendChild(document.createTextNode('Ubicación indicada por quien publica. '));
+      note.appendChild(el('a', { href: 'https://www.google.com/maps/dir/?api=1&destination=' + pos[0].toFixed(5) + ',' + pos[1].toFixed(5), target: '_blank', rel: 'noopener noreferrer', text: 'Cómo llegar' }));
+      note.appendChild(document.createTextNode(' · '));
+    } else {
+      L.circle(pos, { radius: 650, color: '#A34D0A', weight: 2, fillColor: '#F58635', fillOpacity: 0.25 }).addTo(map);
+      note.appendChild(document.createTextNode('Zona referencial de ' + (a.sector || 'la propiedad') + ': la dirección exacta te la entrega el corredor. '));
+    }
+    note.appendChild(el('a', { href: osm, target: '_blank', rel: 'noopener noreferrer', text: 'Abrir en OpenStreetMap' }));
+    setTimeout(() => map.invalidateSize(), 300);
+  }
 
   // Enlaces: mapa, video/tour
   const links = $id('d-links');
@@ -83,16 +108,19 @@
 
   // Precio en pesos + dividendo estimado (UF del día)
   getUF().then(uf => {
-    const n = Number(a.precio);
+    const n = a.precioCLP > 0 ? a.precioCLP / uf.valor : Number(a.precio);
     if (!(n > 0)) return;
-    $id('d-clp').textContent = '≈ ' + formatCLP(n * uf.valor) + ' CLP · UF ' + formatCLP(uf.valor).slice(1) + (uf.fuente === 'referencial' ? ' (referencial)' : '');
-    if (a.op === 'venta') {
+    const ufTxt = 'UF ' + formatCLP(uf.valor).slice(1) + (uf.fuente === 'referencial' ? ' (referencial)' : '');
+    $id('d-clp').textContent = a.precioCLP > 0
+      ? (a.precioAnterior > 0 ? 'Antes ' + formatCLP(a.precioAnterior) + ' · ' : '') + '≈ ' + n.toLocaleString('es-CL', { maximumFractionDigits: 0 }) + ' UF · ' + ufTxt
+      : '≈ ' + formatCLP(n * uf.valor) + ' CLP · ' + ufTxt;
+    if (a.op === 'venta' && !a.cesionDerechos) {   // una cesión de derechos normalmente no califica a crédito hipotecario
       const monto = n * uf.valor * 0.8, div = dividendo(monto, 4.5, 25);
       const box = $id('d-hipo'); box.hidden = false; box.textContent = '';
       box.appendChild(el('b', { text: 'Dividendo estimado: ' + formatCLP(div) + ' / mes' }));
       box.appendChild(document.createElement('br'));
       box.appendChild(document.createTextNode('Pie 20%, 25 años, tasa 4,5% anual. Referencial, no es una oferta de crédito. '));
-      box.appendChild(el('a', { href: 'simulador.html?precio=' + encodeURIComponent(a.precio), text: 'Simular con tus datos', style: 'color:var(--brand);font-weight:700' }));
+      box.appendChild(el('a', { href: 'simulador.html?precio=' + encodeURIComponent(a.precio), text: 'Simular con tus datos', style: 'color:var(--brand-ink);font-weight:700' }));
     }
   });
 
@@ -116,7 +144,7 @@
       el('div', { class: 'av', text: corredor.nombre.charAt(0).toUpperCase() }),
       el('div', {}, [el('b', { text: corredor.nombre }), el('span', { text: corredor.cargo + (corredor.registro ? ' · N° ' + corredor.registro : '') })]),
     ]));
-    card.appendChild(el('a', { href: 'corredores.html', style: 'display:block;margin-top:10px;font-size:0.8rem;color:var(--brand);font-weight:600', text: 'Ver todos los corredores' }));
+    card.appendChild(el('a', { href: 'corredores.html', style: 'display:block;margin-top:10px;font-size:0.8rem;color:var(--brand-ink);font-weight:600', text: 'Ver todos los corredores' }));
   }
 
   // Favorito / comparar / PDF
@@ -171,7 +199,7 @@
   // Datos estructurados (schema.org) para buscadores
   try {
     const ld = { '@context': 'https://schema.org', '@type': 'RealEstateListing', name: a.titulo, description: a.descripcion, url: location.href, datePosted: a.fecha,
-      offers: { '@type': 'Offer', price: Number(a.precio) || undefined, priceCurrency: 'CLF', availability: disponible ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut' },
+      offers: { '@type': 'Offer', price: (a.precioCLP > 0 ? Number(a.precioCLP) : Number(a.precio)) || undefined, priceCurrency: a.precioCLP > 0 ? 'CLP' : 'CLF', availability: disponible ? 'https://schema.org/InStock' : 'https://schema.org/SoldOut' },
       about: { '@type': 'Residence', address: { '@type': 'PostalAddress', addressLocality: com || undefined, streetAddress: a.direccion, addressCountry: 'CL' }, floorSize: a.superficie ? { '@type': 'QuantitativeValue', value: Number(a.superficie), unitCode: 'MTK' } : undefined } };
     const sc = document.createElement('script'); sc.type = 'application/ld+json';
     sc.textContent = JSON.stringify(ld).replace(/</g, '\\u003c'); document.head.appendChild(sc);

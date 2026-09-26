@@ -12,6 +12,9 @@ const BARRIOS = {
   'Peñuelas': 'Sector residencial de Coquimbo con conectividad hacia La Serena, con oferta de departamentos y casas.',
   'Centro Coquimbo': 'Centro comercial, portuario y cultural de Coquimbo, con servicios, transporte y vida de barrio.',
   'Pan de Azúcar': 'Sector de playa y parcelas al sur de Coquimbo, muy usado como segunda vivienda y arriendo de temporada.',
+  'Bosque Oriente': 'Sector residencial de casas en Tierras Blancas, Coquimbo, hacia el oriente de la ciudad.',
+  'Palmas San Ramón IV': 'Villa residencial de casas en Tierras Blancas, Coquimbo, cerca de colegios, comercio y servicios.',
+  'Cruz de Caña': 'Sector semirrural de Coquimbo, con terrenos amplios y parcelas de agrado.',
   'Puerto Aldea': 'Caleta costera de ritmo tranquilo, buscada para descanso y arriendo de temporada.',
 };
 (function () {
@@ -22,7 +25,7 @@ const BARRIOS = {
     const g = $id('b-grid');
     Object.keys(BARRIOS).forEach(b => {
       const n = todos.filter(a => a.sector === b && (!a.estado || a.estado === 'disponible')).length;
-      g.appendChild(el('a', { class: 'barrio-card', href: 'barrio.html?s=' + encodeURIComponent(b) }, [el('span', { class: 'badge-soft', text: comunaDe(b) }), el('h3', { text: b }), el('p', { text: n + (n === 1 ? ' propiedad disponible' : ' propiedades disponibles') })]));
+      g.appendChild(el('a', { class: 'barrio-card', href: 'barrio.html?s=' + encodeURIComponent(b) }, [el('span', { class: 'badge-soft', text: comunaDe(b) }), el('h2', { text: b }), el('p', { text: n + (n === 1 ? ' propiedad disponible' : ' propiedades disponibles') })]));
     });
     return;
   }

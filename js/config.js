@@ -3,8 +3,8 @@
 const MIKSA_CONFIG = {
   AGENCIA: {
     nombre: 'miksapropiedades',
-    whatsapp: '',          // ej: '56912345678' (solo dígitos, con código de país). Vacío = se oculta el botón
-    telefono: '',
+    whatsapp: '56961357871',          // ej: '56912345678' (solo dígitos, con código de país). Vacío = se oculta el botón
+    telefono: '+56961357871',
     email: '',
     direccion: 'La Serena y Coquimbo',
   },

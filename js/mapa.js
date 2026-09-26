@@ -15,14 +15,14 @@
     const foto = fotoPrincipal(a);
     return el('div', { style: 'min-width:170px' }, [
       foto ? el('img', { src: foto, alt: '', style: 'width:100%;border-radius:8px;margin-bottom:6px' }) : '',
-      el('div', { style: 'font-weight:800;color:#E8631A', text: formatPrecio(a) }),
+      el('div', { style: 'font-weight:800;color:#A34D0A', text: formatPrecio(a) }),
       el('div', { style: 'font-weight:600;margin:2px 0 6px', text: a.titulo || '' }),
-      el('a', { href: 'propiedad.html?id=' + encodeURIComponent(a.id), text: 'Ver ficha →', style: 'color:#E8631A;font-weight:700' }),
+      el('a', { href: 'propiedad.html?id=' + encodeURIComponent(a.id), text: 'Ver ficha →', style: 'color:#A34D0A;font-weight:700' }),
     ].filter(Boolean));
   }
   lista.forEach(a => {
     const c = coordsDe(a);
-    const m = L.marker(c).addTo(map).bindPopup(popup(a));
+    const m = L.marker(c, { alt: (a.titulo || 'Propiedad') + ' — ' + formatPrecio(a), title: a.titulo || '' }).addTo(map).bindPopup(popup(a));
     markers[a.id] = m;
     const foto = fotoPrincipal(a);
     const it = el('button', { type: 'button', class: 'map-item', 'data-act': 'mapFoco', 'data-args': JSON.stringify([a.id]) }, [

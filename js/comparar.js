@@ -50,7 +50,7 @@
     table.appendChild(tr);
   });
   window.quitarComp = function (id) {
-    lsSet('miksa_compare', getComp().filter(x => x !== id));
+    setComp(getComp().filter(x => x !== id));
     window.location.href = 'comparar.html';
   };
 })();

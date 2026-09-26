@@ -19,7 +19,7 @@ function crearTarjeta(a, opciones) {
 
   const body = el('div', { class: 'pb' }, [
     el('div', { class: 'price', text: formatPrecio(a) }),
-    el('h3', { text: a.titulo || 'Sin título' }),
+    el('h' + (opciones.nivel || 3), { text: a.titulo || 'Sin título' }),
     el('div', { class: 'loc', text: [a.sector, comunaDe(a.sector)].filter(Boolean).join(', ') }),
     specs,
   ]);
@@ -65,7 +65,7 @@ function pintarBarraComparar() {
   ]));
 }
 function limpiarComparacion() {
-  lsSet('miksa_compare', []);
+  setComp([]);
   document.querySelectorAll('.cmp-btn input').forEach(i => { i.checked = false; });
   pintarBarraComparar();
 }

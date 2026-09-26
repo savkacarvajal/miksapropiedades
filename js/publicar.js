@@ -14,7 +14,7 @@
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.textContent = a;
-      btn.style.cssText = `padding:7px 14px;border-radius:999px;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 150ms ease;border:1.5px solid ${selectedAmenidades.has(a)?'#E8631A':'#EDE4DC'};background:${selectedAmenidades.has(a)?'rgba(232,99,26,0.08)':'white'};color:${selectedAmenidades.has(a)?'#E8631A':'#7A6355'};`;
+      btn.style.cssText = `padding:7px 14px;border-radius:999px;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 150ms ease;border:1.5px solid ${selectedAmenidades.has(a)?'#F58635':'#EDE4DC'};background:${selectedAmenidades.has(a)?'rgba(245,134,53,0.08)':'white'};color:${selectedAmenidades.has(a)?'#F58635':'#655E58'};`;
       btn.onclick = () => {
         if (selectedAmenidades.has(a)) selectedAmenidades.delete(a);
         else selectedAmenidades.add(a);
@@ -48,7 +48,7 @@
       if (!['image/jpeg','image/png','image/webp'].includes(file.type) || file.size > 5 * 1024 * 1024) return;   // solo JPG/PNG/WebP, máx 5 MB (sin SVG)
       const reader = new FileReader();
       reader.onload = e => {
-        // Se reduce a máx. 900 px (JPEG) para que quepa en localStorage
+        // Se reduce a máx. 900 px (JPEG) para que quepa en el almacenamiento
         const img = new Image();
         img.onload = () => {
           const k = Math.min(1, 900 / Math.max(img.width, img.height));
@@ -72,7 +72,7 @@
       div.innerHTML = `
         <img src="${f.src}" alt="Foto ${i+1}" />
         <button type="button" class="photo-remove" data-act="removePhoto" data-args='[${i}]' aria-label="Eliminar foto">×</button>
-        ${i === 0 ? '<div style="position:absolute;bottom:4px;left:4px;background:rgba(232,99,26,0.9);color:white;font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:4px;">Principal</div>' : ''}
+        ${i === 0 ? '<div style="position:absolute;bottom:4px;left:4px;background:rgba(245,134,53,0.9);color:white;font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:4px;">Principal</div>' : ''}
       `;
       preview.appendChild(div);
     });
@@ -164,7 +164,7 @@
     if (amenArr.length) rows.push(['Amenidades', amenArr.join(', ')]);
     document.getElementById('resumen-content').innerHTML = rows.map(([k,v]) =>
       `<div style="display:flex;justify-content:space-between;gap:12px;padding:4px 0;border-bottom:1px solid #EDE4DC;">
-        <span style="color:#7A6355;font-size:0.82rem;">${esc(k)}</span>
+        <span style="color:#655E58;font-size:0.82rem;">${esc(k)}</span>
         <span style="font-weight:600;font-size:0.82rem;text-align:right;">${esc(v)}</span>
       </div>`
     ).join('');
@@ -209,9 +209,11 @@
       estacionamientos: document.getElementById('estacionamientos').value,
       sector: document.getElementById('sector').value,
       direccion: document.getElementById('direccion').value.trim(),
+      lat: window.PIN ? window.PIN[0] : undefined,
+      lng: window.PIN ? window.PIN[1] : undefined,
       amenidades: [...selectedAmenidades],
       fotos: state.fotos.slice(0, 4).map(f => f.src),
-      owner: (function () { try { return (JSON.parse(localStorage.getItem('miksa_session') || 'null') || {}).email || ''; } catch (e) { return ''; } })(),
+      owner: (getSesion() || {}).email || '',
       contacto: {
         nombre:   document.getElementById('c-nombre').value.trim(),
         apellido: document.getElementById('c-apellido').value.trim(),
@@ -230,9 +232,7 @@
     };
 
     try {
-      const avisos = JSON.parse(localStorage.getItem('miksa_avisos') || '[]');
-      avisos.push(aviso);
-      localStorage.setItem('miksa_avisos', JSON.stringify(avisos));
+      if (!guardarAviso(aviso)) throw new Error('almacenamiento lleno');
     } catch (e) {
       showAlert('No se pudo guardar el aviso (almacenamiento lleno). Prueba con menos fotos.');
       return;
@@ -242,8 +242,8 @@
     document.querySelector('.form-card:not(#success-screen)').style.display = 'none';
     document.getElementById('step-indicator').style.display = 'none';
     document.getElementById('success-id').innerHTML =
-      `<p style="font-size:0.75rem;color:#7A6355;margin:0 0 4px;font-weight:600;">Código de tu aviso</p>
-       <p style="font-size:1rem;font-weight:800;color:#E8631A;margin:0;">${aviso.id}</p>`;
+      `<p style="font-size:0.75rem;color:#655E58;margin:0 0 4px;font-weight:600;">Código de tu aviso</p>
+       <p style="font-size:1rem;font-weight:800;color:#A34D0A;margin:0;">${aviso.id}</p>`;
     const ver = document.querySelector('#success-screen a[href="index.html"]');
     if (ver) { ver.setAttribute('href', 'propiedad.html?id=' + encodeURIComponent(aviso.id)); ver.textContent = 'Ver mi aviso'; }
     document.getElementById('success-screen').classList.add('show');
@@ -264,9 +264,7 @@
 
   // ─── PRE-FILL from session ───
   window.addEventListener('DOMContentLoaded', () => {
-    let session = null;
-    try { session = JSON.parse(localStorage.getItem('miksa_session') || 'null'); } catch (e) {}
-    if (session && session.exp && Date.now() > session.exp) { localStorage.removeItem('miksa_session'); session = null; }
+    const session = getSesion();
     if (session) {
       const parts = (session.nombre || '').split(' ');
       if (parts[0]) document.getElementById('c-nombre').value = parts[0];
@@ -281,3 +279,11 @@ function openFileDialog() { document.getElementById('file-input').click(); }
 document.getElementById('file-input').addEventListener('change', function () { handleFiles(this.files); });
 
 document.getElementById('pub-form').addEventListener('submit', function (e) { e.preventDefault(); goNext(); });
+
+// Arrastrar y soltar fotos (con listeners: los atributos ondrop inline los bloquea la CSP)
+(function () {
+  const z = document.getElementById('upload-zone');
+  z.addEventListener('dragover', onDragOver);
+  z.addEventListener('dragleave', onDragLeave);
+  z.addEventListener('drop', onDrop);
+})();

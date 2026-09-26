@@ -40,7 +40,7 @@
      ['Cuota mensual del pie (' + cuotas + ' cuotas)', 'UF ' + f1(cuota) + ' · ' + formatCLP(cuota * uf.valor)], ['Crédito a la entrega (' + (100 - pl.piePct) + '%)', 'UF ' + f1(credito)],
      ['Dividendo estimado (25 años, 4,5%)', formatCLP(div) + ' / mes']]
       .forEach(([k, v]) => cont.appendChild(el('div', { class: 'plan-row' }, [el('span', { text: k }), el('b', { text: v })])));
-    cont.appendChild(el('a', { href: 'simulador.html?precio=' + x.desde + '&pie=' + pl.piePct, text: 'Simular con tus datos →', style: 'display:block;margin-top:10px;color:var(--brand);font-weight:700;font-size:0.85rem' }));
+    cont.appendChild(el('a', { href: 'simulador.html?precio=' + x.desde + '&pie=' + pl.piePct, text: 'Simular con tus datos →', style: 'display:block;margin-top:10px;color:var(--brand-ink);font-weight:700;font-size:0.85rem' }));
   }
   sel.addEventListener('change', plan); plan();
   getUF().then(u => { uf = u; plan(); });

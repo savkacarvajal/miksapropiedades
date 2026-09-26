@@ -57,11 +57,11 @@ function estimar(d) {
       datos: d, estimacion: est });
     $id('t-empty').hidden = true; box.hidden = false;
     box.appendChild(el('div', { style: 'font-size:0.8rem;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase', text: d.op === 'venta' ? 'Valor de venta estimado' : 'Arriendo mensual estimado' }));
-    box.appendChild(el('div', { style: 'font-size:1.9rem;font-weight:800;color:var(--brand);letter-spacing:-0.03em;margin:4px 0', text: fmt(est.bajo) + ' – ' + fmt(est.alto) + ' ' + est.unidad }));
+    box.appendChild(el('div', { style: 'font-size:1.9rem;font-weight:800;color:var(--brand-ink);letter-spacing:-0.03em;margin:4px 0', text: fmt(est.bajo) + ' – ' + fmt(est.alto) + ' ' + est.unidad }));
     box.appendChild(el('div', { style: 'color:var(--muted);font-size:0.9rem', text: '≈ ' + formatCLP(est.bajo * uf.valor) + ' a ' + formatCLP(est.alto * uf.valor) + ' CLP' + (uf.fuente === 'referencial' ? ' (UF referencial)' : '') }));
     if (d.op === 'venta' && d.sup) box.appendChild(el('div', { style: 'color:var(--muted);font-size:0.85rem;margin-top:6px', text: 'Valor central: ' + fmt(est.medio) + ' UF · ' + fmt(est.medio / d.sup) + ' UF/m²' }));
     const sim = filtrarLista(getTodos(), { op: d.op, tipo: d.tipo, sector: d.sector, estado: 'todas' });
-    if (sim.length) box.appendChild(el('p', { style: 'margin:12px 0 0;font-size:0.85rem' }, [sim.length + ' propiedades similares publicadas: ', el('a', { href: 'listado.html?op=' + d.op + '&tipo=' + d.tipo + '&sector=' + encodeURIComponent(d.sector) + '&estado=todas', text: 'verlas', style: 'color:var(--brand);font-weight:700' })]));
+    if (sim.length) box.appendChild(el('p', { style: 'margin:12px 0 0;font-size:0.85rem' }, [sim.length + ' propiedades similares publicadas: ', el('a', { href: 'listado.html?op=' + d.op + '&tipo=' + d.tipo + '&sector=' + encodeURIComponent(d.sector) + '&estado=todas', text: 'verlas', style: 'color:var(--brand-ink);font-weight:700' })]));
     box.appendChild(el('div', { class: 'okmsg', text: lead ? 'Recibimos tu solicitud (código ' + lead.id + '). Un corredor te contactará para confirmar el valor con una visita.' : 'No pudimos guardar tu solicitud, pero puedes contactarnos directamente.' }));
     if (window.innerWidth < 860) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });

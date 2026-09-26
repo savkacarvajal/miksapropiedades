@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Encárgale tu búsqueda a un corredor — miksapropiedades</title>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="description" content="Cuéntanos qué propiedad buscas en La Serena o Coquimbo y un corredor la busca por ti. Mira al instante cuántas coinciden hoy." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Encárgale tu búsqueda a un corredor — miksapropiedades" />
+  <meta property="og:description" content="Cuéntanos qué propiedad buscas en La Serena o Coquimbo y un corredor la busca por ti. Mira al instante cuántas coinciden hoy." />
+  <meta property="og:locale" content="es_CL" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23E8631A'/%3E%3Cpath d='M7 15l9-7 9 7v9a1 1 0 01-1 1H8a1 1 0 01-1-1z' fill='white'/%3E%3C/svg%3E" />
+  <meta name="theme-color" content="#F58635" />
+  <link rel="preload" href="vendor/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="app">
+
+<nav class="topnav" aria-label="Principal">
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+  <div class="topnav-in">
+    <a class="brand" href="index.html" aria-label="Miksa Propiedades, inicio"><img class="brand-logo" src="img/logo.png" width="160" height="50" alt="Miksa Propiedades" /></a>
+    <div class="tn-links"><a href="listado.html" class="nav-link">Propiedades</a><a href="proyectos.html" class="nav-link">Proyectos</a><a href="mapa.html" class="nav-link">Mapa</a><a href="herramientas.html" class="nav-link">Herramientas</a><a href="corredores.html" class="nav-link">Corredores</a><a href="blog.html" class="nav-link">Guías</a></div>
+    <div class="tn-actions">
+      <a href="favoritos.html" class="tn-fav" aria-label="Favoritos"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 000-7.8z"/></svg><b data-fav-count hidden></b></a>
+      <a href="ingresar.html" class="tn-login">Ingresar</a>
+      <a href="publicar.html" class="btn-pub">Publicar propiedad</a>
+      <button type="button" class="tn-burger" data-act="toggleMenu" aria-label="Menú" aria-expanded="false" aria-controls="mobile-menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+  <div id="mobile-menu" hidden><a href="listado.html" class="mm-link">Propiedades</a><a href="proyectos.html" class="mm-link">Proyectos</a><a href="mapa.html" class="mm-link">Mapa</a><a href="herramientas.html" class="mm-link">Herramientas</a><a href="corredores.html" class="mm-link">Corredores</a><a href="blog.html" class="mm-link">Guías</a><a href="favoritos.html" class="mm-link">Favoritos</a></div>
+</nav>
+
+<main id="main" tabindex="-1" class="wrap" style="max-width:980px">
+  <span class="badge-soft">Comprar o arrendar</span>
+  <h1 class="page-title">Encárgale tu búsqueda a un corredor</h1>
+  <p class="page-sub">Dinos qué necesitas. Te mostramos al instante lo que hay hoy y un corredor sigue buscando por ti, también propiedades que aún no se publican.</p>
+  <div class="two-col wide">
+    <form class="panel-card" id="busco-form" novalidate>
+      <div class="two">
+        <div class="fld"><label for="b-op">Quiero</label><select id="b-op"><option value="venta">Comprar</option><option value="arriendo">Arrendar</option><option value="temporal">Arrendar por temporada</option></select></div>
+        <div class="fld"><label for="b-tipo">Tipo de propiedad</label><select id="b-tipo"><option value="">Cualquiera</option><option value="depto">Departamento</option><option value="casa">Casa</option><option value="oficina">Oficina</option><option value="terreno">Terreno</option></select></div>
+      </div>
+      <div class="fld"><label>Sectores de interés <span style="text-transform:none;letter-spacing:0;font-weight:500">(opcional)</span></label><div class="pills" id="b-sectores"><label class="chk-pill"><input type="checkbox" name="b-sector" value="Av. del Mar" /><span>Av. del Mar</span></label><label class="chk-pill"><input type="checkbox" name="b-sector" value="El Faro" /><span>El Faro</span></label><label class="chk-pill"><input type="checkbox" name="b-sector" value="Las Compañías" /><span>Las Compañías</span></label><label class="chk-pill"><input type="checkbox" name="b-sector" value="Centro La Serena" /><span>Centro La Serena</span></label><label class="chk-pill"><input type="checkbox" name="b-sector" value="Serena Golf" /><span>Serena Golf</span></label><label class="chk-pill"><input type="checkbox" name="b-sector" value="Valle del Sol" /><span>Valle del Sol</span></label><label class="chk-pill"><input type="checkbox" name="b-sector" value="Antofagasta (La Serena)" /><span>Antofagasta (La Serena)</span></label><label class="chk-pill"><input type="checkbox" name="b-sector" value="Guayacán" /><span>Guayacán</span></label><label class="chk-pill"><input type="checkbox" name="b-sector" value="La Herradura" /><span>La Herradura</span></label><label class="chk-pill"><input type="checkbox" name="b-sector" value="Peñuelas" /><span>Peñuelas</span></label><label class="chk-pill"><input type="checkbox" name="b-sector" value="Centro Coquimbo" /><span>Centro Coquimbo</span></label><label class="chk-pill"><input type="checkbox" name="b-sector" value="Pan de Azúcar" /><span>Pan de Azúcar</span></label><label class="chk-pill"><input type="checkbox" name="b-sector" value="Puerto Aldea" /><span>Puerto Aldea</span></label><label class="chk-pill"><input type="checkbox" name="b-sector" value="Bosque Oriente" /><span>Bosque Oriente</span></label><label class="chk-pill"><input type="checkbox" name="b-sector" value="Palmas San Ramón IV" /><span>Palmas San Ramón IV</span></label><label class="chk-pill"><input type="checkbox" name="b-sector" value="Cruz de Caña" /><span>Cruz de Caña</span></label></div></div>
+      <div class="two">
+        <div class="fld"><label for="b-pmax">Presupuesto máximo (UF)</label><input id="b-pmax" type="number" value="" inputmode="decimal" step="any" placeholder="Ej: 3500" /></div>
+        <div class="fld"><label for="b-dorm">Dormitorios (mínimo)</label><select id="b-dorm"><option value="">Da igual</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select></div>
+      </div>
+      <div class="two" id="b-pago-wrap">
+        <div class="fld"><label for="b-pago">Forma de pago</label><select id="b-pago"><option value="por-definir">Aún no lo defino</option><option value="credito">Crédito hipotecario</option><option value="contado">Contado</option><option value="subsidio">Subsidio + crédito</option></select></div>
+        <div class="fld"><label for="b-plazo">¿Para cuándo?</label><select id="b-plazo"><option value="sin-apuro">Sin apuro</option><option value="3-6">En 3 a 6 meses</option><option value="1-3">En 1 a 3 meses</option><option value="inmediato">Lo antes posible</option></select></div>
+      </div>
+      <div class="fld"><label for="b-msg">Cuéntanos más (opcional)</label><textarea id="b-msg" rows="3" maxlength="600" placeholder="Ej: cerca de colegios, con estacionamiento, vista al mar…"></textarea></div>
+      <p class="h-sec" style="margin:8px 0 10px;font-size:1rem">Tus datos</p>
+      <div class="fld"><label for="b-nombre">Nombre</label><input id="b-nombre" maxlength="80" autocomplete="name" /><span class="err" id="e-b-nombre">Ingresa tu nombre.</span></div>
+      <div class="two">
+        <div class="fld"><label for="b-email">Correo</label><input id="b-email" type="email" maxlength="120" autocomplete="email" /><span class="err" id="e-b-email">Correo no válido.</span></div>
+        <div class="fld"><label for="b-tel">Teléfono</label><input id="b-tel" type="tel" maxlength="20" autocomplete="tel" /><span class="err" id="e-b-tel">Teléfono no válido.</span></div>
+      </div>
+      <input type="text" id="b-web" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp" />
+      <label class="chk" style="margin-bottom:8px"><input type="checkbox" id="b-avisar" checked /><span>Guardar esta búsqueda y avisarme en "Mis avisos" cuando aparezcan propiedades nuevas.</span></label>
+      <label class="chk"><input type="checkbox" id="b-ok" /><span>Acepto que me contacten y el tratamiento de mis datos según la <a href="privacidad.html">política de privacidad</a>.</span></label>
+      <span class="err" id="e-b-ok">Debes aceptar para continuar.</span>
+      <button class="btn btn-brand btn-block" type="submit" style="margin-top:14px">Encargar mi búsqueda</button>
+    </form>
+    <aside>
+      <div class="panel-card" id="b-result" hidden></div>
+      <div class="panel-card" id="b-live"><h2 class="h-sec" style="margin-top:0">Lo que hay hoy</h2><p id="b-count" style="color:var(--muted);margin:0 0 10px"></p><div id="b-preview"></div></div>
+      <div class="note" style="margin-top:12px">Tu búsqueda no compromete nada. ¿No sabes cuánto puedes comprar? Usa la <a href="presupuesto.html" style="color:var(--brand-ink);font-weight:700">calculadora de presupuesto</a>.</div>
+    </aside>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="sf-in">
+    <p>© 2026 miksapropiedades SpA. Todos los derechos reservados.</p>
+    <div class="sf-links">
+      <a href="corredores.html" class="footer-link">Corredores</a>
+      <a href="blog.html" class="footer-link">Guías</a>
+      <a href="privacidad.html" class="footer-link">Privacidad</a>
+      <a href="terminos.html" class="footer-link">Términos</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/actions.js"></script>
+<script src="js/config.js"></script>
+<script src="js/store.js"></script>
+<script src="js/common.js"></script>
+<script src="js/tarjeta.js"></script>
+<script src="js/busco.js"></script>
+</body>
+</html>

@@ -5,8 +5,8 @@
   const cont = $id('corredores');
   lista.forEach(c => {
     const left = el('div', {}, [
-      el('div', { class: 'corr', style: 'margin-bottom:12px' }, [el('div', { class: 'av', text: c.nombre.charAt(0).toUpperCase() }), el('div', {}, [el('b', { text: c.nombre }), el('span', { text: c.cargo })])]),
-      el('p', { style: 'margin:0 0 6px;font-weight:700;color:var(--brand);font-size:0.85rem', text: c.especialidad || '' }),
+      el('div', { class: 'corr', style: 'margin-bottom:12px' }, [el('div', { class: 'av', text: c.nombre.charAt(0).toUpperCase() }), el('div', {}, [el('h2', { text: c.nombre }), el('span', { text: c.cargo })])]),
+      el('p', { style: 'margin:0 0 6px;font-weight:700;color:var(--brand-ink);font-size:0.85rem', text: c.especialidad || '' }),
       el('p', { style: 'margin:0 0 12px;color:var(--muted);font-size:0.85rem;line-height:1.5', text: c.bio || '' }),
       el('p', { style: 'margin:0 0 12px;font-size:0.78rem;color:var(--muted)', text: 'N° de inscripción: ' + (c.registro || 'por completar') }),
     ]);

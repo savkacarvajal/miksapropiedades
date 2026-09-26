@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>¿Arrendar o comprar? Calculadora — miksapropiedades</title>
+  <title>¿Cuánto puedo comprar? Calculadora de presupuesto — miksapropiedades</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <meta name="description" content="Compara tu patrimonio arrendando e invirtiendo la diferencia frente a comprar con crédito hipotecario." />
+  <meta name="description" content="Descubre el precio máximo de propiedad que puedes comprar según tu ingreso, tus deudas y tu ahorro para el pie." />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="¿Arrendar o comprar? Calculadora — miksapropiedades" />
-  <meta property="og:description" content="Compara tu patrimonio arrendando e invirtiendo la diferencia frente a comprar con crédito hipotecario." />
+  <meta property="og:title" content="¿Cuánto puedo comprar? Calculadora de presupuesto — miksapropiedades" />
+  <meta property="og:description" content="Descubre el precio máximo de propiedad que puedes comprar según tu ingreso, tus deudas y tu ahorro para el pie." />
   <meta property="og:locale" content="es_CL" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23E8631A'/%3E%3Cpath d='M7 15l9-7 9 7v9a1 1 0 01-1 1H8a1 1 0 01-1-1z' fill='white'/%3E%3C/svg%3E" />
   <meta name="theme-color" content="#F58635" />
@@ -35,28 +35,32 @@
 
 <main id="main" tabindex="-1" class="wrap" style="max-width:1080px">
   <div class="toolnav"><a href="presupuesto.html">¿Cuánto puedo comprar?</a><a href="simulador.html">Simulador hipotecario</a><a href="rentabilidad.html">Rentabilidad</a><a href="costos.html">Costos de compra</a><a href="arrendar-vs-comprar.html">Arrendar vs comprar</a><a href="tasacion.html">Tasación</a></div>
-  <span class="badge-soft">Comparador</span>
-  <h1 class="page-title">¿Arrendar o comprar?</h1>
-  <p class="page-sub">Ambos escenarios gastan el mismo presupuesto mensual de vivienda; lo que sobra se invierte. Valores en UF reales.</p>
+  <span class="badge-soft">Comprar</span>
+  <h1 class="page-title">¿Cuánto puedo comprar?</h1>
+  <p class="page-sub">Con tu ingreso, tus deudas y tu ahorro, calculamos el precio máximo de propiedad y el dividendo que podrías pagar.</p>
   <div class="two-col wide">
-    <form class="panel-card" id="avc-form" novalidate>
-      <div class="fld"><label for="a-precio">Precio de la propiedad (UF)</label><input id="a-precio" type="number" value="3000" inputmode="decimal" step="any"  /></div>
-      <div class="fld"><label for="a-pie">Pie (CLP)</label><input id="a-pie" type="number" min="0" step="any" inputmode="numeric" /><span class="hint" id="a-pie-v" aria-live="polite"></span></div>
-      <div class="two"><div class="fld"><label for="a-plazo">Plazo crédito (años)</label><input id="a-plazo" type="number" value="25" inputmode="decimal" step="any"  /></div><div class="fld"><label for="a-tasa">Tasa anual (%)</label><input id="a-tasa" type="number" value="4.5" inputmode="decimal" step="any"  /></div></div>
-      <div class="fld"><label for="a-arriendo">Arriendo de una propiedad equivalente (UF/mes)</label><input id="a-arriendo" type="number" value="12" inputmode="decimal" step="any"  /></div>
-      <div class="two"><div class="fld"><label for="a-reaj">Alza real del arriendo (% anual)</label><input id="a-reaj" type="number" value="0" inputmode="decimal" step="any"  /></div><div class="fld"><label for="a-plus">Plusvalía real (% anual)</label><input id="a-plus" type="number" value="2" inputmode="decimal" step="any"  /></div></div>
-      <div class="two"><div class="fld"><label for="a-gastos">Gastos de dueño (% del valor/año)</label><input id="a-gastos" type="number" value="1.5" inputmode="decimal" step="any"  /><span class="hint">Contribuciones, mantención, seguros</span></div><div class="fld"><label for="a-inv">Rentabilidad real de invertir (% anual)</label><input id="a-inv" type="number" value="3" inputmode="decimal" step="any"  /></div></div>
-      <div class="two"><div class="fld"><label for="a-cc">Costos de compra (%)</label><input id="a-cc" type="number" value="3" inputmode="decimal" step="any"  /></div><div class="fld"><label for="a-cv">Costos de venta (%)</label><input id="a-cv" type="number" value="2" inputmode="decimal" step="any"  /></div></div>
-      <div class="fld"><label for="a-hor">Horizonte: <b id="a-hor-v">10</b> años</label><input id="a-hor" type="range" min="3" max="30" step="1" value="10" /></div>
+    <form class="panel-card" id="pres-form" novalidate>
+      <div class="fld"><label for="p-ingreso">Ingreso líquido mensual del hogar (CLP)</label><input id="p-ingreso" type="number" value="2500000" inputmode="decimal" step="any"  /></div>
+      <div class="fld"><label for="p-deudas">Otras deudas mensuales (CLP)</label><input id="p-deudas" type="number" value="0" inputmode="decimal" step="any"  /><span class="hint">Tarjetas, créditos de consumo, automotriz…</span></div>
+      <div class="fld"><label for="p-pie">Ahorro disponible para pie y gastos (UF)</label><input id="p-pie" type="number" value="600" inputmode="decimal" step="any"  /></div>
+      <div class="fld"><label for="p-pct">Máximo del ingreso para el dividendo: <b id="p-pct-v">25</b>%</label><input id="p-pct" type="range" min="15" max="40" step="1" value="25" /></div>
+      <div class="two"><div class="fld"><label for="p-plazo">Plazo (años)</label><input id="p-plazo" type="number" value="25" inputmode="decimal" step="any"  /></div><div class="fld"><label for="p-tasa">Tasa anual (%)</label><input id="p-tasa" type="number" value="4.5" inputmode="decimal" step="any"  /></div></div>
+      <details style="margin-top:6px"><summary style="cursor:pointer;font-weight:700;color:var(--brand-ink)">Supuestos del banco</summary>
+        <div class="two" style="margin-top:12px"><div class="fld"><label for="p-cc">Costos de compra (%)</label><input id="p-cc" type="number" value="3" inputmode="decimal" step="any"  /></div><div class="fld"><label for="p-ltv">Financiamiento máximo (% del precio)</label><input id="p-ltv" type="number" value="80" inputmode="decimal" step="any"  /></div></div>
+      </details>
     </form>
     <aside>
-      <div class="panel-card"><div class="kpi-label">Resultado</div><div id="a-veredicto" style="font-size:1.35rem;font-weight:800;line-height:1.3;margin:4px 0 6px"></div><div id="a-detalle" style="color:var(--muted);font-size:0.9rem;line-height:1.5"></div></div>
-      <div class="panel-card" style="margin-top:14px"><p class="h-sec" style="margin:0 0 8px;font-size:1rem">Patrimonio neto (UF)</p><div id="a-chart"></div></div>
-      <div class="note" style="margin-top:12px">Es un modelo simplificado: no incluye impuestos personales, cambios de tasa ni el valor no económico de ser dueño (estabilidad, personalización).</div>
+      <div class="panel-card">
+        <div class="kpi-label">Podrías comprar hasta</div>
+        <div id="p-precio" style="font-size:2.3rem;font-weight:800;color:var(--brand-ink);letter-spacing:-0.03em"></div>
+        <div id="p-precio-clp" style="color:var(--muted);font-size:0.9rem"></div>
+        <dl class="dl-grid" style="grid-template-columns:1fr;margin-top:14px" id="p-list"></dl>
+        <div class="note" style="margin-top:12px" id="p-limit"></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px" id="p-ctas"></div>
+      </div>
+      <div class="note" style="margin-top:12px">Estimación referencial. El banco evalúa además tu historial, tipo de contrato y antigüedad laboral, y puede ofrecer condiciones distintas. Considera un colchón para imprevistos y no comprometas más del porcentaje que te acomode.</div>
     </aside>
   </div>
-  <h2 class="h-sec">Año a año</h2>
-  <div class="table-wrap"><table class="cmp-table" id="a-tabla"></table></div>
 </main>
 
 <footer class="site-footer">
@@ -76,7 +80,6 @@
 <script src="js/store.js"></script>
 <script src="js/common.js"></script>
 <script src="js/finanzas.js"></script>
-<script src="js/grafico.js"></script>
-<script src="js/avc.js"></script>
+<script src="js/presupuesto.js"></script>
 </body>
 </html>

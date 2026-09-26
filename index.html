@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>miksapropiedades — La agencia naranja de La Serena y Coquimbo</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta name="description" content="Compra, venta y arriendo de propiedades en La Serena y Coquimbo. Departamentos, casas, terrenos y proyectos nuevos con asesoría cercana." />
   <meta property="og:type" content="website" />
@@ -12,9 +12,9 @@
   <meta property="og:description" content="Compra, venta y arriendo de propiedades en La Serena y Coquimbo. Departamentos, casas, terrenos y proyectos nuevos con asesoría cercana." />
   <meta property="og:locale" content="es_CL" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23E8631A'/%3E%3Cpath d='M7 15l9-7 9 7v9a1 1 0 01-1 1H8a1 1 0 01-1-1z' fill='white'/%3E%3C/svg%3E" />
-  <meta name="theme-color" content="#E8631A" />
+  <meta name="theme-color" content="#F58635" />
+  <link rel="preload" href="vendor/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { font-family: 'Outfit', sans-serif; box-sizing: border-box; }
 
@@ -22,7 +22,7 @@
 
     body {
       background-color: #FDF8F4;
-      color: #1C1009;
+      color: #1F1A16;
       -webkit-font-smoothing: antialiased;
       margin: 0;
     }
@@ -30,7 +30,7 @@
     /* ── Scrollbar ── */
     ::-webkit-scrollbar { width: 5px; }
     ::-webkit-scrollbar-track { background: #FDF8F4; }
-    ::-webkit-scrollbar-thumb { background: #FFB680; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb { background: #FAB035; border-radius: 3px; }
 
     /* ── Ease curves ── */
     :root {
@@ -48,20 +48,20 @@
       position: absolute;
       bottom: -3px; left: 0;
       width: 0; height: 2px;
-      background: #E8631A;
+      background:#F58635;
       transition: width 200ms var(--ease-out);
       border-radius: 1px;
     }
-    .nav-link:hover { color: #E8631A; }
+    .nav-link:hover { color:#A34D0A; }
     .nav-link:hover::after { width: 100%; }
 
     /* ── Hero overlay ── */
     .hero-overlay {
       background: linear-gradient(
         130deg,
-        rgba(232,99,26,0.90) 0%,
-        rgba(28,16,9,0.82) 55%,
-        rgba(28,16,9,0.50) 100%
+        rgba(190,88,14,0.94) 0%,
+        rgba(31,26,22,0.82) 55%,
+        rgba(31,26,22,0.50) 100%
       );
     }
 
@@ -71,7 +71,7 @@
       background: transparent;
       border: none;
       font-family: 'Outfit', sans-serif;
-      color: #1C1009;
+      color: #1F1A16;
       font-size: 0.9rem;
       font-weight: 500;
       width: 100%;
@@ -92,7 +92,7 @@
     }
     .card-lift:hover {
       transform: translateY(-5px);
-      box-shadow: 0 24px 48px rgba(232,99,26,0.16), 0 6px 16px rgba(28,16,9,0.08);
+      box-shadow: 0 24px 48px rgba(245,134,53,0.16), 0 6px 16px rgba(31,26,22,0.08);
     }
 
     /* ── Card image zoom ── */
@@ -109,9 +109,9 @@
     /* ── Badge ── */
     .badge-brand {
       display: inline-block;
-      background: rgba(232,99,26,0.10);
-      color: #E8631A;
-      border: 1px solid rgba(232,99,26,0.22);
+      background: rgba(245,134,53,0.10);
+      color:#A34D0A;
+      border: 1px solid rgba(245,134,53,0.22);
       font-size: 0.7rem;
       font-weight: 700;
       letter-spacing: 0.06em;
@@ -122,7 +122,7 @@
 
     /* ── Precio tag ── */
     .precio-tag {
-      background: rgba(28,16,9,0.82);
+      background: rgba(31,26,22,0.82);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border-radius: 8px;
@@ -155,17 +155,17 @@
       width: 50px;
       height: 50px;
       flex-shrink: 0;
-      background: rgba(232,99,26,0.10);
+      background: rgba(245,134,53,0.10);
       border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #E8631A;
+      color:#A34D0A;
       transition: background 200ms var(--ease-out), color 200ms var(--ease-out), transform 200ms var(--ease-out);
     }
     .service-row:hover .service-icon {
-      background: #E8631A;
-      color: white;
+      background:#F58635;
+      color:#1F1A16;
       transform: scale(1.05);
     }
     .service-row {
@@ -176,23 +176,23 @@
       border-radius: 14px;
       transition: background 200ms ease;
     }
-    .service-row:hover { background: rgba(232,99,26,0.045); }
+    .service-row:hover { background: rgba(245,134,53,0.045); }
 
     /* ── Testimonial card ── */
     .testi-card {
       background: white;
       border-radius: 20px;
       padding: 28px;
-      border: 1px solid rgba(232,99,26,0.09);
+      border: 1px solid rgba(245,134,53,0.09);
     }
     .testi-card.featured {
-      background: #E8631A;
-      border-color: #C84E0F;
+      background:#F58635;
+      border-color: #F58635;
     }
 
     /* ── Footer links ── */
     .footer-link {
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.66);
       font-size: 0.85rem;
       text-decoration: none;
       transition: color 150ms ease;
@@ -229,14 +229,14 @@
       color: rgba(255,255,255,0.6);
       transition: background 150ms ease, color 150ms ease;
     }
-    .social-icon:hover { background: #E8631A; color: white; }
+    .social-icon:hover { background:#F58635; color:#1F1A16; }
 
     /* ── CTA glow blob ── */
     .cta-blob {
       position: absolute;
       width: 320px; height: 320px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(232,99,26,0.35) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(245,134,53,0.35) 0%, transparent 70%);
       pointer-events: none;
     }
   </style>
@@ -247,8 +247,9 @@
      NAVBAR
 ════════════════════════════════════════════ -->
 <nav class="topnav" aria-label="Principal">
+  <a class="skip-link" href="#main">Saltar al contenido</a>
   <div class="topnav-in">
-    <a class="brand" href="index.html"><span class="brand-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span class="brand-name">miksapropiedades<i>.</i></span></a>
+    <a class="brand" href="index.html" aria-label="Miksa Propiedades, inicio"><img class="brand-logo" src="img/logo.png" width="160" height="50" alt="Miksa Propiedades" /></a>
     <div class="tn-links"><a href="listado.html" class="nav-link">Propiedades</a><a href="proyectos.html" class="nav-link">Proyectos</a><a href="mapa.html" class="nav-link">Mapa</a><a href="herramientas.html" class="nav-link">Herramientas</a><a href="corredores.html" class="nav-link">Corredores</a><a href="blog.html" class="nav-link">Guías</a></div>
     <div class="tn-actions">
       <a href="favoritos.html" class="tn-fav" aria-label="Favoritos"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 000-7.8z"/></svg><b data-fav-count hidden></b></a>
@@ -259,6 +260,8 @@
   </div>
   <div id="mobile-menu" hidden><a href="listado.html" class="mm-link">Propiedades</a><a href="proyectos.html" class="mm-link">Proyectos</a><a href="mapa.html" class="mm-link">Mapa</a><a href="herramientas.html" class="mm-link">Herramientas</a><a href="corredores.html" class="mm-link">Corredores</a><a href="blog.html" class="mm-link">Guías</a><a href="favoritos.html" class="mm-link">Favoritos</a></div>
 </nav>
+
+<main id="main" tabindex="-1">
 
 
 <!-- ═══════════════════════════════════════════
@@ -278,14 +281,14 @@
 
     <!-- Eyebrow badge -->
     <div class="anim-0" style="display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.13);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.22);color:white;font-size:0.72rem;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;padding:6px 14px;border-radius:999px;margin-bottom:22px;">
-      <span style="width:6px;height:6px;border-radius:50%;background:#FFB680;"></span>
+      <span style="width:6px;height:6px;border-radius:50%;background:#FAB035;"></span>
       La agencia naranja de La Serena y Coquimbo
     </div>
 
     <!-- Heading -->
     <h1 class="anim-1" style="font-size:clamp(2.8rem,7vw,5.5rem);font-weight:900;color:white;line-height:1;letter-spacing:-0.04em;max-width:700px;margin:0 0 18px;">
       Tu propiedad<br/>
-      <span style="color:#FFB680;">ideal</span> te espera.
+      <span style="color:#FAB035;">ideal</span> te espera.
     </h1>
 
     <!-- Sub -->
@@ -294,15 +297,15 @@
     </p>
 
     <!-- Search bar -->
-    <div class="anim-3" style="background:white;border-radius:18px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;max-width:760px;box-shadow:0 24px 60px rgba(28,16,9,0.35);">
+    <div class="anim-3" style="background:white;border-radius:18px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;max-width:760px;box-shadow:0 24px 60px rgba(31,26,22,0.35);">
 
       <!-- Operación -->
       <div style="flex:1;min-width:120px;padding:6px 14px;">
-        <div style="font-size:0.62rem;font-weight:700;color:#7A6355;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Operación</div>
-        <select class="search-select" id="h-op">
-          <option value="arriendo">Arriendo</option>
-          <option value="venta">Venta</option>
-          <option value="temporal">Temporal</option>
+        <div style="font-size:0.62rem;font-weight:700;color:#655E58;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Operación</div>
+        <select class="search-select" id="h-op" aria-label="Operación">
+          <option value="venta">Comprar</option>
+          <option value="arriendo">Arrendar</option>
+          <option value="temporal">Temporada</option>
         </select>
       </div>
 
@@ -310,8 +313,8 @@
 
       <!-- Tipo -->
       <div style="flex:1;min-width:130px;padding:6px 14px;">
-        <div style="font-size:0.62rem;font-weight:700;color:#7A6355;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Tipo</div>
-        <select class="search-select" id="h-tipo">
+        <div style="font-size:0.62rem;font-weight:700;color:#655E58;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Tipo</div>
+        <select class="search-select" id="h-tipo" aria-label="Tipo de propiedad">
           <option value="depto">Departamento</option>
           <option value="casa">Casa</option>
           <option value="terreno">Terreno</option>
@@ -323,12 +326,12 @@
 
       <!-- Comuna -->
       <div style="flex:2;min-width:200px;padding:6px 14px;">
-        <div style="font-size:0.62rem;font-weight:700;color:#7A6355;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Comuna o ciudad</div>
-        <input type="search" id="h-q" placeholder="Av. del Mar, El Faro, Peñuelas, Guayacán..." class="search-input-field" autocomplete="off" />
+        <div style="font-size:0.62rem;font-weight:700;color:#655E58;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:3px;">Comuna o ciudad</div>
+        <input type="search" id="h-q" aria-label="Comuna, sector o calle" placeholder="Av. del Mar, El Faro, Peñuelas, Guayacán..." class="search-input-field" autocomplete="off" />
       </div>
 
       <!-- Buscar -->
-      <button id="h-buscar" type="button" class="btn-press" style="background:#E8631A;color:white;font-weight:700;font-size:0.9rem;padding:12px 22px;border-radius:12px;border:none;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;">
+      <button id="h-buscar" type="button" class="btn-press" style="background:var(--grad);color:#1F1A16;font-weight:700;font-size:0.9rem;padding:12px 22px;border-radius:12px;border:none;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
         </svg>
@@ -338,7 +341,7 @@
 
     <!-- Quick pills -->
     <div class="anim-4" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px;">
-      <span style="color:rgba(255,255,255,0.45);font-size:0.8rem;">Popular:</span>
+      <span style="color:rgba(255,255,255,0.66);font-size:0.8rem;">Popular:</span>
       <a class="hv-soc" href="barrio.html?s=Av.%20del%20Mar" style="color:rgba(255,255,255,0.8);font-size:0.8rem;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);padding:4px 12px;border-radius:999px;text-decoration:none;transition:background 150ms ease,color 150ms ease;" >Av. del Mar</a>
       <a class="hv-soc" href="barrio.html?s=El%20Faro" style="color:rgba(255,255,255,0.8);font-size:0.8rem;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);padding:4px 12px;border-radius:999px;text-decoration:none;transition:background 150ms ease,color 150ms ease;" >El Faro</a>
       <a class="hv-soc" href="barrio.html?s=Peñuelas" style="color:rgba(255,255,255,0.8);font-size:0.8rem;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.18);padding:4px 12px;border-radius:999px;text-decoration:none;transition:background 150ms ease,color 150ms ease;" >Peñuelas</a>
@@ -348,7 +351,7 @@
   </div>
 
   <!-- Scroll cue -->
-  <div style="position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;color:rgba(255,255,255,0.45);">
+  <div style="position:absolute;bottom:28px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;color:rgba(255,255,255,0.66);">
     <span style="font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;">Explorar</span>
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="bounce-slow">
       <path d="M12 5v14M5 12l7 7 7-7"/>
@@ -360,27 +363,27 @@
 <!-- ═══════════════════════════════════════════
      STATS BAR
 ════════════════════════════════════════════ -->
-<section style="background:white;border-bottom:1px solid rgba(232,99,26,0.08);">
-  <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;">
+<section style="background:white;border-bottom:1px solid rgba(245,134,53,0.08);">
+  <div class="stats-grid" style="max-width:1280px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:repeat(4,1fr);gap:0;">
 
-    <div class="stat-item" style="padding:24px;text-align:center;border-right:1px solid rgba(232,99,26,0.08);">
-      <div data-stat="disp" style="font-size:2.4rem;font-weight:900;color:#E8631A;line-height:1;letter-spacing:-0.03em;">1.247</div>
-      <div style="font-size:0.82rem;color:#7A6355;margin-top:4px;font-weight:500;">Propiedades disponibles</div>
+    <div class="stat-item" style="padding:24px;text-align:center;border-right:1px solid rgba(245,134,53,0.08);">
+      <div data-stat="disp" style="font-size:2.4rem;font-weight:900;color:#A34D0A;line-height:1;letter-spacing:-0.03em;">6</div>
+      <div style="font-size:0.82rem;color:#655E58;margin-top:4px;font-weight:500;">Propiedades disponibles</div>
     </div>
 
-    <div class="stat-item" style="padding:24px;text-align:center;border-right:1px solid rgba(232,99,26,0.08);">
-      <div data-stat="barrios" style="font-size:2.4rem;font-weight:900;color:#1C1009;line-height:1;letter-spacing:-0.03em;">14</div>
-      <div style="font-size:0.82rem;color:#7A6355;margin-top:4px;font-weight:500;">Barrios cubiertos</div>
+    <div class="stat-item" style="padding:24px;text-align:center;border-right:1px solid rgba(245,134,53,0.08);">
+      <div data-stat="barrios" style="font-size:2.4rem;font-weight:900;color:#1F1A16;line-height:1;letter-spacing:-0.03em;">13</div>
+      <div style="font-size:0.82rem;color:#655E58;margin-top:4px;font-weight:500;">Barrios cubiertos</div>
     </div>
 
-    <div class="stat-item" style="padding:24px;text-align:center;border-right:1px solid rgba(232,99,26,0.08);">
-      <div data-stat="corredores" style="font-size:2.4rem;font-weight:900;color:#1C1009;line-height:1;letter-spacing:-0.03em;">96.4%</div>
-      <div style="font-size:0.82rem;color:#7A6355;margin-top:4px;font-weight:500;">Corredores</div>
+    <div class="stat-item" style="padding:24px;text-align:center;border-right:1px solid rgba(245,134,53,0.08);">
+      <div data-stat="corredores" style="font-size:2.4rem;font-weight:900;color:#1F1A16;line-height:1;letter-spacing:-0.03em;">3</div>
+      <div style="font-size:0.82rem;color:#655E58;margin-top:4px;font-weight:500;">Corredores</div>
     </div>
 
     <div class="stat-item" style="padding:24px;text-align:center;">
-      <div data-stat="guias" style="font-size:2.4rem;font-weight:900;color:#1C1009;line-height:1;letter-spacing:-0.03em;">38</div>
-      <div style="font-size:0.82rem;color:#7A6355;margin-top:4px;font-weight:500;">Guías gratuitas</div>
+      <div data-stat="guias" style="font-size:2.4rem;font-weight:900;color:#1F1A16;line-height:1;letter-spacing:-0.03em;">4</div>
+      <div style="font-size:0.82rem;color:#655E58;margin-top:4px;font-weight:500;">Guías gratuitas</div>
     </div>
   </div>
 </section>
@@ -394,11 +397,11 @@
   <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;">
     <div>
       <span class="badge-brand">Destacados</span>
-      <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#1C1009;letter-spacing:-0.04em;line-height:1;margin:12px 0 0;">
+      <h2 style="font-size:clamp(1.8rem,4vw,2.8rem);font-weight:900;color:#1F1A16;letter-spacing:-0.04em;line-height:1;margin:12px 0 0;">
         Propiedades<br/>seleccionadas
       </h2>
     </div>
-    <a href="listado.html" style="display:flex;align-items:center;gap:6px;color:#E8631A;font-weight:700;font-size:0.875rem;text-decoration:none;transition:gap 200ms ease;" class="hidden md:flex">
+    <a href="listado.html" style="display:flex;align-items:center;gap:6px;color:#A34D0A;font-weight:700;font-size:0.875rem;text-decoration:none;transition:gap 200ms ease;" class="hidden md:flex">
       Ver todas
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -411,17 +414,17 @@
     <!-- CARD FEATURED (tall) -->
     <div class="prop-featured card-lift" data-href="propiedad.html?id=DEMO-1" role="link" tabindex="0" style="border-radius:20px;overflow:hidden;position:relative;cursor:pointer;">
       <img class="card-img" src="https://picsum.photos/seed/building-laserena/800/1000" alt="Edificio Borde Mar La Serena" style="width:100%;height:100%;object-fit:cover;min-height:440px;display:block;" />
-      <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(28,16,9,0.88) 0%, rgba(28,16,9,0.20) 50%, transparent 100%);"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(31,26,22,0.88) 0%, rgba(31,26,22,0.20) 50%, transparent 100%);"></div>
 
       <!-- Badges top -->
       <div style="position:absolute;top:16px;left:16px;display:flex;gap:8px;">
-        <span style="background:#E8631A;color:white;font-size:0.65rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;padding:4px 10px;border-radius:8px;">OPORTUNIDAD</span>
+        <span style="background:#F58635;color:#1F1A16;font-size:0.65rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;padding:4px 10px;border-radius:8px;">OPORTUNIDAD</span>
       </div>
 
       <!-- Info bottom -->
       <div style="position:absolute;bottom:0;left:0;right:0;padding:24px;">
         <div class="precio-tag" style="margin-bottom:8px;">
-          <span style="color:rgba(255,255,255,0.55);font-size:0.72rem;">Desde</span>
+          <span style="color:rgba(255,255,255,0.66);font-size:0.72rem;">Desde</span>
           <span style="color:white;font-weight:700;font-size:0.95rem;margin-left:4px;">UF 2.180</span>
         </div>
         <h3 style="color:white;font-weight:800;font-size:1.25rem;line-height:1.25;margin:0 0 6px;">Edificio Borde Mar — Av. del Mar</h3>
@@ -431,9 +434,9 @@
         </div>
         <div style="display:flex;gap:12px;margin-top:10px;">
           <span style="color:rgba(255,255,255,0.70);font-size:0.78rem;font-weight:500;">2–3 dorm.</span>
-          <span style="color:rgba(255,255,255,0.30);">·</span>
+          <span style="color:rgba(255,255,255,0.66);">·</span>
           <span style="color:rgba(255,255,255,0.70);font-size:0.78rem;font-weight:500;">2 baños</span>
-          <span style="color:rgba(255,255,255,0.30);">·</span>
+          <span style="color:rgba(255,255,255,0.66);">·</span>
           <span style="color:rgba(255,255,255,0.70);font-size:0.78rem;font-weight:500;">55–78 m²</span>
         </div>
       </div>
@@ -442,7 +445,7 @@
     <!-- Card 1 -->
     <div class="card-lift" data-href="propiedad.html?id=DEMO-2" role="link" tabindex="0" style="border-radius:20px;overflow:hidden;position:relative;cursor:pointer;">
       <img class="card-img" src="https://picsum.photos/seed/depto-faro/600/420" alt="Departamento El Faro La Serena" style="width:100%;height:100%;object-fit:cover;min-height:220px;display:block;" />
-      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(28,16,9,0.82) 0%,transparent 55%);"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(31,26,22,0.82) 0%,transparent 55%);"></div>
       <div style="position:absolute;top:14px;left:14px;">
         <span style="background:rgba(255,255,255,0.18);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.22);color:white;font-size:0.65rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:4px 10px;border-radius:8px;">ARRIENDO</span>
       </div>
@@ -458,7 +461,7 @@
     <!-- Card 2 -->
     <div class="card-lift" data-href="propiedad.html?id=DEMO-3" role="link" tabindex="0" style="border-radius:20px;overflow:hidden;position:relative;cursor:pointer;">
       <img class="card-img" src="https://picsum.photos/seed/casa-coquimbo/600/420" alt="Casa La Herradura Coquimbo" style="width:100%;height:100%;object-fit:cover;min-height:220px;display:block;" />
-      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(28,16,9,0.82) 0%,transparent 55%);"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(31,26,22,0.82) 0%,transparent 55%);"></div>
       <div style="position:absolute;top:14px;left:14px;">
         <span style="background:rgba(255,255,255,0.18);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.22);color:white;font-size:0.65rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:4px 10px;border-radius:8px;">ARRIENDO</span>
       </div>
@@ -474,7 +477,7 @@
     <!-- Card 3 -->
     <div class="card-lift" data-href="propiedad.html?id=DEMO-4" role="link" tabindex="0" style="border-radius:20px;overflow:hidden;position:relative;cursor:pointer;">
       <img class="card-img" src="https://picsum.photos/seed/depto-penuela/600/360" alt="Departamento Peñuelas Coquimbo" style="width:100%;height:100%;object-fit:cover;min-height:200px;display:block;" />
-      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(28,16,9,0.82) 0%,transparent 55%);"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(31,26,22,0.82) 0%,transparent 55%);"></div>
       <div style="position:absolute;top:14px;left:14px;">
         <span style="background:rgba(255,255,255,0.18);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.22);color:white;font-size:0.65rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;padding:4px 10px;border-radius:8px;">ARRIENDO</span>
       </div>
@@ -490,9 +493,9 @@
     <!-- Card 4 -->
     <div class="card-lift" data-href="propiedad.html?id=DEMO-5" role="link" tabindex="0" style="border-radius:20px;overflow:hidden;position:relative;cursor:pointer;">
       <img class="card-img" src="https://picsum.photos/seed/oficina-coquimbo/600/360" alt="Oficina Guayacán Coquimbo" style="width:100%;height:100%;object-fit:cover;min-height:200px;display:block;" />
-      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(28,16,9,0.82) 0%,transparent 55%);"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(31,26,22,0.82) 0%,transparent 55%);"></div>
       <div style="position:absolute;top:14px;left:14px;">
-        <span style="background:#E8631A;color:white;font-size:0.65rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;padding:4px 10px;border-radius:8px;">INVERSIÓN</span>
+        <span style="background:#F58635;color:#1F1A16;font-size:0.65rem;font-weight:800;letter-spacing:0.06em;text-transform:uppercase;padding:4px 10px;border-radius:8px;">INVERSIÓN</span>
       </div>
       <div style="position:absolute;bottom:0;left:0;right:0;padding:16px;">
         <div class="precio-tag" style="margin-bottom:6px;"><span style="color:white;font-weight:700;font-size:0.88rem;">UF 870</span></div>
@@ -516,11 +519,11 @@
     <!-- Left: copy -->
     <div>
       <span class="badge-brand">Por qué elegirnos</span>
-      <h2 style="font-size:clamp(2rem,4.5vw,3.2rem);font-weight:900;color:#1C1009;letter-spacing:-0.04em;line-height:1;margin:14px 0 16px;">
+      <h2 style="font-size:clamp(2rem,4.5vw,3.2rem);font-weight:900;color:#1F1A16;letter-spacing:-0.04em;line-height:1;margin:14px 0 16px;">
         Más que una<br/>
-        <span style="color:#E8631A;">agencia.</span>
+        <span style="color:#A34D0A;">agencia.</span>
       </h2>
-      <p style="color:#7A6355;font-size:1rem;line-height:1.7;max-width:52ch;margin:0 0 28px;">
+      <p style="color:#655E58;font-size:1rem;line-height:1.7;max-width:52ch;margin:0 0 28px;">
         En Miksa conectamos personas con espacios que transforman su vida. Cada propiedad tiene una historia — nosotros ayudamos a escribir la tuya.
       </p>
 
@@ -533,8 +536,8 @@
             </svg>
           </div>
           <div>
-            <div style="font-weight:700;color:#1C1009;font-size:0.95rem;margin-bottom:3px;">Asesoría legal incluida</div>
-            <div style="font-size:0.85rem;color:#7A6355;line-height:1.6;">Revisión de contratos, estudio de títulos y soporte notarial en cada operación.</div>
+            <div style="font-weight:700;color:#1F1A16;font-size:0.95rem;margin-bottom:3px;">Asesoría legal incluida</div>
+            <div style="font-size:0.85rem;color:#655E58;line-height:1.6;">Revisión de contratos, estudio de títulos y soporte notarial en cada operación.</div>
           </div>
         </div>
 
@@ -545,8 +548,8 @@
             </svg>
           </div>
           <div>
-            <div style="font-weight:700;color:#1C1009;font-size:0.95rem;margin-bottom:3px;">Respuesta en menos de 2 horas</div>
-            <div style="font-size:0.85rem;color:#7A6355;line-height:1.6;">Asesores disponibles de lunes a sábado. Sin tiempos de espera, sin bots.</div>
+            <div style="font-weight:700;color:#1F1A16;font-size:0.95rem;margin-bottom:3px;">Respuesta en menos de 2 horas</div>
+            <div style="font-size:0.85rem;color:#655E58;line-height:1.6;">Asesores disponibles de lunes a sábado. Sin tiempos de espera, sin bots.</div>
           </div>
         </div>
 
@@ -557,8 +560,8 @@
             </svg>
           </div>
           <div>
-            <div style="font-weight:700;color:#1C1009;font-size:0.95rem;margin-bottom:3px;">Valoración precisa de tu propiedad</div>
-            <div style="font-size:0.85rem;color:#7A6355;line-height:1.6;">Informe de mercado gratuito con comparables reales del sector.</div>
+            <div style="font-weight:700;color:#1F1A16;font-size:0.95rem;margin-bottom:3px;">Valoración precisa de tu propiedad</div>
+            <div style="font-size:0.85rem;color:#655E58;line-height:1.6;">Informe de mercado gratuito con comparables reales del sector.</div>
           </div>
         </div>
 
@@ -569,8 +572,8 @@
             </svg>
           </div>
           <div>
-            <div style="font-weight:700;color:#1C1009;font-size:0.95rem;margin-bottom:3px;">Fotografía y recorrido virtual</div>
-            <div style="font-size:0.85rem;color:#7A6355;line-height:1.6;">Sesión fotográfica profesional y tour 360° para cada propiedad que gestionamos.</div>
+            <div style="font-weight:700;color:#1F1A16;font-size:0.95rem;margin-bottom:3px;">Fotografía y recorrido virtual</div>
+            <div style="font-size:0.85rem;color:#655E58;line-height:1.6;">Sesión fotográfica profesional y tour 360° para cada propiedad que gestionamos.</div>
           </div>
         </div>
 
@@ -584,14 +587,14 @@
       </div>
 
       <!-- Floating stat -->
-      <div style="position:absolute;bottom:-16px;left:-28px;background:white;border-radius:18px;padding:18px 22px;box-shadow:0 16px 40px rgba(232,99,26,0.15),0 2px 8px rgba(28,16,9,0.06);border:1px solid rgba(232,99,26,0.08);">
-        <div style="font-size:2rem;font-weight:900;color:#E8631A;line-height:1;letter-spacing:-0.03em;">+1.840</div>
-        <div style="font-size:0.8rem;color:#7A6355;font-weight:600;margin-top:2px;">operaciones cerradas</div>
-        <div style="font-size:0.72rem;color:#B0A09A;margin-top:2px;">Solo en los últimos 3 años</div>
+      <div style="position:absolute;bottom:-16px;left:-28px;background:white;border-radius:18px;padding:18px 22px;box-shadow:0 16px 40px rgba(245,134,53,0.15),0 2px 8px rgba(31,26,22,0.06);border:1px solid rgba(245,134,53,0.08);">
+        <div style="font-size:2rem;font-weight:900;color:#A34D0A;line-height:1;letter-spacing:-0.03em;">+1.840</div>
+        <div style="font-size:0.8rem;color:#655E58;font-weight:600;margin-top:2px;">operaciones cerradas</div>
+        <div style="font-size:0.72rem;color:#655E58;margin-top:2px;">Solo en los últimos 3 años</div>
       </div>
 
       <!-- Orange deco block -->
-      <div style="position:absolute;top:-14px;right:-14px;width:80px;height:80px;background:#E8631A;border-radius:16px;opacity:0.15;z-index:-1;"></div>
+      <div style="position:absolute;top:-14px;right:-14px;width:80px;height:80px;background:#F58635;border-radius:16px;opacity:0.15;z-index:-1;"></div>
     </div>
 
   </div>
@@ -604,8 +607,10 @@
 <section id="herramientas" style="background:#FDF8F4;padding:72px 0 8px;">
   <div style="max-width:1280px;margin:0 auto;padding:0 24px;">
     <span class="badge-brand">Herramientas</span>
-    <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;letter-spacing:-0.03em;margin:12px 0 24px;color:#1C1009;">Decide con números</h2>
+    <h2 style="font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;letter-spacing:-0.03em;margin:12px 0 24px;color:#1F1A16;">Decide con números</h2>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+      <a class="barrio-card" href="presupuesto.html"><span style="font-size:1.5rem">💰</span><h3>¿Cuánto puedo comprar?</h3><p>Tu precio máximo según tu ingreso.</p></a>
+      <a class="barrio-card" href="busco.html"><span style="font-size:1.5rem">🔎</span><h3>Encárgale tu búsqueda</h3><p>Un corredor busca por ti.</p></a>
       <a class="barrio-card" href="simulador.html"><span style="font-size:1.5rem">🧮</span><h3>Simulador hipotecario</h3><p>Tu dividendo con la UF de hoy.</p></a>
       <a class="barrio-card" href="rentabilidad.html"><span style="font-size:1.5rem">📈</span><h3>Rentabilidad</h3><p>Cap rate, flujo y TIR de una inversión.</p></a>
       <a class="barrio-card" href="arrendar-vs-comprar.html"><span style="font-size:1.5rem">⚖️</span><h3>Arrendar vs comprar</h3><p>Compara tu patrimonio a 10 años.</p></a>
@@ -619,28 +624,28 @@
 
     <div style="text-align:center;margin-bottom:44px;">
       <span class="badge-brand">Testimonios</span>
-      <h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:900;color:#1C1009;letter-spacing:-0.04em;margin:14px 0 0;line-height:1.1;">
-        Lo que dicen nuestros clientes <span style="display:block;font-size:0.8rem;font-weight:500;color:#B0A09A;letter-spacing:0;margin-top:6px">Testimonios de ejemplo</span>
+      <h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:900;color:#1F1A16;letter-spacing:-0.04em;margin:14px 0 0;line-height:1.1;">
+        Lo que dicen nuestros clientes <span style="display:block;font-size:0.8rem;font-weight:500;color:#655E58;letter-spacing:0;margin-top:6px">Testimonios de ejemplo</span>
       </h2>
     </div>
 
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
+    <div class="testi-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;">
 
       <!-- Testi 1 -->
       <div class="testi-card">
         <div style="display:flex;gap:3px;margin-bottom:14px;">
-          <svg width="13" height="13" fill="#E8631A" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="13" height="13" fill="#E8631A" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="13" height="13" fill="#E8631A" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="13" height="13" fill="#E8631A" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="13" height="13" fill="#E8631A" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" fill="#F58635" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" fill="#F58635" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" fill="#F58635" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" fill="#F58635" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" fill="#F58635" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         </div>
-        <p style="color:#1C1009;font-size:0.92rem;line-height:1.7;margin:0 0 20px;">"Arrendé mi departamento en Av. del Mar en 18 días. El equipo de miksapropiedades manejó todo desde las fotos profesionales hasta el contrato. Realmente impecable."</p>
-        <div style="display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(232,99,26,0.08);">
-          <img src="https://ui-avatars.com/api/?name=Francisca+Moreno&background=E8631A&color=fff&size=40&bold=true" alt="Francisca Moreno" style="width:40px;height:40px;border-radius:50%;" />
+        <p style="color:#1F1A16;font-size:0.92rem;line-height:1.7;margin:0 0 20px;">"Arrendé mi departamento en Av. del Mar en 18 días. El equipo de miksapropiedades manejó todo desde las fotos profesionales hasta el contrato. Realmente impecable."</p>
+        <div style="display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(245,134,53,0.08);">
+          <img src="https://ui-avatars.com/api/?name=Francisca+Moreno&background=F58635&color=1F1A16&size=40&bold=true" alt="Francisca Moreno" style="width:40px;height:40px;border-radius:50%;" />
           <div>
-            <div style="font-weight:700;color:#1C1009;font-size:0.85rem;">Francisca Moreno</div>
-            <div style="color:#7A6355;font-size:0.75rem;">Propietaria — Av. del Mar, La Serena</div>
+            <div style="font-weight:700;color:#1F1A16;font-size:0.85rem;">Francisca Moreno</div>
+            <div style="color:#655E58;font-size:0.75rem;">Propietaria — Av. del Mar, La Serena</div>
           </div>
         </div>
       </div>
@@ -648,18 +653,18 @@
       <!-- Testi 2 (featured / highlighted) -->
       <div class="testi-card featured">
         <div style="display:flex;gap:3px;margin-bottom:14px;">
-          <svg width="13" height="13" fill="rgba(255,255,255,0.9)" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="13" height="13" fill="rgba(255,255,255,0.9)" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="13" height="13" fill="rgba(255,255,255,0.9)" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="13" height="13" fill="rgba(255,255,255,0.9)" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="13" height="13" fill="rgba(255,255,255,0.9)" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" fill="#1F1A16" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" fill="#1F1A16" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" fill="#1F1A16" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" fill="#1F1A16" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" fill="#1F1A16" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         </div>
-        <p style="color:white;font-size:0.92rem;line-height:1.7;margin:0 0 20px;">"Buscaba departamento para invertir y miksapropiedades me encontró una oportunidad con 6.2% de cap rate en Guayacán. El análisis financiero que hicieron fue clave para decidirme."</p>
-        <div style="display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.20);">
-          <img src="https://ui-avatars.com/api/?name=Rodrigo+Espinoza&background=fff&color=E8631A&size=40&bold=true" alt="Rodrigo Espinoza" style="width:40px;height:40px;border-radius:50%;" />
+        <p style="color:#1F1A16;font-size:0.92rem;line-height:1.7;margin:0 0 20px;">"Buscaba departamento para invertir y miksapropiedades me encontró una oportunidad con 6.2% de cap rate en Guayacán. El análisis financiero que hicieron fue clave para decidirme."</p>
+        <div style="display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(31,26,22,0.25);">
+          <img src="https://ui-avatars.com/api/?name=Rodrigo+Espinoza&background=fff&color=A34D0A&size=40&bold=true" alt="Rodrigo Espinoza" style="width:40px;height:40px;border-radius:50%;" />
           <div>
-            <div style="font-weight:700;color:white;font-size:0.85rem;">Rodrigo Espinoza</div>
-            <div style="color:rgba(255,255,255,0.68);font-size:0.75rem;">Inversor — Guayacán, Coquimbo</div>
+            <div style="font-weight:700;color:#1F1A16;font-size:0.85rem;">Rodrigo Espinoza</div>
+            <div style="color:#1F1A16;font-size:0.75rem;">Inversor — Guayacán, Coquimbo</div>
           </div>
         </div>
       </div>
@@ -667,18 +672,18 @@
       <!-- Testi 3 -->
       <div class="testi-card">
         <div style="display:flex;gap:3px;margin-bottom:14px;">
-          <svg width="13" height="13" fill="#E8631A" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="13" height="13" fill="#E8631A" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="13" height="13" fill="#E8631A" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="13" height="13" fill="#E8631A" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg width="13" height="13" fill="#E8631A" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" fill="#F58635" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" fill="#F58635" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" fill="#F58635" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" fill="#F58635" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg width="13" height="13" fill="#F58635" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         </div>
-        <p style="color:#1C1009;font-size:0.92rem;line-height:1.7;margin:0 0 20px;">"Encontré mi departamento en Peñuelas gracias a miksapropiedades. Me orientaron en cada paso del proceso y siempre respondieron rápido. Muy profesionales y cercanos."</p>
-        <div style="display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(232,99,26,0.08);">
-          <img src="https://ui-avatars.com/api/?name=Valentina+Castro&background=E8631A&color=fff&size=40&bold=true" alt="Valentina Castro" style="width:40px;height:40px;border-radius:50%;" />
+        <p style="color:#1F1A16;font-size:0.92rem;line-height:1.7;margin:0 0 20px;">"Encontré mi departamento en Peñuelas gracias a miksapropiedades. Me orientaron en cada paso del proceso y siempre respondieron rápido. Muy profesionales y cercanos."</p>
+        <div style="display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid rgba(245,134,53,0.08);">
+          <img src="https://ui-avatars.com/api/?name=Valentina+Castro&background=F58635&color=1F1A16&size=40&bold=true" alt="Valentina Castro" style="width:40px;height:40px;border-radius:50%;" />
           <div>
-            <div style="font-weight:700;color:#1C1009;font-size:0.85rem;">Valentina Castro</div>
-            <div style="color:#7A6355;font-size:0.75rem;">Arrendataria — Peñuelas, Coquimbo</div>
+            <div style="font-weight:700;color:#1F1A16;font-size:0.85rem;">Valentina Castro</div>
+            <div style="color:#655E58;font-size:0.75rem;">Arrendataria — Peñuelas, Coquimbo</div>
           </div>
         </div>
       </div>
@@ -693,7 +698,7 @@
 ════════════════════════════════════════════ -->
 <section id="contacto" style="scroll-margin-top:64px;background:white;padding:80px 0;">
   <div style="max-width:1280px;margin:0 auto;padding:0 24px;">
-    <div style="background:#1C1009;border-radius:26px;overflow:hidden;position:relative;">
+    <div style="background:#1F1A16;border-radius:26px;overflow:hidden;position:relative;">
 
       <!-- Background texture -->
       <img src="https://picsum.photos/seed/cta-dark-bg/1400/450" alt="" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.22;" />
@@ -708,12 +713,12 @@
           <h2 style="font-size:clamp(1.8rem,4vw,3rem);font-weight:900;color:white;letter-spacing:-0.04em;line-height:1.05;margin:0 0 12px;">
             ¿Quieres vender<br/>o arrendar?
           </h2>
-          <p style="color:rgba(255,255,255,0.55);font-size:1rem;max-width:42ch;line-height:1.65;margin:0;">
+          <p style="color:rgba(255,255,255,0.66);font-size:1rem;max-width:42ch;line-height:1.65;margin:0;">
             Publica tu propiedad gratis y llega a miles de interesados calificados en La Serena y Coquimbo.
           </p>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:12px;">
-          <a href="publicar.html" class="btn-press" style="background:#E8631A;color:white;font-weight:700;font-size:0.9rem;padding:14px 28px;border-radius:14px;text-decoration:none;white-space:nowrap;display:block;">
+          <a href="publicar.html" class="btn-press" style="background:#F58635;color:#1F1A16;font-weight:700;font-size:0.9rem;padding:14px 28px;border-radius:14px;text-decoration:none;white-space:nowrap;display:block;">
             Publicar propiedad
           </a>
           <a href="ingresar.html" class="hv-soft btn-press" style="border:1.5px solid rgba(255,255,255,0.22);color:white;font-weight:600;font-size:0.9rem;padding:14px 28px;border-radius:14px;text-decoration:none;white-space:nowrap;display:block;transition:background 150ms ease;">
@@ -729,23 +734,17 @@
 <!-- ═══════════════════════════════════════════
      FOOTER
 ════════════════════════════════════════════ -->
-<footer style="background:#1C1009;padding:64px 0 28px;">
+</main>
+
+<footer style="background:#1F1A16;padding:64px 0 28px;">
   <div style="max-width:1280px;margin:0 auto;padding:0 24px;">
 
-    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,0.07);">
+    <div class="footer-grid" style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:44px;border-bottom:1px solid rgba(255,255,255,0.07);">
 
       <!-- Brand column -->
       <div>
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
-          <div style="width:34px;height:34px;background:#E8631A;border-radius:10px;display:flex;align-items:center;justify-content:center;">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-              <polyline points="9 22 9 12 15 12 15 22"/>
-            </svg>
-          </div>
-          <span style="font-size:1rem;font-weight:800;color:white;letter-spacing:-0.03em;">miksapropiedades<span style="color:#E8631A;">.</span></span>
-        </div>
-        <p style="color:rgba(255,255,255,0.42);font-size:0.85rem;line-height:1.7;max-width:26ch;margin:0 0 20px;">
+        <div style="margin-bottom:14px;"><img src="img/logo-oscuro.png" width="180" height="58" alt="Miksa Propiedades" style="display:block;height:auto;max-width:180px" /></div>
+        <p style="color:rgba(255,255,255,0.66);font-size:0.85rem;line-height:1.7;max-width:26ch;margin:0 0 20px;">
           La agencia inmobiliaria naranja de La Serena y Coquimbo. Más de 14 años conectando personas con propiedades.
         </p>
         <div style="display:flex;gap:8px;">
@@ -769,7 +768,7 @@
 
       <!-- Buscar -->
       <div>
-        <div style="color:rgba(255,255,255,0.28);font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;">Buscar</div>
+        <div style="color:rgba(255,255,255,0.66);font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;">Buscar</div>
         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
           <li><a href="listado.html?tipo=depto" class="footer-link">Departamentos</a></li>
           <li><a href="listado.html?tipo=casa" class="footer-link">Casas</a></li>
@@ -781,7 +780,7 @@
 
       <!-- Servicios -->
       <div>
-        <div style="color:rgba(255,255,255,0.28);font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;">Servicios</div>
+        <div style="color:rgba(255,255,255,0.66);font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;">Servicios</div>
         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
           <li><a href="listado.html?op=arriendo" class="footer-link">Arrendar</a></li>
           <li><a href="tasacion.html" class="footer-link">Tasación gratuita</a></li>
@@ -792,31 +791,33 @@
 
       <!-- Contacto -->
       <div>
-        <div style="color:rgba(255,255,255,0.28);font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;">Contacto</div>
+        <div style="color:rgba(255,255,255,0.66);font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;">Contacto</div>
         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
-          <li style="color:rgba(255,255,255,0.50);font-size:0.85rem;">+56 2 2347 8912</li>
-          <li style="color:rgba(255,255,255,0.50);font-size:0.85rem;">hola@miksapropiedades.cl</li>
-          <li style="color:rgba(255,255,255,0.50);font-size:0.85rem;line-height:1.6;">Av. Francisco de Aguirre 312,<br/>La Serena, Coquimbo</li>
+          <li style="color:rgba(255,255,255,0.66);font-size:0.85rem;">+56 2 2347 8912</li>
+          <li style="color:rgba(255,255,255,0.66);font-size:0.85rem;">hola@miksapropiedades.cl</li>
+          <li style="color:rgba(255,255,255,0.66);font-size:0.85rem;line-height:1.6;">Av. Francisco de Aguirre 312,<br/>La Serena, Coquimbo</li>
         </ul>
       </div>
 
     </div>
 
     <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding-top:22px;">
-      <p style="color:rgba(255,255,255,0.24);font-size:0.75rem;margin:0;">
+      <p style="color:rgba(255,255,255,0.66);font-size:0.75rem;margin:0;">
         © 2026 Miksa Propiedades SpA. Todos los derechos reservados.
       </p>
       <div style="display:flex;gap:20px;">
-        <a class="hv-foot" href="privacidad.html" style="color:rgba(255,255,255,0.24);font-size:0.75rem;text-decoration:none;transition:color 150ms ease;">Privacidad</a>
-        <a class="hv-foot" href="terminos.html" style="color:rgba(255,255,255,0.24);font-size:0.75rem;text-decoration:none;transition:color 150ms ease;">Términos de uso</a>
-        <a class="hv-foot" href="privacidad.html#cookies" style="color:rgba(255,255,255,0.24);font-size:0.75rem;text-decoration:none;transition:color 150ms ease;">Cookies</a>
+        <a class="hv-foot" href="privacidad.html" style="color:rgba(255,255,255,0.66);font-size:0.75rem;text-decoration:none;transition:color 150ms ease;">Privacidad</a>
+        <a class="hv-foot" href="terminos.html" style="color:rgba(255,255,255,0.66);font-size:0.75rem;text-decoration:none;transition:color 150ms ease;">Términos de uso</a>
+        <a class="hv-foot" href="privacidad.html#cookies" style="color:rgba(255,255,255,0.66);font-size:0.75rem;text-decoration:none;transition:color 150ms ease;">Cookies</a>
       </div>
     </div>
 
   </div>
 </footer>
 
+<script src="js/actions.js"></script>
 <script src="js/config.js"></script>
+<script src="js/store.js"></script>
 <script src="js/common.js"></script>
 <script src="js/index.js"></script>
 </body>

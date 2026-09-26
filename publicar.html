@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Publicar propiedad — miksapropiedades</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta name="description" content="Publica tu propiedad en La Serena o Coquimbo en pocos pasos: datos, fotos y contacto." />
   <meta property="og:type" content="website" />
@@ -12,18 +12,19 @@
   <meta property="og:description" content="Publica tu propiedad en La Serena o Coquimbo en pocos pasos: datos, fotos y contacto." />
   <meta property="og:locale" content="es_CL" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23E8631A'/%3E%3Cpath d='M7 15l9-7 9 7v9a1 1 0 01-1 1H8a1 1 0 01-1-1z' fill='white'/%3E%3C/svg%3E" />
-  <meta name="theme-color" content="#E8631A" />
+  <meta name="theme-color" content="#F58635" />
+  <link rel="preload" href="vendor/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="vendor/leaflet/leaflet.css" />
   <link rel="stylesheet" href="styles.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { font-family: 'Outfit', sans-serif; box-sizing: border-box; }
-    body { background-color: #FDF8F4; color: #1C1009; -webkit-font-smoothing: antialiased; margin: 0; }
+    body { background-color: #FDF8F4; color: #1F1A16; -webkit-font-smoothing: antialiased; margin: 0; }
     :root { --ease-out: cubic-bezier(0.23, 1, 0.32, 1); }
 
     /* Nav */
     .nav-link { position: relative; transition: color 180ms var(--ease-out); text-decoration: none; }
-    .nav-link::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 2px; background: #E8631A; transition: width 200ms var(--ease-out); border-radius: 1px; }
-    .nav-link:hover { color: #E8631A; }
+    .nav-link::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 2px; background:#F58635; transition: width 200ms var(--ease-out); border-radius: 1px; }
+    .nav-link:hover { color:#A34D0A; }
     .nav-link:hover::after { width: 100%; }
 
     /* Step indicator */
@@ -31,57 +32,57 @@
       width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
       font-weight: 800; font-size: 0.85rem; flex-shrink: 0; transition: background 250ms ease, color 250ms ease, border-color 250ms ease;
     }
-    .step-circle.done    { background: #E8631A; color: white; border: 2px solid #E8631A; }
-    .step-circle.active  { background: white; color: #E8631A; border: 2px solid #E8631A; }
-    .step-circle.pending { background: white; color: #B0A09A; border: 2px solid #EDE4DC; }
+    .step-circle.done    { background:#F58635; color:#1F1A16; border: 2px solid #F58635; }
+    .step-circle.active  { background: white; color:#A34D0A; border: 2px solid #F58635; }
+    .step-circle.pending { background: white; color: #655E58; border: 2px solid #EDE4DC; }
     .step-label { font-size: 0.72rem; font-weight: 600; margin-top: 4px; transition: color 250ms ease; }
-    .step-label.done, .step-label.active { color: #E8631A; }
-    .step-label.pending { color: #B0A09A; }
+    .step-label.done, .step-label.active { color:#A34D0A; }
+    .step-label.pending { color: #655E58; }
     .step-line { flex: 1; height: 2px; background: #EDE4DC; transition: background 250ms ease; }
-    .step-line.done { background: #E8631A; }
+    .step-line.done { background:#F58635; }
 
     /* Form */
-    .form-card { background: white; border-radius: 22px; border: 1px solid rgba(232,99,26,0.09); box-shadow: 0 8px 32px rgba(28,16,9,0.06); }
+    .form-card { background: white; border-radius: 22px; border: 1px solid rgba(245,134,53,0.09); box-shadow: 0 8px 32px rgba(31,26,22,0.06); }
     .field-wrap { display: flex; flex-direction: column; gap: 5px; }
-    .field-label { font-size: 0.78rem; font-weight: 700; color: #7A6355; letter-spacing: 0.04em; }
-    .field-req { color: #E8631A; }
+    .field-label { font-size: 0.78rem; font-weight: 700; color: #655E58; letter-spacing: 0.04em; }
+    .field-req { color:#A34D0A; }
     .field-input, .field-select, .field-textarea {
       width: 100%; padding: 11px 14px; border: 1.5px solid #EDE4DC; border-radius: 12px;
-      font-size: 0.9rem; font-family: 'Outfit', sans-serif; color: #1C1009; background: white;
+      font-size: 0.9rem; font-family: 'Outfit', sans-serif; color: #1F1A16; background: white;
       transition: border-color 150ms ease, box-shadow 150ms ease; outline: none;
     }
     .field-select { appearance: none; -webkit-appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237A6355' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 36px; }
     .field-textarea { resize: vertical; min-height: 110px; }
-    .field-input:focus, .field-select:focus, .field-textarea:focus { border-color: #E8631A; box-shadow: 0 0 0 3px rgba(232,99,26,0.10); }
+    .field-input:focus, .field-select:focus, .field-textarea:focus { border-color: #F58635; box-shadow: 0 0 0 3px rgba(245,134,53,0.10); }
     .field-input.error, .field-select.error, .field-textarea.error { border-color: #DC2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.08); }
     .field-error { font-size: 0.74rem; color: #DC2626; font-weight: 500; display: none; }
     .field-error.show { display: block; }
-    .field-hint { font-size: 0.74rem; color: #B0A09A; }
+    .field-hint { font-size: 0.74rem; color: #655E58; }
 
     /* Option cards (tipo/operación) */
     .opt-card { border: 1.5px solid #EDE4DC; border-radius: 14px; padding: 14px 16px; cursor: pointer; transition: border-color 200ms ease, background 200ms ease, box-shadow 200ms ease; display: flex; align-items: center; gap: 12px; }
-    .opt-card:hover { border-color: rgba(232,99,26,0.4); background: rgba(232,99,26,0.03); }
-    .opt-card.selected { border-color: #E8631A; background: rgba(232,99,26,0.06); box-shadow: 0 0 0 3px rgba(232,99,26,0.08); }
-    .opt-icon { width: 40px; height: 40px; border-radius: 10px; background: #FDF8F4; display: flex; align-items: center; justify-content: center; color: #B0A09A; flex-shrink: 0; transition: background 200ms ease, color 200ms ease; }
-    .opt-card.selected .opt-icon { background: #E8631A; color: white; }
-    .opt-title { font-weight: 700; font-size: 0.9rem; color: #1C1009; }
-    .opt-sub   { font-size: 0.75rem; color: #7A6355; }
+    .opt-card:hover { border-color: rgba(245,134,53,0.4); background: rgba(245,134,53,0.03); }
+    .opt-card.selected { border-color: #F58635; background: rgba(245,134,53,0.06); box-shadow: 0 0 0 3px rgba(245,134,53,0.08); }
+    .opt-icon { width: 40px; height: 40px; border-radius: 10px; background: #FDF8F4; display: flex; align-items: center; justify-content: center; color: #655E58; flex-shrink: 0; transition: background 200ms ease, color 200ms ease; }
+    .opt-card.selected .opt-icon { background:#F58635; color:#1F1A16; }
+    .opt-title { font-weight: 700; font-size: 0.9rem; color: #1F1A16; }
+    .opt-sub   { font-size: 0.75rem; color: #655E58; }
 
     /* Buttons */
-    .btn-primary { padding: 13px 28px; background: #E8631A; color: white; font-weight: 700; font-size: 0.9rem; border: none; border-radius: 12px; cursor: pointer; transition: background 150ms ease, transform 100ms ease; display: inline-flex; align-items: center; gap: 8px; }
-    .btn-primary:hover { background: #C84E0F; }
+    .btn-primary { padding: 13px 28px; background:#F58635; color:#1F1A16; font-weight: 700; font-size: 0.9rem; border: none; border-radius: 12px; cursor: pointer; transition: background 150ms ease, transform 100ms ease; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-primary:hover { background: #F58635; }
     .btn-primary:active { transform: scale(0.98); }
-    .btn-secondary { padding: 13px 28px; background: white; color: #7A6355; font-weight: 600; font-size: 0.9rem; border: 1.5px solid #EDE4DC; border-radius: 12px; cursor: pointer; transition: border-color 150ms ease, color 150ms ease, transform 100ms ease; display: inline-flex; align-items: center; gap: 8px; }
-    .btn-secondary:hover { border-color: #E8631A; color: #E8631A; }
+    .btn-secondary { padding: 13px 28px; background: white; color: #655E58; font-weight: 600; font-size: 0.9rem; border: 1.5px solid #EDE4DC; border-radius: 12px; cursor: pointer; transition: border-color 150ms ease, color 150ms ease, transform 100ms ease; display: inline-flex; align-items: center; gap: 8px; }
+    .btn-secondary:hover { border-color: #F58635; color:#A34D0A; }
     .btn-secondary:active { transform: scale(0.98); }
 
     /* Photo upload */
     .upload-zone { border: 2px dashed #EDE4DC; border-radius: 14px; padding: 32px; text-align: center; cursor: pointer; transition: border-color 200ms ease, background 200ms ease; }
-    .upload-zone:hover, .upload-zone.drag { border-color: #E8631A; background: rgba(232,99,26,0.03); }
+    .upload-zone:hover, .upload-zone.drag { border-color: #F58635; background: rgba(245,134,53,0.03); }
     .photo-preview { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px,1fr)); gap: 10px; margin-top: 14px; }
     .photo-thumb { position: relative; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: #EDE4DC; }
     .photo-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .photo-remove { position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; background: rgba(28,16,9,0.7); border: none; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; line-height: 1; transition: background 150ms ease; }
+    .photo-remove { position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; background: rgba(31,26,22,0.7); border: none; border-radius: 50%; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; line-height: 1; transition: background 150ms ease; }
     .photo-remove:hover { background: #DC2626; }
 
     /* Stepper panels */
@@ -89,8 +90,8 @@
     .step-panel.active { display: block; }
 
     /* Section title */
-    .section-title { font-size: 1.1rem; font-weight: 800; color: #1C1009; margin: 0 0 4px; }
-    .section-sub   { font-size: 0.85rem; color: #7A6355; margin: 0 0 22px; }
+    .section-title { font-size: 1.1rem; font-weight: 800; color: #1F1A16; margin: 0 0 4px; }
+    .section-sub   { font-size: 0.85rem; color: #655E58; margin: 0 0 22px; }
 
     /* Success screen */
     .success-screen { display: none; text-align: center; padding: 48px 32px; }
@@ -106,11 +107,11 @@
     .alert-error { background: rgba(220,38,38,0.08); color: #DC2626; border: 1px solid rgba(220,38,38,0.15); }
 
     /* UF badge */
-    .uf-prefix { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-weight: 700; color: #7A6355; font-size: 0.9rem; pointer-events: none; }
+    .uf-prefix { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-weight: 700; color: #655E58; font-size: 0.9rem; pointer-events: none; }
     .uf-input { padding-left: 46px !important; }
 
     /* Footer link */
-    .footer-link { color: rgba(255,255,255,0.5); font-size: 0.85rem; text-decoration: none; transition: color 150ms ease; }
+    .footer-link { color: rgba(255,255,255,0.66); font-size: 0.85rem; text-decoration: none; transition: color 150ms ease; }
     .footer-link:hover { color: rgba(255,255,255,0.9); }
 
     @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
@@ -135,8 +136,9 @@
 
 <!-- NAVBAR -->
 <nav class="topnav" aria-label="Principal">
+  <a class="skip-link" href="#main">Saltar al contenido</a>
   <div class="topnav-in">
-    <a class="brand" href="index.html"><span class="brand-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span class="brand-name">miksapropiedades<i>.</i></span></a>
+    <a class="brand" href="index.html" aria-label="Miksa Propiedades, inicio"><img class="brand-logo" src="img/logo.png" width="160" height="50" alt="Miksa Propiedades" /></a>
     <div class="tn-links"><a href="listado.html" class="nav-link">Propiedades</a><a href="proyectos.html" class="nav-link">Proyectos</a><a href="mapa.html" class="nav-link">Mapa</a><a href="herramientas.html" class="nav-link">Herramientas</a><a href="corredores.html" class="nav-link">Corredores</a><a href="blog.html" class="nav-link">Guías</a></div>
     <div class="tn-actions">
       <a href="favoritos.html" class="tn-fav" aria-label="Favoritos"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 000-7.8z"/></svg><b data-fav-count hidden></b></a>
@@ -149,17 +151,17 @@
 </nav>
 
 <!-- MAIN -->
-<main style="max-width:760px;margin:0 auto;padding:100px 24px 80px;">
+<main id="main" tabindex="-1" style="max-width:760px;margin:0 auto;padding:100px 24px 80px;">
   <div class="fade-in">
 
     <!-- Header -->
     <div style="margin-bottom:32px;">
-      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(232,99,26,0.10);border:1px solid rgba(232,99,26,0.22);color:#E8631A;font-size:0.7rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:5px 12px;border-radius:999px;margin-bottom:12px;">
-        <span style="width:5px;height:5px;border-radius:50%;background:#E8631A;"></span>
+      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(245,134,53,0.10);border:1px solid rgba(245,134,53,0.22);color:#A34D0A;font-size:0.7rem;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;padding:5px 12px;border-radius:999px;margin-bottom:12px;">
+        <span style="width:5px;height:5px;border-radius:50%;background:#F58635;"></span>
         Nueva publicación
       </div>
-      <h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;color:#1C1009;letter-spacing:-0.04em;line-height:1;margin:0 0 6px;">Publica tu propiedad</h1>
-      <p style="color:#7A6355;font-size:0.9rem;margin:0;">Completa los pasos y tu aviso estará disponible en minutos.</p>
+      <h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:900;color:#1F1A16;letter-spacing:-0.04em;line-height:1;margin:0 0 6px;">Publica tu propiedad</h1>
+      <p style="color:#655E58;font-size:0.9rem;margin:0;">Completa los pasos y tu aviso estará disponible en minutos.</p>
     </div>
 
     <!-- Step indicator -->
@@ -274,7 +276,7 @@
               <label class="field-label" for="superficie">Superficie total <span class="field-req">*</span></label>
               <div style="position:relative;">
                 <input class="field-input" type="number" id="superficie" placeholder="0" min="1" style="padding-right:44px;" />
-                <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:0.82rem;font-weight:600;color:#7A6355;pointer-events:none;">m²</span>
+                <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:0.82rem;font-weight:600;color:#655E58;pointer-events:none;">m²</span>
               </div>
               <span class="field-error" id="err-superficie">Ingresa la superficie.</span>
             </div>
@@ -324,7 +326,7 @@
                   <option>La Herradura</option>
                   <option>Centro Coquimbo</option>
                   <option>Pan de Azúcar</option>
-                  <option>Puerto Aldea</option>
+                  <option>Puerto Aldea</option><option>Bosque Oriente</option><option>Palmas San Ramón IV</option><option>Cruz de Caña</option>
                 </optgroup>
               </select>
               <span class="field-error" id="err-sector">Selecciona un sector.</span>
@@ -335,16 +337,23 @@
             </div>
           </div>
 
+          <div class="field-wrap">
+            <span class="field-label" id="pin-label">Ubicación en el mapa <span style="font-weight:500;color:#655E58;">(opcional)</span></span>
+            <div id="pin-map" class="mini-map" role="application" aria-labelledby="pin-label"></div>
+            <p class="map-note" id="pin-hint">Haz clic en el mapa para marcar el punto exacto; podrás arrastrar el marcador. Se mostrará públicamente en la ficha. Si no marcas nada, se muestra la zona del sector.</p>
+            <div class="pin-row"><button type="button" class="btn btn-ghost" id="pin-clear" data-act="pinLimpiar" hidden>Quitar marcador</button></div>
+          </div>
+
           <!-- Datos adicionales -->
           <div style="border-top:1px solid #EDE4DC;padding-top:18px;">
-            <p class="field-label" style="margin-bottom:4px;">Datos adicionales <span style="font-weight:500;color:#B0A09A;">(opcional, pero aumentan las consultas)</span></p>
+            <p class="field-label" style="margin-bottom:4px;">Datos adicionales <span style="font-weight:500;color:#655E58;">(opcional, pero aumentan las consultas)</span></p>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px;">
               <div class="field-wrap"><label class="field-label" for="gastos">Gastos comunes (CLP/mes)</label><input class="field-input" type="number" id="gastos" min="0" placeholder="Ej: 60000" /></div>
               <div class="field-wrap"><label class="field-label" for="contrib">Contribuciones (CLP/trimestre)</label><input class="field-input" type="number" id="contrib" min="0" placeholder="Ej: 120000" /></div>
               <div class="field-wrap"><label class="field-label" for="anio">Año de construcción</label><input class="field-input" type="number" id="anio" min="1900" max="2100" placeholder="Ej: 2015" /></div>
               <div class="field-wrap"><label class="field-label" for="orient">Orientación</label><select class="field-select" id="orient"><option value="">—</option><option>Norte</option><option>Sur</option><option>Oriente</option><option>Poniente</option><option>Norponiente</option><option>Nororiente</option><option>Surponiente</option><option>Suroriente</option></select></div>
             </div>
-            <label style="display:flex;align-items:center;gap:8px;margin:6px 0 14px;font-size:0.85rem;color:#7A6355;cursor:pointer;"><input type="checkbox" id="subsidio" style="accent-color:#E8631A;" /> Acepta subsidio habitacional</label>
+            <label style="display:flex;align-items:center;gap:8px;margin:6px 0 14px;font-size:0.85rem;color:#655E58;cursor:pointer;"><input type="checkbox" id="subsidio" style="accent-color:#F58635;" /> Acepta subsidio habitacional</label>
             <div class="field-wrap"><label class="field-label" for="video">Video o tour virtual (enlace)</label><input class="field-input" type="url" id="video" placeholder="https://www.youtube.com/watch?v=… (YouTube, Vimeo, Matterport o Kuula)" /><span class="field-error" id="err-video">Ingresa un enlace https de YouTube, Vimeo, Matterport o Kuula.</span></div>
           </div>
 
@@ -363,12 +372,12 @@
         <p class="section-title">Fotos de la propiedad</p>
         <p class="section-sub">Las propiedades con fotos reciben hasta 5x más consultas. Agrega al menos 1.</p>
 
-        <div class="upload-zone" id="upload-zone" data-act="openFileDialog" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
-          <div style="width:52px;height:52px;background:rgba(232,99,26,0.10);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#E8631A;">
+        <div class="upload-zone" id="upload-zone" data-act="openFileDialog">
+          <div style="width:52px;height:52px;background:rgba(245,134,53,0.10);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#A34D0A;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           </div>
-          <p style="font-weight:700;color:#1C1009;font-size:0.9rem;margin:0 0 4px;">Haz clic o arrastra tus fotos aquí</p>
-          <p style="color:#B0A09A;font-size:0.8rem;margin:0;">JPG, PNG o WebP · Máximo 10 fotos</p>
+          <p style="font-weight:700;color:#1F1A16;font-size:0.9rem;margin:0 0 4px;">Haz clic o arrastra tus fotos aquí</p>
+          <p style="color:#655E58;font-size:0.8rem;margin:0;">JPG, PNG o WebP · Máximo 10 fotos</p>
           <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" multiple style="display:none;" />
         </div>
 
@@ -376,9 +385,9 @@
 
         <span class="field-error" id="err-fotos" style="margin-top:8px;display:none;">Agrega al menos una foto.</span>
 
-        <div style="background:rgba(232,99,26,0.06);border-radius:12px;padding:14px 16px;margin-top:18px;display:flex;gap:10px;align-items:flex-start;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E8631A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          <p style="font-size:0.8rem;color:#7A6355;margin:0;line-height:1.5;">La primera foto será la imagen principal del aviso. Puedes reordenarlas arrastrando.</p>
+        <div style="background:rgba(245,134,53,0.06);border-radius:12px;padding:14px 16px;margin-top:18px;display:flex;gap:10px;align-items:flex-start;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F58635" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <p style="font-size:0.8rem;color:#655E58;margin:0;line-height:1.5;">La primera foto será la imagen principal del aviso. Puedes reordenarlas arrastrando.</p>
         </div>
       </div>
 
@@ -424,9 +433,9 @@
           </div>
 
           <!-- Resumen -->
-          <div style="background:#FDF8F4;border-radius:14px;padding:18px;border:1px solid rgba(232,99,26,0.09);">
-            <p style="font-size:0.78rem;font-weight:700;color:#7A6355;letter-spacing:0.04em;text-transform:uppercase;margin:0 0 12px;">Resumen del aviso</p>
-            <div id="resumen-content" style="display:flex;flex-direction:column;gap:8px;font-size:0.875rem;color:#1C1009;"></div>
+          <div style="background:#FDF8F4;border-radius:14px;padding:18px;border:1px solid rgba(245,134,53,0.09);">
+            <p style="font-size:0.78rem;font-weight:700;color:#655E58;letter-spacing:0.04em;text-transform:uppercase;margin:0 0 12px;">Resumen del aviso</p>
+            <div id="resumen-content" style="display:flex;flex-direction:column;gap:8px;font-size:0.875rem;color:#1F1A16;"></div>
           </div>
         </div>
       </div>
@@ -450,12 +459,12 @@
       <div style="width:72px;height:72px;background:rgba(22,163,74,0.10);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
       </div>
-      <h2 style="font-size:1.6rem;font-weight:900;color:#1C1009;margin:0 0 8px;">¡Propiedad publicada!</h2>
-      <p style="color:#7A6355;font-size:0.9rem;line-height:1.6;max-width:340px;margin:0 auto 24px;">Tu aviso ha sido guardado exitosamente. Nuestro equipo lo revisará y estará disponible en breve.</p>
+      <h2 style="font-size:1.6rem;font-weight:900;color:#1F1A16;margin:0 0 8px;">¡Propiedad publicada!</h2>
+      <p style="color:#655E58;font-size:0.9rem;line-height:1.6;max-width:340px;margin:0 auto 24px;">Tu aviso ha sido guardado exitosamente. Nuestro equipo lo revisará y estará disponible en breve.</p>
       <div style="background:#FDF8F4;border-radius:12px;padding:16px;display:inline-block;text-align:left;margin-bottom:24px;" id="success-id"></div>
       <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;">
-        <a href="publicar.html" style="background:#E8631A;color:white;font-weight:700;font-size:0.875rem;padding:12px 22px;border-radius:12px;text-decoration:none;">Publicar otra propiedad</a>
-        <a href="index.html" style="background:white;color:#7A6355;font-weight:600;font-size:0.875rem;padding:12px 22px;border-radius:12px;text-decoration:none;border:1.5px solid #EDE4DC;">Volver al inicio</a>
+        <a href="publicar.html" style="background:#F58635;color:#1F1A16;font-weight:700;font-size:0.875rem;padding:12px 22px;border-radius:12px;text-decoration:none;">Publicar otra propiedad</a>
+        <a href="index.html" style="background:white;color:#655E58;font-weight:600;font-size:0.875rem;padding:12px 22px;border-radius:12px;text-decoration:none;border:1.5px solid #EDE4DC;">Volver al inicio</a>
       </div>
     </div>
 
@@ -477,7 +486,10 @@
 
 <script src="js/actions.js"></script>
 <script src="js/config.js"></script>
+<script src="js/store.js"></script>
 <script src="js/common.js"></script>
+<script src="vendor/leaflet/leaflet.js"></script>
+<script src="js/pin-mapa.js"></script>
 <script src="js/publicar.js"></script>
 </body>
 </html>

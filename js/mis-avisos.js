@@ -44,14 +44,11 @@
       setTimeout(() => { btn.classList.remove('confirm'); btn.textContent = 'Eliminar'; }, 3500);
       return;
     }
-    const todos = getAvisosUsuario();
-    const i = todos.findIndex(a => a.id === id && (a.owner || (a.contacto || {}).email) === s.email);
-    if (i > -1) { todos.splice(i, 1); localStorage.setItem('miksa_avisos', JSON.stringify(todos)); }
+    eliminarAviso(id, s.email);
     pintar();
   };
   function cambiarEstado(id, estado) {
-    const todos = getAvisosUsuario(); const x = todos.find(a => a.id === id);
-    if (x) { x.estado = estado; lsSet('miksa_avisos', todos); avisoFlotante('Estado actualizado: ' + LABEL_ESTADO[estado]); }
+    if (actualizarAviso(id, { estado: estado })) avisoFlotante('Estado actualizado: ' + LABEL_ESTADO[estado]);
   }
 
   // Consultas recibidas en mis avisos
@@ -81,7 +78,18 @@
       ]));
     });
   }
-  window.borrarBusqueda = function (id) { lsSet('miksa_busquedas', getBusquedas().filter(b => b.id !== id)); pintarBusquedas(); };
+  // Búsquedas encargadas a un corredor (lado comprador)
+  function pintarRequerimientos() {
+    const cont = $id('requerimientos'); cont.textContent = '';
+    const R = getLeads().filter(l => l.tipo === 'requerimiento' && String(l.email).toLowerCase() === String(s.email).toLowerCase()).reverse();
+    $id('requerimientos-wrap').hidden = !R.length;
+    R.forEach(l => cont.appendChild(el('div', { class: 'arow', style: 'grid-template-columns:minmax(0,1fr)' }, [el('div', {}, [
+      el('h3', { text: (l.propiedadTitulo || 'Búsqueda').replace(/^Busca: /, '') }),
+      el('div', { class: 'meta', text: 'Estado: ' + (LABEL_LEAD[l.estado] || l.estado) + ' · ' + l.id + (l.creado ? ' · ' + fecha(l.creado) : '') }),
+      l.mensaje ? el('div', { class: 'meta', text: '“' + l.mensaje + '”' }) : '',
+    ].filter(Boolean))])));
+  }
+  window.borrarBusqueda = function (id) { setBusquedas(getBusquedas().filter(b => b.id !== id)); pintarBusquedas(); };
 
-  pintar(); pintarConsultas(); pintarBusquedas();
+  pintar(); pintarConsultas(); pintarRequerimientos(); pintarBusquedas();
 })();

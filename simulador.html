@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Simulador de crédito hipotecario — miksapropiedades</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta name="description" content="Calcula tu dividendo mensual según el precio, el pie, el plazo y la tasa. Valor UF actualizado." />
   <meta property="og:type" content="website" />
@@ -12,15 +12,16 @@
   <meta property="og:description" content="Calcula tu dividendo mensual según el precio, el pie, el plazo y la tasa. Valor UF actualizado." />
   <meta property="og:locale" content="es_CL" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23E8631A'/%3E%3Cpath d='M7 15l9-7 9 7v9a1 1 0 01-1 1H8a1 1 0 01-1-1z' fill='white'/%3E%3C/svg%3E" />
-  <meta name="theme-color" content="#E8631A" />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <meta name="theme-color" content="#F58635" />
+  <link rel="preload" href="vendor/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="app">
 
 <nav class="topnav" aria-label="Principal">
+  <a class="skip-link" href="#main">Saltar al contenido</a>
   <div class="topnav-in">
-    <a class="brand" href="index.html"><span class="brand-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span class="brand-name">miksapropiedades<i>.</i></span></a>
+    <a class="brand" href="index.html" aria-label="Miksa Propiedades, inicio"><img class="brand-logo" src="img/logo.png" width="160" height="50" alt="Miksa Propiedades" /></a>
     <div class="tn-links"><a href="listado.html" class="nav-link">Propiedades</a><a href="proyectos.html" class="nav-link">Proyectos</a><a href="mapa.html" class="nav-link">Mapa</a><a href="herramientas.html" class="nav-link">Herramientas</a><a href="corredores.html" class="nav-link">Corredores</a><a href="blog.html" class="nav-link">Guías</a></div>
     <div class="tn-actions">
       <a href="favoritos.html" class="tn-fav" aria-label="Favoritos"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 000-7.8z"/></svg><b data-fav-count hidden></b></a>
@@ -32,15 +33,15 @@
   <div id="mobile-menu" hidden><a href="listado.html" class="mm-link">Propiedades</a><a href="proyectos.html" class="mm-link">Proyectos</a><a href="mapa.html" class="mm-link">Mapa</a><a href="herramientas.html" class="mm-link">Herramientas</a><a href="corredores.html" class="mm-link">Corredores</a><a href="blog.html" class="mm-link">Guías</a><a href="favoritos.html" class="mm-link">Favoritos</a></div>
 </nav>
 
-<main class="wrap" style="max-width:980px">
-  <div class="toolnav"><a href="simulador.html">Simulador hipotecario</a><a href="rentabilidad.html">Rentabilidad</a><a href="costos.html">Costos de compra</a><a href="arrendar-vs-comprar.html">Arrendar vs comprar</a><a href="tasacion.html">Tasación</a></div>
+<main id="main" tabindex="-1" class="wrap" style="max-width:980px">
+  <div class="toolnav"><a href="presupuesto.html">¿Cuánto puedo comprar?</a><a href="simulador.html">Simulador hipotecario</a><a href="rentabilidad.html">Rentabilidad</a><a href="costos.html">Costos de compra</a><a href="arrendar-vs-comprar.html">Arrendar vs comprar</a><a href="tasacion.html">Tasación</a></div>
   <span class="badge-soft">Simulador</span>
   <h1 class="page-title">Simula tu crédito hipotecario</h1>
   <p class="page-sub">Calcula el dividendo mensual y el ingreso recomendado. Referencial: no es una oferta de crédito.</p>
   <div class="two-col">
     <form class="panel-card" id="sim-form" novalidate>
       <div class="fld"><label for="s-precio">Precio de la propiedad (UF)</label><input id="s-precio" type="number" min="1" value="3000" inputmode="decimal" /></div>
-      <div class="fld"><label for="s-pie">Pie: <b id="s-pie-v">20</b>%</label><input id="s-pie" type="range" min="5" max="60" step="1" value="20" /></div>
+      <div class="fld"><label for="s-pie">Pie (CLP)</label><input id="s-pie" type="number" min="0" step="any" inputmode="numeric" /><span class="hint" id="s-pie-v" aria-live="polite"></span></div>
       <div class="fld"><label for="s-plazo">Plazo: <b id="s-plazo-v">25</b> años</label><input id="s-plazo" type="range" min="5" max="30" step="1" value="25" /></div>
       <div class="fld"><label for="s-tasa">Tasa anual (%)</label><input id="s-tasa" type="number" min="0" max="20" step="0.1" value="4.5" inputmode="decimal" /></div>
       <div class="fld"><label for="s-uf">Valor UF (CLP) <span id="s-uf-src" style="text-transform:none;letter-spacing:0;font-weight:500"></span></label><input id="s-uf" type="number" min="1" step="0.01" /></div>
@@ -48,7 +49,7 @@
     <aside>
       <div class="panel-card">
         <div style="font-size:0.8rem;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase">Dividendo mensual</div>
-        <div id="r-div" style="font-size:2.2rem;font-weight:800;color:var(--brand);letter-spacing:-0.03em"></div>
+        <div id="r-div" style="font-size:2.2rem;font-weight:800;color:var(--brand-ink);letter-spacing:-0.03em"></div>
         <div id="r-div-uf" style="color:var(--muted);font-size:0.9rem"></div>
         <dl class="dl-grid" style="grid-template-columns:1fr;margin-top:16px" id="r-list"></dl>
       </div>
@@ -71,6 +72,7 @@
 
 <script src="js/actions.js"></script>
 <script src="js/config.js"></script>
+<script src="js/store.js"></script>
 <script src="js/common.js"></script>
 <script src="js/simulador.js"></script>
 </body>

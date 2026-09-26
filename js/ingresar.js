@@ -67,7 +67,7 @@
       document.getElementById('sb'+(i+1)).style.background = i < score ? active[score-1] : '#EDE4DC';
     }
     document.getElementById('strength-label').textContent = val ? labels[score] : '';
-    document.getElementById('strength-label').style.color = score > 0 ? active[score-1] : '#B0A09A';
+    document.getElementById('strength-label').style.color = score > 0 ? active[score-1] : '#655E58';
   }
 
   // ─── LOGIN ───
@@ -83,11 +83,10 @@
     if (!valid) return;
 
     // Límite de intentos: 5 fallos → bloqueo de 60 s (mitigación en cliente; el control real va en el servidor)
-    const th = JSON.parse(localStorage.getItem('miksa_throttle') || '{"n":0,"until":0}');
+    const th = getThrottle();
     if (Date.now() < th.until) { showAlert('error', 'Demasiados intentos. Espera ' + Math.ceil((th.until - Date.now())/1000) + ' s.'); return; }
 
-    // Buscar en localStorage
-    const users = JSON.parse(localStorage.getItem('miksa_users') || '[]');
+    const users = getUsuarios();
     const user  = users.find(u => u.email === email);
     let ok = false;
     if (user) {
@@ -96,20 +95,20 @@
           ok = (await hashPwd(pwd, user.salt)).hash === user.hash;
         } else if (user.pwd === pwd) {           // cuenta antigua: migrar a hash
           Object.assign(user, await hashPwd(pwd)); delete user.pwd;
-          localStorage.setItem('miksa_users', JSON.stringify(users));
+          guardarUsuarios(users);
           ok = true;
         }
       } catch (e) { showAlert('error', CRYPTO_ERR); return; }
     }
     if (!ok) {
       th.n++; if (th.n >= 5) { th.until = Date.now() + 60000; th.n = 0; }
-      localStorage.setItem('miksa_throttle', JSON.stringify(th));
+      setThrottle(th);
       showAlert('error', 'Correo o contraseña incorrectos. Verifica tus datos.');
       return;
     }
 
-    localStorage.removeItem('miksa_throttle');
-    localStorage.setItem('miksa_session', JSON.stringify({ email: user.email, nombre: user.nombre, exp: Date.now() + 7*24*3600*1000 }));
+    limpiarThrottle();
+    setSesion({ email: user.email, nombre: user.nombre, exp: Date.now() + 7*24*3600*1000 });
     showAlert('success', '¡Bienvenido de vuelta, ' + user.nombre + '! Redirigiendo...');
     setTimeout(() => { window.location.href = 'index.html'; }, 1400);
   }
@@ -134,7 +133,7 @@
     setError('reg-terms', !terms);              if (!terms)    valid = false;
     if (!valid) return;
 
-    const users = JSON.parse(localStorage.getItem('miksa_users') || '[]');
+    const users = getUsuarios();
     if (users.find(u => u.email === email)) {
       showAlert('error', 'No pudimos crear la cuenta con esos datos. Si ya tienes cuenta, ingresa.');
       return;
@@ -143,8 +142,8 @@
     let cred;
     try { cred = await hashPwd(pwd); } catch (e) { showAlert('error', CRYPTO_ERR); return; }
     users.push({ nombre, apellido, email, salt: cred.salt, hash: cred.hash, tel: document.getElementById('reg-tel').value.trim(), fecha: new Date().toISOString() });
-    localStorage.setItem('miksa_users', JSON.stringify(users));
-    localStorage.setItem('miksa_session', JSON.stringify({ email, nombre, exp: Date.now() + 7*24*3600*1000 }));
+    guardarUsuarios(users);
+    setSesion({ email, nombre, exp: Date.now() + 7*24*3600*1000 });
 
     showAlert('success', '¡Cuenta creada con éxito! Bienvenido/a, ' + nombre + '. Redirigiendo...');
     setTimeout(() => { window.location.href = 'index.html'; }, 1600);
@@ -152,9 +151,7 @@
 
   // ─── INIT — check session ───
   window.addEventListener('DOMContentLoaded', () => {
-    let session = null;
-    try { session = JSON.parse(localStorage.getItem('miksa_session') || 'null'); } catch (e) {}
-    if (session && session.exp && Date.now() > session.exp) { localStorage.removeItem('miksa_session'); session = null; }
+    const session = getSesion();
     if (session) {
       showAlert('success', 'Ya estás conectado como ' + session.nombre + '. Redirigiendo...');
       setTimeout(() => { window.location.href = 'index.html'; }, 1200);

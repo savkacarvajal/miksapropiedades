@@ -7,7 +7,7 @@ const LABEL_ESTADO = { disponible: 'Disponible', reservada: 'Reservada', vendida
 const LABEL_LEAD = { nuevo: 'Nuevo', contactado: 'Contactado', visita: 'Visita agendada', negociacion: 'En negociación', cerrado: 'Cerrado', descartado: 'Descartado' };
 const SECTORES = {
   'La Serena': ['Av. del Mar', 'El Faro', 'Las Compañías', 'Centro La Serena', 'Serena Golf', 'Valle del Sol', 'Antofagasta (La Serena)'],
-  'Coquimbo': ['Guayacán', 'La Herradura', 'Peñuelas', 'Centro Coquimbo', 'Pan de Azúcar', 'Puerto Aldea'],
+  'Coquimbo': ['Guayacán', 'La Herradura', 'Peñuelas', 'Centro Coquimbo', 'Pan de Azúcar', 'Puerto Aldea', 'Bosque Oriente', 'Palmas San Ramón IV', 'Cruz de Caña'],
 };
 // Coordenadas APROXIMADAS por sector (para el mapa). Al haber backend se guardan lat/lng exactas por aviso.
 const COORDS = {
@@ -15,7 +15,7 @@ const COORDS = {
   'Centro La Serena': [-29.9027, -71.2519], 'Serena Golf': [-29.9430, -71.2790], 'Valle del Sol': [-29.9330, -71.2380],
   'Antofagasta (La Serena)': [-29.9100, -71.2310], 'Guayacán': [-29.9680, -71.3560], 'La Herradura': [-29.9870, -71.3450],
   'Peñuelas': [-29.9930, -71.2900], 'Centro Coquimbo': [-29.9533, -71.3395], 'Pan de Azúcar': [-30.0170, -71.3650],
-  'Puerto Aldea': [-30.2600, -71.4700],
+  'Puerto Aldea': [-30.2600, -71.4700], 'Bosque Oriente': [-29.9715, -71.2466], 'Palmas San Ramón IV': [-29.9805, -71.2433], 'Cruz de Caña': [-30.0239, -71.2094],
 };
 
 const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -32,17 +32,8 @@ function el(tag, attrs, children) {
 }
 const $id = i => document.getElementById(i);
 
-// ── Almacenamiento (localStorage, a prueba de fallos) ──
-function lsGet(k, def) { try { const v = JSON.parse(localStorage.getItem(k)); return v === null || v === undefined ? def : v; } catch (e) { return def; } }
-function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } }
-
-// ── Sesión ──
-function getSesion() {
-  const s = lsGet('miksa_session', null);
-  if (s && s.exp && Date.now() > s.exp) { try { localStorage.removeItem('miksa_session'); } catch (e) {} return null; }
-  return s;
-}
-function cerrarSesion() { try { localStorage.removeItem('miksa_session'); } catch (e) {} window.location.href = 'index.html'; }
+// ── Sesión (los datos viven en store.js) ──
+function cerrarSesion() { limpiarSesion(); window.location.href = 'index.html'; }
 function esAdmin() { const s = getSesion(); return !!s && (MIKSA_CONFIG.ADMIN_EMAILS || []).map(x => x.toLowerCase()).includes(String(s.email).toLowerCase()); }
 
 // ── Formato ──
@@ -50,6 +41,7 @@ function formatPrecio(a) {
   const n = Number(a.precio);
   if (!isFinite(n) || n <= 0) return 'Consultar';
   const suf = a.op === 'arriendo' ? ' / mes' : a.op === 'temporal' ? ' / día' : '';
+  if (Number(a.precioCLP) > 0) return formatCLP(a.precioCLP) + suf;   // avisos publicados en pesos: se muestra el valor exacto (precio en UF es solo referencia)
   return 'UF ' + n.toLocaleString('es-CL') + suf;
 }
 function formatCLP(n) { const v = Math.round(Number(n) || 0); return (v < 0 ? '-$' : '$') + Math.abs(v).toLocaleString('es-CL'); }
@@ -84,13 +76,13 @@ function videoSeguro(u) {
 
 // ── Valor UF (mindicador.cl, con caché de 12 h y valor referencial de respaldo) ──
 async function getUF() {
-  const c = lsGet('miksa_uf', null);
+  const c = getUFCache();
   if (c && Date.now() - c.t < 12 * 3600 * 1000) return c;
   try {
     const r = await fetch('https://mindicador.cl/api/uf', { cache: 'no-store' });
     const j = await r.json();
     const v = j.serie && j.serie[0] && Number(j.serie[0].valor);
-    if (v > 1000) { const o = { valor: v, fecha: j.serie[0].fecha, fuente: 'mindicador.cl', t: Date.now() }; lsSet('miksa_uf', o); return o; }
+    if (v > 1000) { const o = { valor: v, fecha: j.serie[0].fecha, fuente: 'mindicador.cl', t: Date.now() }; setUFCache(o); return o; }
   } catch (e) { /* sin red: se usa respaldo */ }
   return c || { valor: MIKSA_CONFIG.UF_FALLBACK, fecha: null, fuente: 'referencial', t: 0 };
 }
@@ -130,60 +122,60 @@ const SEED = [
   { id: 'DEMO-8', demo: true, tipo: 'depto', op: 'venta', estado: 'vendida', fecha: dias(60), corredor: 'c1', titulo: 'Depto. Centro La Serena', descripcion: 'Departamento en pleno centro histórico, cerca de todo. Excelente para inversión.', precio: 2450, superficie: 60, dormitorios: '2', banos: '2', estacionamientos: '1', sector: 'Centro La Serena', direccion: 'Centro, La Serena', amenidades: ['Conserje', 'Bodega'], gastosComunes: 70000, contribuciones: 150000, anio: 2019, orientacion: 'Norte', subsidio: true, fotos: [img('demo8-centro', 800, 600)] },
 ];
 
-function getAvisosUsuario() { const a = lsGet('miksa_avisos', []); return Array.isArray(a) ? a : []; }
+// Propiedades reales de la agencia (precio en pesos exacto; «precio» en UF es referencial, calculado con UF_FALLBACK)
+const REALES = [
+  { id: 'MP-001', tipo: 'casa', op: 'venta', estado: 'disponible', fecha: '2026-09-26T12:00:00.000Z', titulo: 'Casa en Bosque Oriente — Coquimbo',
+    descripcion: 'Casa de 3 dormitorios y 1 baño con sala/comedor, cocina, estacionamiento, área de lavado y quincho, en Bosque Oriente (Tierras Blancas, Coquimbo). Oferta: antes $165.000.000.',
+    precioCLP: 155000000, precioAnterior: 165000000, comision: 2, precio: Math.round(155000000 / MIKSA_CONFIG.UF_FALLBACK), superficie: null, dormitorios: '3', banos: '1', estacionamientos: '1',
+    sector: 'Bosque Oriente', direccion: 'Bosque Oriente, Coquimbo', amenidades: ['Sala / comedor', 'Cocina', 'Estacionamiento', 'Área de lavado', 'Quincho'], subsidio: null,
+    contacto: { nombre: 'Miksa', apellido: 'Propiedades', tel: '+56961357871' },
+    fotos: ['img/propiedades/bosque-oriente-1.jpg', 'img/propiedades/bosque-oriente-2.jpg', 'img/propiedades/bosque-oriente-3.jpg', 'img/propiedades/bosque-oriente-4.jpg', 'img/propiedades/bosque-oriente-5.jpg'] },
+  { id: 'MP-002', tipo: 'casa', op: 'venta', estado: 'disponible', fecha: '2026-09-26T12:00:00.000Z', titulo: 'Casa de 2 pisos ampliada en Palmas de San Ramón IV — Coquimbo',
+    descripcion: 'Casa de 2 pisos ampliada en un sector seguro y tranquilo, cercana a colegios, jardines, supermercados, farmacias, comisaría, centros comerciales y servicentro. Cuenta con 4 dormitorios, 1 baño, cocina ampliada, lavandería, 2 estacionamientos, antejardín, patio pequeño y bodega exterior. Se acepta efectivo, leasing y crédito hipotecario.',
+    precioCLP: 100000000, comision: 2, precio: Math.round(100000000 / MIKSA_CONFIG.UF_FALLBACK), superficie: null, dormitorios: '4', banos: '1', estacionamientos: '2',
+    sector: 'Palmas San Ramón IV', direccion: 'Palmas de San Ramón IV, Coquimbo', amenidades: ['Cocina ampliada', 'Lavandería', 'Antejardín', 'Patio pequeño', 'Bodega exterior', 'Estacionamiento'], subsidio: null,
+    contacto: { nombre: 'Miksa', apellido: 'Propiedades', tel: '+56961357871' },
+    fotos: ['img/propiedades/palmas-san-ramon-1.jpg'] },
+  { id: 'MP-003', tipo: 'terreno', op: 'venta', estado: 'disponible', fecha: '2026-09-26T12:00:00.000Z', titulo: 'Terreno de 2.500 m² en Cruz de Caña — Coquimbo (cesión de derechos)',
+    descripcion: 'Terreno de 2.500 m² en venta por cesión de derechos, con contribuciones al día. Cuenta con terraza, radier de 96 m², portón eléctrico, cabaña de 18 m² sin terminar, estanque de agua de 2.500 litros sin conectar, agua y luz, árboles frutales, cierre completo con pandereta bulldogs y fosa instalada.',
+    precioCLP: 28000000, cesionDerechos: true, precio: Math.round(28000000 / MIKSA_CONFIG.UF_FALLBACK), superficie: 2500, dormitorios: '', banos: '', estacionamientos: '',
+    sector: 'Cruz de Caña', direccion: 'Cruz de Caña, Coquimbo', amenidades: ['Agua y luz', 'Portón eléctrico', 'Terraza', 'Fosa instalada', 'Árboles frutales', 'Cierre perimetral'], subsidio: null,
+    contacto: { nombre: 'Miksa', apellido: 'Propiedades', tel: '+56961357871' },
+    fotos: ['img/propiedades/cruz-de-cana-1.jpg', 'img/propiedades/cruz-de-cana-2.jpg', 'img/propiedades/cruz-de-cana-3.jpg', 'img/propiedades/cruz-de-cana-4.jpg', 'img/propiedades/cruz-de-cana-5.jpg'] },
+];
 function getTodos() {
   const propios = getAvisosUsuario().map(a => Object.assign({ estado: 'disponible' }, a, {
     fotos: (a.fotos || []).filter(f => typeof f === 'string' && f.indexOf('data:image/') === 0),
   }));
-  return propios.reverse().concat(SEED);
+  return propios.reverse().concat(REALES, SEED.filter(a => !a.demo || demoActivo()));
 }
 function getPorId(id) { return getTodos().find(a => a.id === id) || null; }
 function fotoPrincipal(a) { return (a.fotos && a.fotos[0]) || null; }
 function getCorredor(id) { return (MIKSA_CONFIG.CORREDORES || []).find(c => c.id === id) || null; }
 
 // Posición estable por aviso: coordenadas del sector + pequeño desplazamiento determinista
+// (isFinite(null) es true: sin este chequeo un aviso con lat/lng null caería en 0,0)
+function tienePunto(a) { return a.lat != null && a.lng != null && a.lat !== '' && a.lng !== '' && isFinite(a.lat) && isFinite(a.lng); }
 function coordsDe(a) {
-  if (isFinite(a.lat) && isFinite(a.lng)) return [Number(a.lat), Number(a.lng)];
+  if (tienePunto(a)) return [Number(a.lat), Number(a.lng)];
   const base = COORDS[a.sector]; if (!base) return null;
   let h = 0; const s = String(a.id); for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
   return [base[0] + (((h & 255) / 255) - 0.5) * 0.008, base[1] + ((((h >> 8) & 255) / 255) - 0.5) * 0.008];
 }
 
 // ── Favoritos y comparador ──
-function getFavs() { const f = lsGet('miksa_favs', []); return Array.isArray(f) ? f : []; }
 function isFav(id) { return getFavs().includes(id); }
 function toggleFav(id) {
   const f = getFavs(); const i = f.indexOf(id);
   if (i > -1) f.splice(i, 1); else f.push(id);
-  lsSet('miksa_favs', f); pintarContadorFav(); return i === -1;
+  setFavs(f); pintarContadorFav(); return i === -1;
 }
-function getComp() { const c = lsGet('miksa_compare', []); return Array.isArray(c) ? c : []; }
 function toggleComp(id) {
   const c = getComp(); const i = c.indexOf(id);
-  if (i > -1) { c.splice(i, 1); lsSet('miksa_compare', c); return { ok: true, on: false }; }
+  if (i > -1) { c.splice(i, 1); setComp(c); return { ok: true, on: false }; }
   if (c.length >= 3) return { ok: false, on: false };
-  c.push(id); lsSet('miksa_compare', c); return { ok: true, on: true };
+  c.push(id); setComp(c); return { ok: true, on: true };
 }
-
-// ── Leads (consultas, visitas, tasaciones, captación) ──
-function getLeads() { const l = lsGet('miksa_leads', []); return Array.isArray(l) ? l : []; }
-function guardarLead(l) {
-  const todos = getLeads();
-  const lead = Object.assign({ id: 'L-' + (crypto.randomUUID ? crypto.randomUUID().slice(0, 8).toUpperCase() : Date.now()), creado: new Date().toISOString(), estado: 'nuevo' }, l);
-  todos.push(lead);
-  return lsSet('miksa_leads', todos) ? lead : null;
-}
-function actualizarLead(id, cambios) {
-  const todos = getLeads(); const l = todos.find(x => x.id === id);
-  if (!l) return false; Object.assign(l, cambios); return lsSet('miksa_leads', todos);
-}
-
-// ── Estadísticas por aviso (solo de este navegador hasta que exista backend) ──
-function sumarStat(id, campo) { const s = lsGet('miksa_stats', {}); s[id] = s[id] || { vistas: 0, contactos: 0 }; s[id][campo]++; lsSet('miksa_stats', s); }
-function getStats(id) { return (lsGet('miksa_stats', {})[id]) || { vistas: 0, contactos: 0 }; }
-
-// ── Búsquedas guardadas ──
-function getBusquedas() { const b = lsGet('miksa_busquedas', []); return Array.isArray(b) ? b : []; }
 
 // ── UI global ──
 function toggleMenu() {
@@ -246,7 +238,18 @@ function dibujarQR(canvas, texto, px) {
   const qr = qrcode(0, 'M'); qr.addData(texto); qr.make();
   const n = qr.getModuleCount(), cell = Math.max(2, Math.floor((px || 220) / (n + 8))), size = cell * (n + 8);
   canvas.width = size; canvas.height = size;
-  const g = canvas.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, size, size); g.fillStyle = '#1C1009';
+  const g = canvas.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, size, size); g.fillStyle = '#1F1A16';
   for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) g.fillRect((c + 4) * cell, (r + 4) * cell, cell, cell);
   return true;
+}
+
+// Pie ingresado en CLP → % del precio (0-100). Mientras el usuario no lo edite, sigue el % por defecto (data-pct, 20) del precio.
+function pieDesdeCLP(id, precioUF, valorUF, hintId) {
+  const inp = $id(id), precioCLP = precioUF * valorUF;
+  if (!inp.dataset.init) { inp.dataset.init = '1'; inp.addEventListener('input', () => { inp.dataset.touched = '1'; }); }
+  if (!inp.dataset.touched) inp.value = Math.round(precioCLP * (Number(inp.dataset.pct) || 20) / 100 / 1000) * 1000;
+  const clp = Math.min(Math.max(0, Number(inp.value) || 0), precioCLP);
+  const pct = precioCLP > 0 ? clp / precioCLP * 100 : 0;
+  if (hintId) $id(hintId).textContent = pct.toLocaleString('es-CL', { maximumFractionDigits: 1 }) + '% del precio';
+  return pct;
 }

@@ -22,6 +22,7 @@ function escribirURL(f) {
   const qs = p.toString();
   history.replaceState(null, '', window.location.pathname + (qs ? '?' + qs : ''));
   document.getElementById('ver-mapa').href = 'mapa.html' + (qs ? '?' + qs : '');
+  document.getElementById('btn-busco').href = 'busco.html' + (qs ? '?' + qs : '');
 }
 function render() {
   const f = leerFiltros();
@@ -42,7 +43,7 @@ function render() {
   }
   cont.style.display = '';
   const s = getSesion();
-  lista.forEach(a => cont.appendChild(crearTarjeta(a, { marcaPropio: !!s && a.owner === s.email })));
+  lista.forEach(a => cont.appendChild(crearTarjeta(a, { marcaPropio: !!s && a.owner === s.email, nivel: 2 })));
 }
 
 function guardarBusqueda() {
@@ -56,7 +57,7 @@ function guardarBusqueda() {
   const qs = window.location.search;
   if (b.some(x => x.qs === qs)) { avisoFlotante('Esa búsqueda ya está guardada.'); return; }
   b.push({ id: 'B-' + Date.now(), nombre: partes.join(' · ') || 'Búsqueda', qs: qs, visto: getTodos().map(a => a.id), creada: new Date().toISOString() });
-  lsSet('miksa_busquedas', b);
+  setBusquedas(b);
   avisoFlotante('Búsqueda guardada. La encuentras en "Mis avisos".');
 }
 

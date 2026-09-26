@@ -92,3 +92,20 @@ function costosCompra(c) {
   const total = items.reduce((s, [, v]) => s + v, 0), pie = c.precio * c.piePct / 100;
   return { items, total, pie, necesarioInicial: pie + total, credito };
 }
+
+// ── ¿Cuánto puedo comprar? ──
+// p: { ingreso (CLP/mes), deudas (CLP/mes), pctIngreso (% máx. del ingreso al dividendo), pieUF (ahorro disponible), plazo, tasa, uf, costoCompraPct, ltv (% máx. de financiamiento) }
+function capacidadCompra(p) {
+  const divMax = Math.max(0, p.ingreso * p.pctIngreso / 100 - p.deudas);
+  const n = p.plazo * 12, r = p.tasa / 100 / 12, cc = p.costoCompraPct / 100, ltv = p.ltv / 100;
+  const factor = r === 0 ? 1 / n : r / (1 - Math.pow(1 + r, -n));          // dividendo por cada $ de crédito
+  const creditoMaxUF = divMax / factor / p.uf;
+  if (p.pieUF <= 0) return { precio: 0, credito: 0, dividendo: 0, piePct: 0, costos: 0, limitante: 'pie', divMax, creditoMaxUF, ingresoNecesario: 0 };
+  const porIngreso = (creditoMaxUF + p.pieUF) / (1 + cc);                   // el crédito no puede superar lo que permite el ingreso
+  const porPie = p.pieUF / (1 + cc - ltv);                                  // el pie debe cubrir (1 − ltv) del precio y los costos
+  const precio = Math.min(porIngreso, porPie);
+  const pieUsado = p.pieUF - cc * precio, credito = Math.max(0, precio - pieUsado);
+  const dividendo = credito * p.uf * factor;
+  return { precio, credito, dividendo, piePct: pieUsado / precio * 100, costos: cc * precio, limitante: porIngreso <= porPie ? 'ingreso' : 'pie',
+    divMax, creditoMaxUF, ingresoNecesario: p.pctIngreso > 0 ? (dividendo + p.deudas) / (p.pctIngreso / 100) : 0 };
+}

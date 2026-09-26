@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Herramientas para comprar, invertir y arrendar — miksapropiedades</title>
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta name="description" content="Simulador hipotecario, rentabilidad de inversión, costos de compra, arrendar vs comprar y tasación online." />
   <meta property="og:type" content="website" />
@@ -12,15 +12,16 @@
   <meta property="og:description" content="Simulador hipotecario, rentabilidad de inversión, costos de compra, arrendar vs comprar y tasación online." />
   <meta property="og:locale" content="es_CL" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23E8631A'/%3E%3Cpath d='M7 15l9-7 9 7v9a1 1 0 01-1 1H8a1 1 0 01-1-1z' fill='white'/%3E%3C/svg%3E" />
-  <meta name="theme-color" content="#E8631A" />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <meta name="theme-color" content="#F58635" />
+  <link rel="preload" href="vendor/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body class="app">
 
 <nav class="topnav" aria-label="Principal">
+  <a class="skip-link" href="#main">Saltar al contenido</a>
   <div class="topnav-in">
-    <a class="brand" href="index.html"><span class="brand-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span class="brand-name">miksapropiedades<i>.</i></span></a>
+    <a class="brand" href="index.html" aria-label="Miksa Propiedades, inicio"><img class="brand-logo" src="img/logo.png" width="160" height="50" alt="Miksa Propiedades" /></a>
     <div class="tn-links"><a href="listado.html" class="nav-link">Propiedades</a><a href="proyectos.html" class="nav-link">Proyectos</a><a href="mapa.html" class="nav-link">Mapa</a><a href="herramientas.html" class="nav-link">Herramientas</a><a href="corredores.html" class="nav-link">Corredores</a><a href="blog.html" class="nav-link">Guías</a></div>
     <div class="tn-actions">
       <a href="favoritos.html" class="tn-fav" aria-label="Favoritos"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 000-7.8z"/></svg><b data-fav-count hidden></b></a>
@@ -32,17 +33,19 @@
   <div id="mobile-menu" hidden><a href="listado.html" class="mm-link">Propiedades</a><a href="proyectos.html" class="mm-link">Proyectos</a><a href="mapa.html" class="mm-link">Mapa</a><a href="herramientas.html" class="mm-link">Herramientas</a><a href="corredores.html" class="mm-link">Corredores</a><a href="blog.html" class="mm-link">Guías</a><a href="favoritos.html" class="mm-link">Favoritos</a></div>
 </nav>
 
-<main class="wrap">
+<main id="main" tabindex="-1" class="wrap">
   <span class="badge-soft">Herramientas</span>
   <h1 class="page-title">Decide con números</h1>
   <p class="page-sub">Calculadoras gratuitas para comprar, invertir o arrendar en La Serena y Coquimbo. Son estimaciones referenciales.</p>
   <div class="grid-props">
-<a class="barrio-card tool-card" href="simulador.html"><span class="tool-ico">🧮</span><h3>Simulador hipotecario</h3><p>Dividendo mensual según pie, plazo y tasa, con la UF del día.</p></a>
-<a class="barrio-card tool-card" href="rentabilidad.html"><span class="tool-ico">📈</span><h3>Rentabilidad de inversión</h3><p>Cap rate, flujo mensual, retorno sobre tu capital y TIR de una propiedad para arriendo.</p></a>
-<a class="barrio-card tool-card" href="costos.html"><span class="tool-ico">🧾</span><h3>Costos de compra</h3><p>Notaría, conservador, timbres y tasación: cuánto dinero necesitas además del pie.</p></a>
-<a class="barrio-card tool-card" href="arrendar-vs-comprar.html"><span class="tool-ico">⚖️</span><h3>Arrendar vs comprar</h3><p>Compara tu patrimonio en 10 o más años y encuentra el punto de equilibrio.</p></a>
-<a class="barrio-card tool-card" href="tasacion.html"><span class="tool-ico">🏷️</span><h3>Tasación online</h3><p>Estima cuánto vale tu propiedad y pide que un corredor la confirme.</p></a>
-<a class="barrio-card tool-card" href="proyectos.html"><span class="tool-ico">🏗️</span><h3>Proyectos nuevos</h3><p>Departamentos y casas en blanco, en construcción o de entrega inmediata.</p></a>
+<a class="barrio-card tool-card" href="presupuesto.html"><span class="tool-ico">💰</span><h2>¿Cuánto puedo comprar?</h2><p>Tu precio máximo según ingreso, deudas y ahorro para el pie.</p></a>
+<a class="barrio-card tool-card" href="busco.html"><span class="tool-ico">🔎</span><h2>Encárgale tu búsqueda</h2><p>Cuéntanos qué buscas y un corredor la busca por ti.</p></a>
+<a class="barrio-card tool-card" href="simulador.html"><span class="tool-ico">🧮</span><h2>Simulador hipotecario</h2><p>Dividendo mensual según pie, plazo y tasa, con la UF del día.</p></a>
+<a class="barrio-card tool-card" href="rentabilidad.html"><span class="tool-ico">📈</span><h2>Rentabilidad de inversión</h2><p>Cap rate, flujo mensual, retorno sobre tu capital y TIR de una propiedad para arriendo.</p></a>
+<a class="barrio-card tool-card" href="costos.html"><span class="tool-ico">🧾</span><h2>Costos de compra</h2><p>Notaría, conservador, timbres y tasación: cuánto dinero necesitas además del pie.</p></a>
+<a class="barrio-card tool-card" href="arrendar-vs-comprar.html"><span class="tool-ico">⚖️</span><h2>Arrendar vs comprar</h2><p>Compara tu patrimonio en 10 o más años y encuentra el punto de equilibrio.</p></a>
+<a class="barrio-card tool-card" href="tasacion.html"><span class="tool-ico">🏷️</span><h2>Tasación online</h2><p>Estima cuánto vale tu propiedad y pide que un corredor la confirme.</p></a>
+<a class="barrio-card tool-card" href="proyectos.html"><span class="tool-ico">🏗️</span><h2>Proyectos nuevos</h2><p>Departamentos y casas en blanco, en construcción o de entrega inmediata.</p></a>
   </div>
   <div class="note" style="margin-top:24px">Los resultados dependen de los supuestos que ingreses (tasas, plusvalía, gastos). No constituyen asesoría financiera ni una oferta de crédito.</div>
 </main>
@@ -61,6 +64,7 @@
 
 <script src="js/actions.js"></script>
 <script src="js/config.js"></script>
+<script src="js/store.js"></script>
 <script src="js/common.js"></script>
 </body>
 </html>

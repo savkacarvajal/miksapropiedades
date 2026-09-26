@@ -4,7 +4,7 @@
     const lista = getFavs().map(getPorId).filter(Boolean);
     $id('fav-sub').textContent = lista.length ? lista.length + (lista.length === 1 ? ' propiedad guardada' : ' propiedades guardadas') : '';
     $id('fav-empty').hidden = lista.length > 0;
-    lista.forEach(a => cont.appendChild(crearTarjeta(a)));
+    lista.forEach(a => cont.appendChild(crearTarjeta(a, { nivel: 2 })));
   }
   document.addEventListener('favs-changed', () => {
     const n = document.querySelectorAll('#favs .pcard-w').length;
