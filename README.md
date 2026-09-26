@@ -14,6 +14,8 @@ Frontend estático: **HTML + CSS + JavaScript puro**, sin dependencias ni paso d
 ![CSP](https://img.shields.io/badge/CSP-estricta-F58635)
 ![Estado](https://img.shields.io/badge/estado-maqueta%20funcional-orange)
 
+### 🌐 [Ver el sitio en vivo → savkacarvajal.github.io/miksapropiedades](https://savkacarvajal.github.io/miksapropiedades/)
+
 <img src="docs/screenshots/inicio.png" alt="Portada de miksapropiedades" width="820">
 
 </div>
@@ -196,7 +198,7 @@ La verificación completa está en [`SEGURIDAD.md`](SEGURIDAD.md).
 | Plataforma | Notas |
 |---|---|
 | **Cloudflare Pages / Netlify** *(recomendado)* | Publicar la raíz, sin comando de build. `_headers` aplica HSTS, `frame-ancestors`, `X-Frame-Options` y demás. |
-| **GitHub Pages** | Funciona, pero ignora `_headers`: solo queda la CSP por `<meta>`. |
+| **GitHub Pages** *(activo hoy)* | Publica la rama `master` en https://savkacarvajal.github.io/miksapropiedades/. Ignora `_headers`: solo queda la CSP por `<meta>`. |
 
 El navegador consulta estos servicios externos (todos declarados en la CSP): mindicador.cl (UF), teselas de OpenStreetMap y picsum.photos (fotos de las propiedades de demostración, ocultas por defecto). Las tipografías (Outfit, OFL) van dentro del repo.
 
