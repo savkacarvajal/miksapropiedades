@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Barrios de La Serena y Coquimbo — miksapropiedades</title>
+  <title>Proyecto inmobiliario — miksapropiedades</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <meta name="description" content="Conoce los barrios de La Serena y Coquimbo, sus propiedades disponibles y precios referenciales." />
+  <meta name="description" content="Ficha de proyecto inmobiliario con tipologías, plan de pagos y cotización." />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Barrios de La Serena y Coquimbo — miksapropiedades" />
-  <meta property="og:description" content="Conoce los barrios de La Serena y Coquimbo, sus propiedades disponibles y precios referenciales." />
+  <meta property="og:title" content="Proyecto inmobiliario — miksapropiedades" />
+  <meta property="og:description" content="Ficha de proyecto inmobiliario con tipologías, plan de pagos y cotización." />
   <meta property="og:locale" content="es_CL" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23E8631A'/%3E%3Cpath d='M7 15l9-7 9 7v9a1 1 0 01-1 1H8a1 1 0 01-1-1z' fill='white'/%3E%3C/svg%3E" />
   <meta name="theme-color" content="#E8631A" />
@@ -33,22 +33,47 @@
 </nav>
 
 <main class="wrap">
-  <div class="crumbs"><a href="index.html">Inicio</a> › <a href="barrio.html">Barrios</a> › <span id="b-crumb">Todos</span></div>
-  <div id="b-index" hidden>
-    <span class="badge-soft">Barrios</span>
-    <h1 class="page-title">Elige tu barrio</h1>
-    <p class="page-sub">Explora cada sector con sus propiedades disponibles y precios de referencia.</p>
-    <div id="b-grid" class="grid-props"></div>
-  </div>
-  <div id="b-detail" hidden>
-    <span class="badge-soft" id="b-com"></span>
-    <h1 class="page-title" id="b-title"></h1>
-    <p class="page-sub" id="b-blurb" style="max-width:720px"></p>
-    <div class="facts" id="b-stats"></div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px" id="b-actions"></div>
-    <h2 class="h-sec">Propiedades en este barrio</h2>
-    <div class="grid-props" id="b-props"></div>
-    <div id="b-empty" class="empty" hidden><h2>Sin propiedades por ahora</h2><p>Publica la tuya o guarda una búsqueda para enterarte cuando aparezca algo.</p><a class="btn btn-brand" href="publicar.html">Publicar propiedad</a></div>
+  <div class="crumbs"><a href="index.html">Inicio</a> › <a href="proyectos.html">Proyectos</a> › <span id="pj-crumb"></span></div>
+  <div id="pj-nf" class="empty" hidden><h2>No encontramos este proyecto</h2><a class="btn btn-brand" href="proyectos.html">Ver proyectos</a></div>
+  <div id="pj" class="detail" hidden>
+    <section>
+      <div class="gallery"><div class="main" id="pj-main"></div><div class="thumbs" id="pj-thumbs"></div></div>
+      <div style="margin-top:24px">
+        <div id="pj-badges" class="chips" style="margin-bottom:10px"></div>
+        <h1 class="page-title" id="pj-titulo" style="margin-top:0"></h1>
+        <p class="page-sub" id="pj-sub" style="margin-bottom:8px"></p>
+        <div class="progress" aria-label="Avance de obra"><div id="pj-avance"></div></div>
+        <div id="pj-avance-txt" style="font-size:0.8rem;color:var(--muted);margin-top:4px"></div>
+      </div>
+      <h2 class="h-sec">Sobre el proyecto</h2>
+      <p id="pj-desc" style="color:var(--muted);line-height:1.7;margin:0"></p>
+      <div id="pj-ben-wrap"><h2 class="h-sec">Beneficios</h2><div class="chips" id="pj-ben"></div></div>
+      <div id="pj-am-wrap"><h2 class="h-sec">Amenidades</h2><div class="chips" id="pj-am"></div></div>
+      <h2 class="h-sec">Tipologías</h2>
+      <div class="table-wrap"><table class="cmp-table" id="pj-tipos"></table></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px"><a class="btn btn-ghost" id="pj-mapa" href="mapa.html">Ver zona en el mapa</a></div>
+    </section>
+    <aside class="side">
+      <div class="panel-card">
+        <h2 class="h-sec" style="margin:0 0 10px">Plan de pagos</h2>
+        <div class="fld"><label for="pl-tipo">Tipología</label><select id="pl-tipo"></select></div>
+        <div id="pl-res"></div>
+      </div>
+      <form class="panel-card" id="cot-form" novalidate>
+        <h2 class="h-sec" style="margin:0 0 4px">Cotiza esta unidad</h2>
+        <p style="margin:0 0 14px;color:var(--muted);font-size:0.85rem">Un corredor te enviará la cotización y disponibilidad.</p>
+        <div class="fld"><label for="ct-nombre">Nombre</label><input id="ct-nombre" maxlength="80" autocomplete="name" /><span class="err" id="e-ct-nombre">Ingresa tu nombre.</span></div>
+        <div class="fld"><label for="ct-email">Correo</label><input id="ct-email" type="email" maxlength="120" autocomplete="email" /><span class="err" id="e-ct-email">Correo no válido.</span></div>
+        <div class="fld"><label for="ct-tel">Teléfono</label><input id="ct-tel" type="tel" maxlength="20" autocomplete="tel" /><span class="err" id="e-ct-tel">Teléfono no válido.</span></div>
+        <div class="fld"><label for="ct-msg">Mensaje (opcional)</label><textarea id="ct-msg" rows="2" maxlength="500"></textarea></div>
+        <input type="text" id="ct-web" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp" />
+        <label class="chk"><input type="checkbox" id="ct-ok" /><span>Acepto que me contacten y el tratamiento de mis datos según la <a href="privacidad.html">política de privacidad</a>.</span></label>
+        <span class="err" id="e-ct-ok">Debes aceptar para continuar.</span>
+        <button class="btn btn-brand btn-block" type="submit" style="margin-top:12px" id="ct-btn">Solicitar cotización</button>
+        <div class="okmsg" id="ct-done" hidden></div>
+      </form>
+      <div class="note" id="pj-note"></div>
+    </aside>
   </div>
 </main>
 
@@ -67,7 +92,6 @@
 <script src="js/actions.js"></script>
 <script src="js/config.js"></script>
 <script src="js/common.js"></script>
-<script src="js/tarjeta.js"></script>
-<script src="js/barrio.js"></script>
+<script src="js/proyecto.js"></script>
 </body>
 </html>

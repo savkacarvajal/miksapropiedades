@@ -61,10 +61,25 @@
 
   // Enlaces: mapa, video/tour
   const links = $id('d-links');
+  if (a.op === 'venta') links.appendChild(el('a', { class: 'btn btn-ghost', href: 'rentabilidad.html?precio=' + encodeURIComponent(a.precio) + (a.contribuciones ? '&contrib=' + Math.round(a.contribuciones) : '') + (a.gastosComunes ? '&gc=0' : ''), text: 'Analizar como inversión' }));
   if (coordsDe(a)) links.appendChild(el('a', { class: 'btn btn-ghost', href: 'mapa.html?id=' + encodeURIComponent(a.id), text: 'Ver en el mapa' }));
   const vid = videoSeguro(a.videoUrl);
   if (vid) links.appendChild(el('a', { class: 'btn btn-ghost', href: vid, target: '_blank', rel: 'noopener noreferrer', text: 'Ver video / tour virtual' }));
   if (!links.children.length) links.hidden = true;
+
+  // Compartir: WhatsApp, enlace, QR y letrero
+  const urlFicha = urlSitio('propiedad.html?id=' + encodeURIComponent(a.id));
+  dibujarQR($id('qr'), urlFicha, 240);
+  $id('sh-wa').href = 'https://wa.me/?text=' + encodeURIComponent((a.titulo || 'Propiedad') + ' — ' + formatPrecio(a) + '\n' + urlFicha);
+  $id('sh-letrero').href = 'letrero.html?id=' + encodeURIComponent(a.id);
+  window.copiarEnlace = function () {
+    const ok = () => avisoFlotante('Enlace copiado');
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(urlFicha).then(ok, () => avisoFlotante(urlFicha));
+    else avisoFlotante(urlFicha);
+  };
+  window.descargarQR = function () {
+    $id('qr').toBlob(b => { const u = URL.createObjectURL(b); const l = el('a', { href: u, download: 'qr-' + a.id + '.png' }); document.body.appendChild(l); l.click(); l.remove(); setTimeout(() => URL.revokeObjectURL(u), 1000); });
+  };
 
   // Precio en pesos + dividendo estimado (UF del día)
   getUF().then(uf => {

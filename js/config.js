@@ -11,6 +11,7 @@ const MIKSA_CONFIG = {
   // Correos con acceso al panel de corredor (panel.html). Vacío = panel deshabilitado.
   // OJO: sin backend esto solo oculta la pantalla; no es control de acceso real.
   ADMIN_EMAILS: [],
+  SITIO_URL: '',            // ej: 'https://miksapropiedades.cl' (para los códigos QR y enlaces compartidos). Vacío = usa la URL actual
   UF_FALLBACK: 41000,       // valor referencial si no hay conexión con mindicador.cl
   CORREDORES: [
     { id: 'c1', nombre: 'Asesor/a de ejemplo 1', cargo: 'Corredor de propiedades', especialidad: 'Ventas · La Serena', registro: '', tel: '', email: '', bio: 'Perfil de ejemplo. Reemplaza por los datos reales del corredor: trayectoria, zonas y tipo de propiedades que maneja.' },

@@ -59,5 +59,8 @@ Estados: ✅ cumple · 🟡 mitigado en cliente / parcial · ❌ no cumple · �
 - Leaflet alojado en `vendor/` (sin CDN); CSP de `connect-src` limitada a mindicador.cl y de `img-src` a OSM/picsum.
 - **Limitación:** `panel.html` se protege con `ADMIN_EMAILS` en el cliente; sin backend no es control de acceso real (A01/V8 siguen ❌). Los leads viven en `localStorage`.
 
+- Herramientas financieras y QR: cálculo 100% en el navegador, sin envío de datos; el QR se genera con una librería MIT alojada en `vendor/qrcode` (sin CDN) y se dibuja en `<canvas>`.
+- Formulario de cotización de proyectos: mismas validaciones, consentimiento y honeypot que las demás solicitudes.
+
 ## Verificación funcional (Chrome headless, CSP activa)
 17 comprobaciones automáticas OK: hash+sal sin contraseña en claro, migración de cuentas antiguas, bloqueo tras 5 fallos, sesión con expiración, escape de XSS en el resumen, menú móvil y despachador `data-act`. Sin violaciones de CSP en las 3 páginas.

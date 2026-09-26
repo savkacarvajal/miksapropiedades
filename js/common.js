@@ -52,7 +52,7 @@ function formatPrecio(a) {
   const suf = a.op === 'arriendo' ? ' / mes' : a.op === 'temporal' ? ' / día' : '';
   return 'UF ' + n.toLocaleString('es-CL') + suf;
 }
-function formatCLP(n) { return '$' + Math.round(Number(n) || 0).toLocaleString('es-CL'); }
+function formatCLP(n) { const v = Math.round(Number(n) || 0); return (v < 0 ? '-$' : '$') + Math.abs(v).toLocaleString('es-CL'); }
 function waLink(tel, texto) {
   let d = String(tel || '').replace(/\D/g, '');
   if (d.length === 9 && d[0] === '9') d = '56' + d;
@@ -98,6 +98,27 @@ async function getUF() {
 // ── Datos de ejemplo ──
 const img = (seed, w, h) => `https://picsum.photos/seed/${seed}/${w}/${h}`;
 const dias = n => new Date(Date.now() - n * 86400000).toISOString();
+// ── Proyectos nuevos (inmobiliarias). DATOS DE EJEMPLO: reemplaza por proyectos reales. ──
+const LABEL_PROY = { blanco: 'En blanco', construccion: 'En construcción', inmediata: 'Entrega inmediata' };
+const PROYECTOS = [
+  { id: 'PR-1', demo: true, nombre: 'Edificio Vista Faro', inmobiliaria: 'Inmobiliaria de ejemplo', sector: 'El Faro', estado: 'construccion', entrega: '2027-12', avance: 45,
+    descripcion: 'Edificio de departamentos a pasos de la costanera de La Serena, con áreas comunes completas, terrazas y estacionamientos subterráneos.',
+    amenidades: ['Piscina', 'Gimnasio', 'Quincho', 'Terraza/Balcón', 'Conserje'], beneficios: ['Bono pie del 10% (ejemplo)', 'Cocina equipada incluida'],
+    plan: { reservaUF: 20, piePct: 20, cuotasPie: 24 }, fotos: [img('proy1-a', 900, 600), img('proy1-b', 900, 600), img('proy1-c', 900, 600)],
+    tipologias: [{ nombre: '1 dorm. + 1 baño', dorm: 1, banos: 1, m2: 38, desde: 2100, disp: 6 }, { nombre: '2 dorm. + 2 baños', dorm: 2, banos: 2, m2: 58, desde: 3050, disp: 9 }, { nombre: '3 dorm. + 2 baños', dorm: 3, banos: 2, m2: 82, desde: 4300, disp: 3 }] },
+  { id: 'PR-2', demo: true, nombre: 'Condominio Los Aromos', inmobiliaria: 'Constructora de ejemplo', sector: 'La Herradura', estado: 'blanco', entrega: '2028-06', avance: 5,
+    descripcion: 'Condominio de casas en Coquimbo, con áreas verdes, sede social y control de acceso. Preventa con condiciones especiales.',
+    amenidades: ['Quincho', 'Estacionamiento', 'Terraza/Balcón', 'Mascotas permitidas'], beneficios: ['Precio de lanzamiento', 'Personalización de terminaciones'],
+    plan: { reservaUF: 30, piePct: 15, cuotasPie: 36 }, fotos: [img('proy2-a', 900, 600), img('proy2-b', 900, 600)],
+    tipologias: [{ nombre: 'Casa 3 dorm.', dorm: 3, banos: 2, m2: 110, desde: 5200, disp: 12 }, { nombre: 'Casa 4 dorm.', dorm: 4, banos: 3, m2: 148, desde: 6900, disp: 5 }] },
+  { id: 'PR-3', demo: true, nombre: 'Torre Centro Coquimbo', inmobiliaria: 'Inmobiliaria de ejemplo', sector: 'Centro Coquimbo', estado: 'inmediata', entrega: '2026-10', avance: 100,
+    descripcion: 'Departamentos de entrega inmediata en el centro de Coquimbo, ideales para inversión y arriendo. Subsidio aplicable según programa.',
+    amenidades: ['Conserje', 'Bodega', 'Estacionamiento', 'Lavandería'], beneficios: ['Entrega inmediata', 'Acepta subsidio (consultar)'],
+    plan: { reservaUF: 10, piePct: 10, cuotasPie: 6 }, fotos: [img('proy3-a', 900, 600)],
+    tipologias: [{ nombre: 'Estudio', dorm: 1, banos: 1, m2: 30, desde: 1650, disp: 8 }, { nombre: '2 dorm. + 1 baño', dorm: 2, banos: 1, m2: 50, desde: 2400, disp: 4 }] },
+];
+function getProyecto(id) { return PROYECTOS.find(p => p.id === id) || null; }
+
 const SEED = [
   { id: 'DEMO-1', demo: true, tipo: 'depto', op: 'venta', estado: 'disponible', fecha: dias(3), corredor: 'c1', titulo: 'Edificio Borde Mar — Av. del Mar', descripcion: 'Proyecto frente al mar con vista despejada, terminaciones de primer nivel y áreas comunes completas. Entrega inmediata en unidades seleccionadas.', precio: 2180, superficie: 78, dormitorios: '3', banos: '2', estacionamientos: '1', sector: 'Av. del Mar', direccion: 'Av. del Mar, La Serena', amenidades: ['Vista al mar', 'Piscina', 'Gimnasio', 'Conserje', 'Estacionamiento'], gastosComunes: 95000, contribuciones: 180000, anio: 2023, orientacion: 'Poniente', subsidio: false, fotos: [img('building-laserena', 800, 1000), img('demo1-b', 800, 600), img('demo1-c', 800, 600)] },
   { id: 'DEMO-2', demo: true, tipo: 'depto', op: 'arriendo', estado: 'disponible', fecha: dias(8), corredor: 'c2', titulo: 'Depto. El Faro — La Serena', descripcion: 'Departamento luminoso a pasos del Faro y la costanera. Cocina equipada, buena conectividad y estacionamiento.', precio: 14, superficie: 55, dormitorios: '2', banos: '1', estacionamientos: '1', sector: 'El Faro', direccion: 'El Faro, La Serena', amenidades: ['Estacionamiento', 'Bodega', 'Mascotas permitidas'], gastosComunes: 45000, anio: 2015, orientacion: 'Norte', fotos: [img('depto-faro', 800, 600), img('demo2-b', 800, 600)] },
@@ -182,6 +203,7 @@ function pintarContadorFav() {
   pintarContadorFav();
   const cur = location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('nav .tn-links a').forEach(a => { if (a.getAttribute('href') === cur) a.classList.add('current'); });
+  document.querySelectorAll('.toolnav a').forEach(a => { if (a.getAttribute('href') === cur) a.classList.add('current'); });
 })();
 
 // ── Crédito hipotecario (sistema francés, cuota fija) ──
@@ -211,4 +233,20 @@ function filtrosDesdeURL() {
   ['q', 'op', 'tipo', 'sector', 'dorm', 'pmax', 'estado', 'orden'].forEach(k => { f[k] = (p.get(k) || '').trim(); });
   if (f.estado !== 'todas') f.estado = 'disp';
   return f;
+}
+
+// ── Compartir: URL base del sitio y códigos QR (librería local vendor/qrcode) ──
+function urlSitio(ruta) {
+  const base = (MIKSA_CONFIG.SITIO_URL || '').replace(/\/+$/, '') || (location.origin + location.pathname.replace(/\/[^\/]*$/, ''));
+  return base + '/' + ruta;
+}
+// Dibuja el QR de `texto` en un <canvas> (sin innerHTML). Devuelve false si la librería no está cargada.
+function dibujarQR(canvas, texto, px) {
+  if (typeof qrcode !== 'function') return false;
+  const qr = qrcode(0, 'M'); qr.addData(texto); qr.make();
+  const n = qr.getModuleCount(), cell = Math.max(2, Math.floor((px || 220) / (n + 8))), size = cell * (n + 8);
+  canvas.width = size; canvas.height = size;
+  const g = canvas.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, size, size); g.fillStyle = '#1C1009';
+  for (let r = 0; r < n; r++) for (let c = 0; c < n; c++) if (qr.isDark(r, c)) g.fillRect((c + 4) * cell, (r + 4) * cell, cell, cell);
+  return true;
 }

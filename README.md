@@ -30,6 +30,11 @@ Frontend estático: **HTML + CSS + JavaScript puro**, sin dependencias ni paso d
 | 🏡 **Ficha completa** | Galería, gastos comunes, contribuciones, orientación, subsidio, video/tour, corredor asignado y propiedades similares. |
 | 💱 **UF en vivo** | Precio en pesos con la UF del día ([mindicador.cl](https://mindicador.cl)) y dividendo estimado. |
 | 🧮 **Simulador hipotecario** | Pie, plazo y tasa a tu medida, con ingreso mensual sugerido. |
+| 📈 **Rentabilidad** | Cap rate, flujo mensual, retorno sobre tu capital y TIR de una propiedad para arriendo, con gráfico. |
+| 🧾 **Costos de compra** | Notaría, conservador, timbres y tasación: cuánto dinero necesitas además del pie. |
+| ⚖️ **Arrendar vs comprar** | Patrimonio a 10 o más años y año de equilibrio. |
+| 🏗️ **Proyectos nuevos** | En blanco, en construcción o entrega inmediata; plan de pagos y cotización. |
+| 📲 **Compartir** | WhatsApp, enlace, código QR y letrero imprimible por propiedad. |
 | ❤️ **Favoritos y comparador** | Guarda propiedades y compara hasta 3 lado a lado. |
 | 🔔 **Búsquedas guardadas** | Cuenta cuántas propiedades nuevas aparecieron desde que la guardaste. |
 | 🏘️ **Barrios y guías** | Una página por barrio y guías sobre arriendo seguro, contribuciones, subsidio y compra. |
@@ -82,7 +87,11 @@ python3 -m http.server 8000
 | `listado.html` | Listado con filtros, orden, favoritos y comparador |
 | `propiedad.html?id=…` | Ficha de la propiedad |
 | `mapa.html` | Mapa de propiedades |
-| `tasacion.html` · `simulador.html` | Tasación y simulador hipotecario |
+| `herramientas.html` | Centro de calculadoras |
+| `simulador.html` · `rentabilidad.html` · `costos.html` · `arrendar-vs-comprar.html` | Hipotecario, rentabilidad de inversión (cap rate, flujo, TIR), costos de compra y arrendar vs comprar |
+| `tasacion.html` | Tasación online referencial |
+| `proyectos.html` · `proyecto.html?id=…` | Proyectos nuevos con tipologías, plan de pagos y cotización |
+| `letrero.html?id=…` | Letrero imprimible con código QR |
 | `favoritos.html` · `comparar.html` | Favoritos y comparador |
 | `corredores.html` · `barrio.html?s=…` | Equipo y landing por barrio |
 | `blog.html` · `blog/*.html` | Guías |
@@ -109,7 +118,9 @@ python3 tools/sync-layout.py
 
 ### 🔧 Datos de ejemplo que debes reemplazar
 
-- Propiedades demo: `SEED` en `js/common.js` (y fotos de picsum).
+- Propiedades demo (`SEED`) y proyectos (`PROYECTOS`) en `js/common.js`, con fotos de picsum.
+- `SITIO_URL` en `js/config.js`: dominio que llevarán los códigos QR y enlaces compartidos.
+- Porcentajes por defecto de costos de compra en `costos.html` (referenciales y editables).
 - Tabla de UF/m² de la tasación: `js/tasacion.js` → `BASE_UF_M2`.
 - Descripciones de barrios: `js/barrio.js` → `BARRIOS`.
 - Testimonios: `index.html` (están rotulados como "de ejemplo").
@@ -122,11 +133,13 @@ python3 tools/sync-layout.py
 ├── blog/                                          guías
 ├── js/
 │   ├── config.js        configuración de la agencia
-│   ├── common.js        utilidades, datos de ejemplo, leads, favoritos, UF
+│   ├── common.js        utilidades, datos de ejemplo, leads, favoritos, UF, QR
+│   ├── finanzas.js      crédito, TIR, rentabilidad, arrendar vs comprar, costos
 │   ├── actions.js       despacha los data-act (no hay JS inline)
 │   └── <pagina>.js      lógica de cada página
 ├── styles.css           reset + componentes
-├── vendor/leaflet/      Leaflet 1.9.4 alojado localmente
+├── vendor/leaflet/      Leaflet 1.9.4 (mapa), alojado localmente
+├── vendor/qrcode/       qrcode-generator 1.4.4 (QR), alojado localmente
 ├── tools/sync-layout.py sincroniza menú y footer
 ├── _headers             cabeceras de seguridad (Cloudflare Pages / Netlify)
 └── SEGURIDAD.md         verificación OWASP Top 10 / ASVS 5.0

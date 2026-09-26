@@ -8,7 +8,7 @@
 
   const fEstado = $id('p-filtro');
   Object.keys(LABEL_LEAD).forEach(k => fEstado.appendChild(el('option', { value: k, text: LABEL_LEAD[k] })));
-  const TIPO_TXT = { visita: 'Visita', contacto: 'Consulta', tasacion: 'Tasación', captacion: 'Captación' };
+  const TIPO_TXT = { visita: 'Visita', contacto: 'Consulta', tasacion: 'Tasación', captacion: 'Captación', cotizacion: 'Cotización' };
   const fecha = iso => { const d = new Date(iso); return isNaN(d) ? '' : d.toLocaleString('es-CL', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); };
 
   function kpis() {

@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Barrios de La Serena y Coquimbo — miksapropiedades</title>
+  <title>Proyectos nuevos en La Serena y Coquimbo — miksapropiedades</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <meta name="description" content="Conoce los barrios de La Serena y Coquimbo, sus propiedades disponibles y precios referenciales." />
+  <meta name="description" content="Departamentos y casas nuevas en blanco, en construcción o de entrega inmediata en La Serena y Coquimbo." />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Barrios de La Serena y Coquimbo — miksapropiedades" />
-  <meta property="og:description" content="Conoce los barrios de La Serena y Coquimbo, sus propiedades disponibles y precios referenciales." />
+  <meta property="og:title" content="Proyectos nuevos en La Serena y Coquimbo — miksapropiedades" />
+  <meta property="og:description" content="Departamentos y casas nuevas en blanco, en construcción o de entrega inmediata en La Serena y Coquimbo." />
   <meta property="og:locale" content="es_CL" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23E8631A'/%3E%3Cpath d='M7 15l9-7 9 7v9a1 1 0 01-1 1H8a1 1 0 01-1-1z' fill='white'/%3E%3C/svg%3E" />
   <meta name="theme-color" content="#E8631A" />
@@ -33,23 +33,17 @@
 </nav>
 
 <main class="wrap">
-  <div class="crumbs"><a href="index.html">Inicio</a> › <a href="barrio.html">Barrios</a> › <span id="b-crumb">Todos</span></div>
-  <div id="b-index" hidden>
-    <span class="badge-soft">Barrios</span>
-    <h1 class="page-title">Elige tu barrio</h1>
-    <p class="page-sub">Explora cada sector con sus propiedades disponibles y precios de referencia.</p>
-    <div id="b-grid" class="grid-props"></div>
+  <span class="badge-soft">Proyectos nuevos</span>
+  <h1 class="page-title">Proyectos inmobiliarios</h1>
+  <p class="page-sub">En blanco, en construcción o con entrega inmediata. Cotiza tu unidad con un corredor.</p>
+  <div class="note" style="margin-bottom:18px" id="pr-note">Proyectos de ejemplo. Reemplázalos por los proyectos reales en <code>js/common.js</code> (PROYECTOS).</div>
+  <div class="filters" style="grid-template-columns:repeat(3,minmax(0,1fr))">
+    <div><label for="pf-estado">Etapa</label><select id="pf-estado"><option value="">Todas</option><option value="blanco">En blanco</option><option value="construccion">En construcción</option><option value="inmediata">Entrega inmediata</option></select></div>
+    <div><label for="pf-sector">Sector</label><select id="pf-sector"><option value="">Todos</option></select></div>
+    <div><label for="pf-orden">Ordenar</label><select id="pf-orden"><option value="entrega">Fecha de entrega</option><option value="precio">Precio desde</option></select></div>
   </div>
-  <div id="b-detail" hidden>
-    <span class="badge-soft" id="b-com"></span>
-    <h1 class="page-title" id="b-title"></h1>
-    <p class="page-sub" id="b-blurb" style="max-width:720px"></p>
-    <div class="facts" id="b-stats"></div>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px" id="b-actions"></div>
-    <h2 class="h-sec">Propiedades en este barrio</h2>
-    <div class="grid-props" id="b-props"></div>
-    <div id="b-empty" class="empty" hidden><h2>Sin propiedades por ahora</h2><p>Publica la tuya o guarda una búsqueda para enterarte cuando aparezca algo.</p><a class="btn btn-brand" href="publicar.html">Publicar propiedad</a></div>
-  </div>
+  <div class="grid-props" id="pr-grid"></div>
+  <div id="pr-empty" class="empty" hidden><h2>Sin proyectos con esos filtros</h2></div>
 </main>
 
 <footer class="site-footer">
@@ -67,7 +61,6 @@
 <script src="js/actions.js"></script>
 <script src="js/config.js"></script>
 <script src="js/common.js"></script>
-<script src="js/tarjeta.js"></script>
-<script src="js/barrio.js"></script>
+<script src="js/proyectos.js"></script>
 </body>
 </html>
