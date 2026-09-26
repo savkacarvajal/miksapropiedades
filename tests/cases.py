@@ -1,0 +1,46 @@
+"""Manifiesto de casos de prueba en el navegador. Cada caso carga la página real con el arnés inyectado.
+
+Campos: name, page, query, case (archivo en tests/cases), setup (opcional: se ejecuta ANTES que los scripts de la página),
+viewport (ancho, alto), allow_problems (tolera errores de consola en ese caso).
+"""
+D = (1280, 900)
+M = (390, 800)
+CASES = [
+    dict(name='Portada: cifras, anclas y buscador', page='index.html', case='cases/indice.js'),
+    dict(name='Tipografía alojada localmente', page='index.html', case='cases/tipografia.js'),
+    dict(name='Barra superior: escritorio y favoritos', page='listado.html', case='cases/menu-escritorio.js'),
+    dict(name='Barra superior: menú móvil', page='index.html', case='cases/menu-movil.js', viewport=M),
+    dict(name='Autenticación: registro, login, hash, bloqueo', page='ingresar.html', case='cases/auth.js'),
+    dict(name='Publicar: e2e con foto, drag&drop y XSS', page='publicar.html', case='cases/publicar-e2e.js'),
+    dict(name='Publicar: campos legales y video', page='publicar.html', case='cases/publicar-campos.js'),
+    dict(name='Listado: filtros, favoritos, comparar, guardar', page='listado.html', case='cases/listado.js'),
+    dict(name='Ficha: visita, corredor, UF, favoritos', page='propiedad.html', query='?id=DEMO-1', case='cases/ficha.js'),
+    dict(name='Propiedades reales: precios, sectores, fotos, demos', page='listado.html', case='cases/reales.js'),
+    dict(name='Ficha real: terreno en cesión de derechos', page='propiedad.html', query='?id=MP-003', case='cases/ficha-real-terreno.js'),
+    dict(name='Ficha real: casa con precio anterior', page='propiedad.html', query='?id=MP-001', case='cases/ficha-real-casa.js'),
+    dict(name='Ficha: mapa de zona referencial', page='propiedad.html', query='?id=DEMO-1', case='cases/ficha-mapa.js'),
+    dict(name='Ficha: mapa con punto exacto', page='propiedad.html', query='?id=PIN-1', case='cases/ficha-mapa-exacta.js', setup='cases/setup_ficha_mapa.js'),
+    dict(name='Publicar: ubicación en el mapa', page='publicar.html', case='cases/publicar-mapa.js'),
+    dict(name='Ficha: compartir, QR y análisis', page='propiedad.html', query='?id=DEMO-1', case='cases/ficha-compartir.js'),
+    dict(name='Seguridad: XSS almacenado', page='listado.html', case='cases/xss-almacenado.js'),
+    dict(name='Mapa: Leaflet y marcadores', page='mapa.html', case='cases/mapa.js'),
+    dict(name='Favoritos', page='favoritos.html', case='cases/favoritos.js', setup='cases/setup_favs.js'),
+    dict(name='Comparador', page='comparar.html', query='?ids=DEMO-1,DEMO-2,DEMO-4', case='cases/comparar.js'),
+    dict(name='Barrios', page='barrio.html', query='?s=El%20Faro', case='cases/barrio.js'),
+    dict(name='Corredores', page='corredores.html', case='cases/corredores.js'),
+    dict(name='Comprador: ¿cuánto puedo comprar?', page='presupuesto.html', case='cases/presupuesto.js'),
+    dict(name='Comprador: encargar búsqueda', page='busco.html', case='cases/busco.js'),
+    dict(name='Comprador: búsqueda prellenada', page='busco.html', query='?op=venta&pmax=2500&tipo=casa&sector=Guayac%C3%A1n', case='cases/busco-prefill.js'),
+    dict(name='Comprador: listado y encargo', page='listado.html', case='cases/listado-comprador.js'),
+    dict(name='Tasación online', page='tasacion.html', case='cases/tasacion.js'),
+    dict(name='Simulador hipotecario', page='simulador.html', case='cases/simulador.js'),
+    dict(name='Finanzas: TIR, saldo, rentabilidad, costos', page='rentabilidad.html', case='cases/finanzas.js'),
+    dict(name='Rentabilidad (interfaz)', page='rentabilidad.html', case='cases/rentabilidad.js'),
+    dict(name='Costos de compra (interfaz)', page='costos.html', case='cases/costos.js'),
+    dict(name='Arrendar vs comprar (interfaz)', page='arrendar-vs-comprar.html', case='cases/arrendar-vs-comprar.js'),
+    dict(name='Proyectos: listado y filtros', page='proyectos.html', case='cases/proyectos.js'),
+    dict(name='Proyecto: plan de pagos y cotización', page='proyecto.html', query='?id=PR-1', case='cases/proyecto.js'),
+    dict(name='Letrero: código QR', page='letrero.html', query='?id=DEMO-3', case='cases/letrero-qr.js'),
+    dict(name='Panel de corredor', page='panel.html', case='cases/panel.js', setup='cases/setup_panel.js'),
+    dict(name='Mis avisos: estado, consultas, búsquedas', page='mis-avisos.html', case='cases/mis-avisos.js', setup='cases/setup_mis.js'),
+]

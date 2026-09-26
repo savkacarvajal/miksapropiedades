@@ -1,0 +1,1 @@
+localStorage.setItem('miksa_avisos',JSON.stringify([{id:'PIN-1',titulo:'Con punto exacto',op:'venta',precio:'3000',sector:'Guayacán',tipo:'casa',lat:-29.9701,lng:-71.3502,owner:'a@b.cl',fecha:new Date().toISOString(),fotos:[],contacto:{nombre:'A',email:'a@b.cl'}}]));
