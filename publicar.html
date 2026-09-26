@@ -4,7 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Publicar propiedad — miksapropiedades</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="description" content="Publica tu propiedad en La Serena o Coquimbo en pocos pasos: datos, fotos y contacto." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Publicar propiedad — miksapropiedades" />
+  <meta property="og:description" content="Publica tu propiedad en La Serena o Coquimbo en pocos pasos: datos, fotos y contacto." />
+  <meta property="og:locale" content="es_CL" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23E8631A'/%3E%3Cpath d='M7 15l9-7 9 7v9a1 1 0 01-1 1H8a1 1 0 01-1-1z' fill='white'/%3E%3C/svg%3E" />
+  <meta name="theme-color" content="#E8631A" />
+  <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { font-family: 'Outfit', sans-serif; box-sizing: border-box; }
@@ -106,28 +115,37 @@
 
     @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
     .fade-in { animation: fadeUp 0.45s cubic-bezier(0.23,1,0.32,1) both; }
+
+    #tipo-grid, #op-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+    .opt-card { min-width: 0; }
+    @media (max-width: 520px) {
+      .opt-card { padding: 12px 10px; gap: 8px; }
+      .opt-icon { width: 34px !important; height: 34px !important; flex-shrink: 0; }
+      main div[style*="grid-template-columns:1fr 1fr"]:not(#tipo-grid):not(#op-grid) { grid-template-columns: 1fr !important; }
+      #rooms-row { gap: 8px !important; }
+      .form-card { padding: 22px 18px !important; }
+    }
+    @media (max-width: 400px) {
+      nav span[style*="font-size:1.1rem"] { font-size: 0.95rem !important; }
+      nav a[href="publicar.html"] { padding: 8px 12px !important; }
+    }
   </style>
 </head>
-<body>
+<body class="app">
 
 <!-- NAVBAR -->
-<nav style="position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(253,248,244,0.90);backdrop-filter:blur(14px);border-bottom:1px solid rgba(232,99,26,0.10);">
-  <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px;">
-    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
-      <div style="width:34px;height:34px;background:#E8631A;border-radius:10px;display:flex;align-items:center;justify-content:center;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      </div>
-      <span style="font-size:1.1rem;font-weight:800;color:#1C1009;letter-spacing:-0.03em;">miksapropiedades<span style="color:#E8631A;">.</span></span>
-    </a>
-    <div style="display:flex;align-items:center;gap:32px;" class="hidden md:flex">
-      <a href="index.html" class="nav-link" style="font-size:0.875rem;font-weight:500;color:#7A6355;">Inicio</a>
-      <a href="index.html" class="nav-link" style="font-size:0.875rem;font-weight:500;color:#7A6355;">Propiedades</a>
-    </div>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <a href="ingresar.html" style="font-size:0.875rem;font-weight:600;color:#7A6355;text-decoration:none;transition:color 150ms ease;" class="hidden md:block" onmouseover="this.style.color='#E8631A'" onmouseout="this.style.color='#7A6355'">Ingresar</a>
-      <a href="publicar.html" style="background:#E8631A;color:white;font-size:0.8rem;font-weight:700;padding:10px 18px;border-radius:12px;text-decoration:none;">Publicar propiedad</a>
+<nav class="topnav" aria-label="Principal">
+  <div class="topnav-in">
+    <a class="brand" href="index.html"><span class="brand-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span class="brand-name">miksapropiedades<i>.</i></span></a>
+    <div class="tn-links"><a href="listado.html" class="nav-link">Propiedades</a><a href="mapa.html" class="nav-link">Mapa</a><a href="tasacion.html" class="nav-link">Tasación</a><a href="simulador.html" class="nav-link">Simulador</a><a href="corredores.html" class="nav-link">Corredores</a><a href="blog.html" class="nav-link">Guías</a></div>
+    <div class="tn-actions">
+      <a href="favoritos.html" class="tn-fav" aria-label="Favoritos"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 000-7.8z"/></svg><b data-fav-count hidden></b></a>
+      <a href="ingresar.html" class="tn-login">Ingresar</a>
+      <a href="publicar.html" class="btn-pub">Publicar propiedad</a>
+      <button type="button" class="tn-burger" data-act="toggleMenu" aria-label="Menú" aria-expanded="false" aria-controls="mobile-menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </div>
+  <div id="mobile-menu" hidden><a href="listado.html" class="mm-link">Propiedades</a><a href="mapa.html" class="mm-link">Mapa</a><a href="tasacion.html" class="mm-link">Tasación</a><a href="simulador.html" class="mm-link">Simulador</a><a href="corredores.html" class="mm-link">Corredores</a><a href="blog.html" class="mm-link">Guías</a><a href="favoritos.html" class="mm-link">Favoritos</a></div>
 </nav>
 
 <!-- MAIN -->
@@ -168,7 +186,7 @@
     </div>
 
     <!-- FORM CARD -->
-    <div class="form-card" style="padding:32px;">
+    <form class="form-card" id="pub-form" novalidate style="padding:32px;">
 
       <!-- Alert -->
       <div class="alert alert-error" id="form-alert"></div>
@@ -180,25 +198,25 @@
 
         <p class="field-label" style="margin-bottom:10px;">Tipo de propiedad <span class="field-req">*</span></p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px;" id="tipo-grid">
-          <div class="opt-card selected" onclick="selectOpt('tipo','depto',this)">
+          <div class="opt-card selected" data-act="selectOpt" data-args='["tipo", "depto", "@this"]'>
             <div class="opt-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
             </div>
             <div><div class="opt-title">Departamento</div><div class="opt-sub">Unidad en edificio</div></div>
           </div>
-          <div class="opt-card" onclick="selectOpt('tipo','casa',this)">
+          <div class="opt-card" data-act="selectOpt" data-args='["tipo", "casa", "@this"]'>
             <div class="opt-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
             </div>
             <div><div class="opt-title">Casa</div><div class="opt-sub">Casa o villa</div></div>
           </div>
-          <div class="opt-card" onclick="selectOpt('tipo','oficina',this)">
+          <div class="opt-card" data-act="selectOpt" data-args='["tipo", "oficina", "@this"]'>
             <div class="opt-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
             </div>
             <div><div class="opt-title">Oficina</div><div class="opt-sub">Espacio comercial</div></div>
           </div>
-          <div class="opt-card" onclick="selectOpt('tipo','terreno',this)">
+          <div class="opt-card" data-act="selectOpt" data-args='["tipo", "terreno", "@this"]'>
             <div class="opt-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
             </div>
@@ -208,13 +226,13 @@
 
         <p class="field-label" style="margin-bottom:10px;">Tipo de operación <span class="field-req">*</span></p>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;" id="op-grid">
-          <div class="opt-card selected" onclick="selectOpt('op','arriendo',this)">
+          <div class="opt-card selected" data-act="selectOpt" data-args='["op", "arriendo", "@this"]'>
             <div class="opt-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
             </div>
             <div><div class="opt-title">Arriendo</div><div class="opt-sub">Precio mensual en UF</div></div>
           </div>
-          <div class="opt-card" onclick="selectOpt('op','temporal',this)">
+          <div class="opt-card" data-act="selectOpt" data-args='["op", "temporal", "@this"]'>
             <div class="opt-icon">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             </div>
@@ -294,8 +312,7 @@
                 <optgroup label="La Serena">
                   <option>Av. del Mar</option>
                   <option>El Faro</option>
-                  <option>Peñuelas</option>
-                  <option>Las Compañías</option>
+                      <option>Las Compañías</option>
                   <option>Centro La Serena</option>
                   <option>Serena Golf</option>
                   <option>Valle del Sol</option>
@@ -303,6 +320,7 @@
                 </optgroup>
                 <optgroup label="Coquimbo">
                   <option>Guayacán</option>
+                <option>Peñuelas</option>
                   <option>La Herradura</option>
                   <option>Centro Coquimbo</option>
                   <option>Pan de Azúcar</option>
@@ -315,6 +333,19 @@
               <label class="field-label" for="direccion">Dirección aproximada</label>
               <input class="field-input" type="text" id="direccion" placeholder="Calle o referencia" />
             </div>
+          </div>
+
+          <!-- Datos adicionales -->
+          <div style="border-top:1px solid #EDE4DC;padding-top:18px;">
+            <p class="field-label" style="margin-bottom:4px;">Datos adicionales <span style="font-weight:500;color:#B0A09A;">(opcional, pero aumentan las consultas)</span></p>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:10px;">
+              <div class="field-wrap"><label class="field-label" for="gastos">Gastos comunes (CLP/mes)</label><input class="field-input" type="number" id="gastos" min="0" placeholder="Ej: 60000" /></div>
+              <div class="field-wrap"><label class="field-label" for="contrib">Contribuciones (CLP/trimestre)</label><input class="field-input" type="number" id="contrib" min="0" placeholder="Ej: 120000" /></div>
+              <div class="field-wrap"><label class="field-label" for="anio">Año de construcción</label><input class="field-input" type="number" id="anio" min="1900" max="2100" placeholder="Ej: 2015" /></div>
+              <div class="field-wrap"><label class="field-label" for="orient">Orientación</label><select class="field-select" id="orient"><option value="">—</option><option>Norte</option><option>Sur</option><option>Oriente</option><option>Poniente</option><option>Norponiente</option><option>Nororiente</option><option>Surponiente</option><option>Suroriente</option></select></div>
+            </div>
+            <label style="display:flex;align-items:center;gap:8px;margin:6px 0 14px;font-size:0.85rem;color:#7A6355;cursor:pointer;"><input type="checkbox" id="subsidio" style="accent-color:#E8631A;" /> Acepta subsidio habitacional</label>
+            <div class="field-wrap"><label class="field-label" for="video">Video o tour virtual (enlace)</label><input class="field-input" type="url" id="video" placeholder="https://www.youtube.com/watch?v=… (YouTube, Vimeo, Matterport o Kuula)" /><span class="field-error" id="err-video">Ingresa un enlace https de YouTube, Vimeo, Matterport o Kuula.</span></div>
           </div>
 
           <!-- Amenidades -->
@@ -332,13 +363,13 @@
         <p class="section-title">Fotos de la propiedad</p>
         <p class="section-sub">Las propiedades con fotos reciben hasta 5x más consultas. Agrega al menos 1.</p>
 
-        <div class="upload-zone" id="upload-zone" onclick="document.getElementById('file-input').click()" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
+        <div class="upload-zone" id="upload-zone" data-act="openFileDialog" ondragover="onDragOver(event)" ondragleave="onDragLeave(event)" ondrop="onDrop(event)">
           <div style="width:52px;height:52px;background:rgba(232,99,26,0.10);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;color:#E8631A;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
           </div>
           <p style="font-weight:700;color:#1C1009;font-size:0.9rem;margin:0 0 4px;">Haz clic o arrastra tus fotos aquí</p>
           <p style="color:#B0A09A;font-size:0.8rem;margin:0;">JPG, PNG o WebP · Máximo 10 fotos</p>
-          <input type="file" id="file-input" accept="image/*" multiple style="display:none;" onchange="handleFiles(this.files)" />
+          <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" multiple style="display:none;" />
         </div>
 
         <div class="photo-preview" id="photo-preview"></div>
@@ -402,17 +433,17 @@
 
       <!-- Navigation buttons -->
       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:20px;border-top:1px solid #EDE4DC;" id="nav-buttons">
-        <button class="btn-secondary" id="btn-back" onclick="goBack()" style="display:none;">
+        <button type="button" class="btn-secondary" id="btn-back" data-act="goBack" style="display:none;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
           Atrás
         </button>
         <div id="btn-back-placeholder"></div>
-        <button class="btn-primary" id="btn-next" onclick="goNext()">
+        <button type="submit" class="btn-primary" id="btn-next">
           Siguiente
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </button>
       </div>
-    </div>
+    </form>
 
     <!-- SUCCESS SCREEN -->
     <div class="form-card success-screen" id="success-screen" style="padding:48px 32px;">
@@ -432,264 +463,21 @@
 </main>
 
 <!-- FOOTER -->
-<footer style="background:#1C1009;padding:24px;">
-  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
-    <p style="color:rgba(255,255,255,0.24);font-size:0.75rem;margin:0;">© 2026 miksapropiedades SpA. Todos los derechos reservados.</p>
-    <div style="display:flex;gap:20px;">
-      <a href="#" class="footer-link">Privacidad</a>
-      <a href="#" class="footer-link">Términos</a>
+<footer class="site-footer">
+  <div class="sf-in">
+    <p>© 2026 miksapropiedades SpA. Todos los derechos reservados.</p>
+    <div class="sf-links">
+      <a href="corredores.html" class="footer-link">Corredores</a>
+      <a href="blog.html" class="footer-link">Guías</a>
+      <a href="privacidad.html" class="footer-link">Privacidad</a>
+      <a href="terminos.html" class="footer-link">Términos</a>
     </div>
   </div>
 </footer>
 
-<script>
-  // ─── STATE ───
-  let currentStep = 1;
-  const totalSteps = 4;
-  const state = { tipo: 'depto', op: 'arriendo', fotos: [] };
-
-  // ─── AMENIDADES ───
-  const AMENIDADES = ['Amoblado','Estacionamiento','Bodega','Piscina','Quincho','Lavandería','Gimnasio','Conserje','Mascotas permitidas','Calefacción central','Vista al mar','Terraza/Balcón'];
-  const selectedAmenidades = new Set();
-
-  function renderAmenidades() {
-    const container = document.getElementById('amenidades-grid');
-    container.innerHTML = '';
-    AMENIDADES.forEach(a => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.textContent = a;
-      btn.style.cssText = `padding:7px 14px;border-radius:999px;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 150ms ease;border:1.5px solid ${selectedAmenidades.has(a)?'#E8631A':'#EDE4DC'};background:${selectedAmenidades.has(a)?'rgba(232,99,26,0.08)':'white'};color:${selectedAmenidades.has(a)?'#E8631A':'#7A6355'};`;
-      btn.onclick = () => {
-        if (selectedAmenidades.has(a)) selectedAmenidades.delete(a);
-        else selectedAmenidades.add(a);
-        renderAmenidades();
-      };
-      container.appendChild(btn);
-    });
-  }
-  renderAmenidades();
-
-  // ─── OPT CARDS ───
-  function selectOpt(group, value, el) {
-    state[group] = value;
-    const grid = document.getElementById(group === 'tipo' ? 'tipo-grid' : 'op-grid');
-    grid.querySelectorAll('.opt-card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-  }
-
-  // ─── CHARACTER COUNTERS ───
-  document.getElementById('titulo').addEventListener('input', function() {
-    document.getElementById('titulo-count').textContent = this.value.length + ' / 80 caracteres';
-  });
-  document.getElementById('descripcion').addEventListener('input', function() {
-    document.getElementById('desc-count').textContent = this.value.length + ' / 800 caracteres';
-  });
-
-  // ─── PHOTO UPLOAD ───
-  function handleFiles(files) {
-    const remaining = 10 - state.fotos.length;
-    Array.from(files).slice(0, remaining).forEach(file => {
-      if (!file.type.startsWith('image/')) return;
-      const reader = new FileReader();
-      reader.onload = e => {
-        state.fotos.push({ name: file.name, src: e.target.result });
-        renderPhotos();
-      };
-      reader.readAsDataURL(file);
-    });
-  }
-  function renderPhotos() {
-    const preview = document.getElementById('photo-preview');
-    preview.innerHTML = '';
-    state.fotos.forEach((f, i) => {
-      const div = document.createElement('div');
-      div.className = 'photo-thumb';
-      div.innerHTML = `
-        <img src="${f.src}" alt="Foto ${i+1}" />
-        <button class="photo-remove" onclick="removePhoto(${i})" aria-label="Eliminar foto">×</button>
-        ${i === 0 ? '<div style="position:absolute;bottom:4px;left:4px;background:rgba(232,99,26,0.9);color:white;font-size:0.6rem;font-weight:700;padding:2px 6px;border-radius:4px;">Principal</div>' : ''}
-      `;
-      preview.appendChild(div);
-    });
-  }
-  function removePhoto(i) {
-    state.fotos.splice(i, 1);
-    renderPhotos();
-  }
-  function onDragOver(e) { e.preventDefault(); document.getElementById('upload-zone').classList.add('drag'); }
-  function onDragLeave()  { document.getElementById('upload-zone').classList.remove('drag'); }
-  function onDrop(e)      { e.preventDefault(); onDragLeave(); handleFiles(e.dataTransfer.files); }
-
-  // ─── STEP INDICATOR ───
-  function updateStepUI() {
-    for (let i = 1; i <= totalSteps; i++) {
-      const sc = document.getElementById('sc' + i);
-      const sl = document.getElementById('sl' + i);
-      let state2;
-      if (i < currentStep) state2 = 'done';
-      else if (i === currentStep) state2 = 'active';
-      else state2 = 'pending';
-      sc.className = 'step-circle ' + state2;
-      sl.className = 'step-label ' + state2;
-      if (state2 === 'done') sc.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
-      else sc.textContent = i;
-      if (i < totalSteps) document.getElementById('line' + i).className = 'step-line ' + (i < currentStep ? 'done' : '');
-    }
-    // Buttons
-    document.getElementById('btn-back').style.display = currentStep > 1 ? 'inline-flex' : 'none';
-    document.getElementById('btn-back-placeholder').style.display = currentStep > 1 ? 'none' : 'block';
-    const btnNext = document.getElementById('btn-next');
-    if (currentStep === totalSteps) {
-      btnNext.innerHTML = 'Publicar propiedad <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>';
-    } else {
-      btnNext.innerHTML = 'Siguiente <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>';
-    }
-  }
-
-  // ─── VALIDATE STEP ───
-  function validateStep(step) {
-    let valid = true;
-    const setErr = (id, show) => {
-      const el = document.getElementById(id);
-      const err = document.getElementById('err-' + id);
-      if (el) el.classList.toggle('error', show);
-      if (err) { err.style.display = show ? 'block' : 'none'; }
-      if (show) valid = false;
-    };
-    if (step === 2) {
-      setErr('titulo', !document.getElementById('titulo').value.trim());
-      setErr('descripcion', !document.getElementById('descripcion').value.trim());
-      setErr('precio', !document.getElementById('precio').value);
-      setErr('superficie', !document.getElementById('superficie').value);
-      setErr('sector', !document.getElementById('sector').value);
-    }
-    if (step === 3) {
-      const errFotos = document.getElementById('err-fotos');
-      if (state.fotos.length === 0) { errFotos.style.display = 'block'; valid = false; }
-      else errFotos.style.display = 'none';
-    }
-    if (step === 4) {
-      setErr('c-nombre', !document.getElementById('c-nombre').value.trim());
-      setErr('c-apellido', !document.getElementById('c-apellido').value.trim());
-      const email = document.getElementById('c-email').value.trim();
-      setErr('c-email', !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email));
-      setErr('c-tel', !document.getElementById('c-tel').value.trim());
-    }
-    return valid;
-  }
-
-  // ─── BUILD RESUMEN ───
-  function buildResumen() {
-    const tipoLabel = { depto:'Departamento', casa:'Casa', oficina:'Oficina', terreno:'Terreno' };
-    const opLabel   = { arriendo:'Arriendo', temporal:'Arriendo temporal' };
-    const rows = [
-      ['Tipo',      tipoLabel[state.tipo] + ' — ' + opLabel[state.op]],
-      ['Título',    document.getElementById('titulo').value],
-      ['Precio',    'UF ' + document.getElementById('precio').value + (state.op === 'arriendo' ? ' / mes' : '')],
-      ['Superficie',document.getElementById('superficie').value + ' m²'],
-      ['Sector',    document.getElementById('sector').value],
-      ['Fotos',     state.fotos.length + ' foto(s)'],
-    ];
-    const amenArr = [...selectedAmenidades];
-    if (amenArr.length) rows.push(['Amenidades', amenArr.join(', ')]);
-    document.getElementById('resumen-content').innerHTML = rows.map(([k,v]) =>
-      `<div style="display:flex;justify-content:space-between;gap:12px;padding:4px 0;border-bottom:1px solid #EDE4DC;">
-        <span style="color:#7A6355;font-size:0.82rem;">${k}</span>
-        <span style="font-weight:600;font-size:0.82rem;text-align:right;">${v}</span>
-      </div>`
-    ).join('');
-  }
-
-  // ─── NAVIGATION ───
-  function goNext() {
-    clearAlert();
-    if (!validateStep(currentStep)) {
-      showAlert('Completa los campos requeridos antes de continuar.');
-      return;
-    }
-    if (currentStep === totalSteps) { submitForm(); return; }
-    document.getElementById('step' + currentStep).classList.remove('active');
-    currentStep++;
-    document.getElementById('step' + currentStep).classList.add('active');
-    if (currentStep === 4) buildResumen();
-    updateStepUI();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  function goBack() {
-    document.getElementById('step' + currentStep).classList.remove('active');
-    currentStep--;
-    document.getElementById('step' + currentStep).classList.add('active');
-    updateStepUI();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  // ─── SUBMIT ───
-  function submitForm() {
-    const aviso = {
-      id: 'MIKSA-' + Date.now(),
-      tipo: state.tipo,
-      op: state.op,
-      titulo: document.getElementById('titulo').value.trim(),
-      descripcion: document.getElementById('descripcion').value.trim(),
-      precio: document.getElementById('precio').value,
-      superficie: document.getElementById('superficie').value,
-      dormitorios: document.getElementById('dormitorios').value,
-      banos: document.getElementById('banos').value,
-      estacionamientos: document.getElementById('estacionamientos').value,
-      sector: document.getElementById('sector').value,
-      direccion: document.getElementById('direccion').value.trim(),
-      amenidades: [...selectedAmenidades],
-      fotos: state.fotos.map(f => f.name),
-      contacto: {
-        nombre:   document.getElementById('c-nombre').value.trim(),
-        apellido: document.getElementById('c-apellido').value.trim(),
-        email:    document.getElementById('c-email').value.trim(),
-        tel:      document.getElementById('c-tel').value.trim(),
-        medio:    document.getElementById('c-tipo-contacto').value,
-      },
-      fecha: new Date().toISOString(),
-    };
-
-    const avisos = JSON.parse(localStorage.getItem('miksa_avisos') || '[]');
-    avisos.push(aviso);
-    localStorage.setItem('miksa_avisos', JSON.stringify(avisos));
-
-    // Show success
-    document.querySelector('.form-card:not(#success-screen)').style.display = 'none';
-    document.getElementById('step-indicator').style.display = 'none';
-    document.getElementById('success-id').innerHTML =
-      `<p style="font-size:0.75rem;color:#7A6355;margin:0 0 4px;font-weight:600;">Código de tu aviso</p>
-       <p style="font-size:1rem;font-weight:800;color:#E8631A;margin:0;">${aviso.id}</p>`;
-    document.getElementById('success-screen').classList.add('show');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-
-  // ─── ALERT ───
-  function showAlert(msg) {
-    const el = document.getElementById('form-alert');
-    el.textContent = msg;
-    el.classList.add('show');
-  }
-  function clearAlert() {
-    const el = document.getElementById('form-alert');
-    el.textContent = '';
-    el.classList.remove('show');
-  }
-
-  // ─── PRE-FILL from session ───
-  window.addEventListener('DOMContentLoaded', () => {
-    const session = JSON.parse(localStorage.getItem('miksa_session') || 'null');
-    if (session) {
-      const parts = (session.nombre || '').split(' ');
-      if (parts[0]) document.getElementById('c-nombre').value = parts[0];
-      if (parts[1]) document.getElementById('c-apellido').value = parts[1];
-      document.getElementById('c-email').value = session.email || '';
-    }
-  });
-
-  updateStepUI();
-</script>
+<script src="js/actions.js"></script>
+<script src="js/config.js"></script>
+<script src="js/common.js"></script>
+<script src="js/publicar.js"></script>
 </body>
 </html>

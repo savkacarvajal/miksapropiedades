@@ -4,7 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Ingresar — miksapropiedades</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="description" content="Ingresa o crea tu cuenta en miksapropiedades para publicar y gestionar tus propiedades en La Serena y Coquimbo." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Ingresar — miksapropiedades" />
+  <meta property="og:description" content="Ingresa o crea tu cuenta en miksapropiedades para publicar y gestionar tus propiedades en La Serena y Coquimbo." />
+  <meta property="og:locale" content="es_CL" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23E8631A'/%3E%3Cpath d='M7 15l9-7 9 7v9a1 1 0 01-1 1H8a1 1 0 01-1-1z' fill='white'/%3E%3C/svg%3E" />
+  <meta name="theme-color" content="#E8631A" />
+  <link rel="stylesheet" href="styles.css" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { font-family: 'Outfit', sans-serif; box-sizing: border-box; }
@@ -76,29 +85,33 @@
     /* Panel switch */
     .panel { display: none; }
     .panel.active { display: flex; flex-direction: column; gap: 18px; }
+
+    @media (max-width: 520px) {
+      main div[style*="grid-template-columns:1fr 1fr"]:not(#tipo-grid):not(#op-grid) { grid-template-columns: 1fr !important; }
+      #rooms-row { gap: 8px !important; }
+      .form-card { padding: 22px 18px !important; }
+    }
+    @media (max-width: 400px) {
+      nav span[style*="font-size:1.1rem"] { font-size: 0.95rem !important; }
+      nav a[href="publicar.html"] { padding: 8px 12px !important; }
+    }
   </style>
 </head>
-<body>
+<body class="app">
 
 <!-- NAVBAR -->
-<nav style="position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(253,248,244,0.90);backdrop-filter:blur(14px);border-bottom:1px solid rgba(232,99,26,0.10);">
-  <div style="max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px;">
-    <a href="index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
-      <div style="width:34px;height:34px;background:#E8631A;border-radius:10px;display:flex;align-items:center;justify-content:center;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      </div>
-      <span style="font-size:1.1rem;font-weight:800;color:#1C1009;letter-spacing:-0.03em;">miksapropiedades<span style="color:#E8631A;">.</span></span>
-    </a>
-    <div style="display:flex;align-items:center;gap:32px;" class="hidden md:flex">
-      <a href="index.html" class="nav-link" style="font-size:0.875rem;font-weight:500;color:#7A6355;">Inicio</a>
-      <a href="index.html#proyectos" class="nav-link" style="font-size:0.875rem;font-weight:500;color:#7A6355;">Propiedades</a>
-      <a href="index.html#servicios" class="nav-link" style="font-size:0.875rem;font-weight:500;color:#7A6355;">Servicios</a>
-    </div>
-    <div style="display:flex;align-items:center;gap:12px;">
-      <a href="ingresar.html" style="font-size:0.875rem;font-weight:600;color:#E8631A;text-decoration:none;" class="hidden md:block">Ingresar</a>
-      <a href="publicar.html" style="background:#E8631A;color:white;font-size:0.8rem;font-weight:700;padding:10px 18px;border-radius:12px;text-decoration:none;">Publicar propiedad</a>
+<nav class="topnav" aria-label="Principal">
+  <div class="topnav-in">
+    <a class="brand" href="index.html"><span class="brand-ico"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span><span class="brand-name">miksapropiedades<i>.</i></span></a>
+    <div class="tn-links"><a href="listado.html" class="nav-link">Propiedades</a><a href="mapa.html" class="nav-link">Mapa</a><a href="tasacion.html" class="nav-link">Tasación</a><a href="simulador.html" class="nav-link">Simulador</a><a href="corredores.html" class="nav-link">Corredores</a><a href="blog.html" class="nav-link">Guías</a></div>
+    <div class="tn-actions">
+      <a href="favoritos.html" class="tn-fav" aria-label="Favoritos"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 00-7.8 7.8l1 1.1L12 21.2l7.8-7.7 1-1.1a5.5 5.5 0 000-7.8z"/></svg><b data-fav-count hidden></b></a>
+      <a href="ingresar.html" class="tn-login">Ingresar</a>
+      <a href="publicar.html" class="btn-pub">Publicar propiedad</a>
+      <button type="button" class="tn-burger" data-act="toggleMenu" aria-label="Menú" aria-expanded="false" aria-controls="mobile-menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     </div>
   </div>
+  <div id="mobile-menu" hidden><a href="listado.html" class="mm-link">Propiedades</a><a href="mapa.html" class="mm-link">Mapa</a><a href="tasacion.html" class="mm-link">Tasación</a><a href="simulador.html" class="mm-link">Simulador</a><a href="corredores.html" class="mm-link">Corredores</a><a href="blog.html" class="mm-link">Guías</a><a href="favoritos.html" class="mm-link">Favoritos</a></div>
 </nav>
 
 <!-- MAIN -->
@@ -119,8 +132,8 @@
 
       <!-- Tabs -->
       <div style="display:flex;background:#FDF8F4;border-radius:12px;padding:4px;margin-bottom:24px;gap:4px;">
-        <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Ingresar</button>
-        <button class="tab-btn inactive" id="tab-register" onclick="switchTab('register')">Crear cuenta</button>
+        <button type="button" class="tab-btn active" id="tab-login" data-act="switchTab" data-args='["login"]'>Ingresar</button>
+        <button type="button" class="tab-btn inactive" id="tab-register" data-act="switchTab" data-args='["register"]'>Crear cuenta</button>
       </div>
 
       <!-- Alerts -->
@@ -128,7 +141,7 @@
       <div class="alert alert-error" id="alert-error"></div>
 
       <!-- ─── PANEL LOGIN ─── -->
-      <div class="panel active" id="panel-login">
+      <form class="panel active" id="panel-login" novalidate>
         <div class="field-wrap">
           <label class="field-label" for="login-email">Correo electrónico</label>
           <input class="field-input" type="email" id="login-email" placeholder="tu@correo.cl" autocomplete="email" />
@@ -139,7 +152,7 @@
           <label class="field-label" for="login-pwd">Contraseña</label>
           <div class="input-wrap">
             <input class="field-input" type="password" id="login-pwd" placeholder="••••••••" autocomplete="current-password" />
-            <button class="pwd-toggle" type="button" onclick="togglePwd('login-pwd', this)" aria-label="Mostrar contraseña">
+            <button class="pwd-toggle" type="button" data-act="togglePwd" data-args='["login-pwd", "@this"]' aria-label="Mostrar contraseña">
               <svg id="eye-login" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
@@ -150,18 +163,18 @@
           <a href="#" style="font-size:0.8rem;color:#E8631A;text-decoration:none;font-weight:600;">¿Olvidaste tu contraseña?</a>
         </div>
 
-        <button class="btn-primary" onclick="handleLogin()">Ingresar</button>
+        <button class="btn-primary" type="submit">Ingresar</button>
 
         <div class="divider">o</div>
 
         <p style="text-align:center;font-size:0.85rem;color:#7A6355;margin:0;">
           ¿No tienes cuenta?
-          <a href="#" onclick="switchTab('register')" style="color:#E8631A;font-weight:700;text-decoration:none;">Crear cuenta gratis</a>
+          <a href="#" data-act="switchTab" data-args='["register"]' style="color:#E8631A;font-weight:700;text-decoration:none;">Crear cuenta gratis</a>
         </p>
-      </div>
+      </form>
 
       <!-- ─── PANEL REGISTER ─── -->
-      <div class="panel" id="panel-register">
+      <form class="panel" id="panel-register" novalidate>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
           <div class="field-wrap">
             <label class="field-label" for="reg-nombre">Nombre</label>
@@ -189,8 +202,8 @@
         <div class="field-wrap">
           <label class="field-label" for="reg-pwd">Contraseña</label>
           <div class="input-wrap">
-            <input class="field-input" type="password" id="reg-pwd" placeholder="Mínimo 8 caracteres" autocomplete="new-password" oninput="checkPwdStrength(this.value)" />
-            <button class="pwd-toggle" type="button" onclick="togglePwd('reg-pwd', this)" aria-label="Mostrar contraseña">
+            <input class="field-input" type="password" id="reg-pwd" placeholder="Mínimo 8 caracteres" autocomplete="new-password" />
+            <button class="pwd-toggle" type="button" data-act="togglePwd" data-args='["reg-pwd", "@this"]' aria-label="Mostrar contraseña">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
@@ -209,7 +222,7 @@
           <label class="field-label" for="reg-pwd2">Confirmar contraseña</label>
           <div class="input-wrap">
             <input class="field-input" type="password" id="reg-pwd2" placeholder="Repite tu contraseña" autocomplete="new-password" />
-            <button class="pwd-toggle" type="button" onclick="togglePwd('reg-pwd2', this)" aria-label="Mostrar contraseña">
+            <button class="pwd-toggle" type="button" data-act="togglePwd" data-args='["reg-pwd2", "@this"]' aria-label="Mostrar contraseña">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
@@ -224,21 +237,21 @@
         </label>
         <span class="field-error" id="err-reg-terms">Debes aceptar los términos.</span>
 
-        <button class="btn-primary" onclick="handleRegister()">Crear cuenta</button>
+        <button class="btn-primary" type="submit">Crear cuenta</button>
 
         <div class="divider">o</div>
 
         <p style="text-align:center;font-size:0.85rem;color:#7A6355;margin:0;">
           ¿Ya tienes cuenta?
-          <a href="#" onclick="switchTab('login')" style="color:#E8631A;font-weight:700;text-decoration:none;">Ingresar</a>
+          <a href="#" data-act="switchTab" data-args='["login"]' style="color:#E8631A;font-weight:700;text-decoration:none;">Ingresar</a>
         </p>
-      </div>
+      </form>
 
     </div>
 
     <!-- Back to home -->
     <div style="text-align:center;margin-top:20px;">
-      <a href="index.html" style="font-size:0.82rem;color:#B0A09A;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:color 150ms ease;" onmouseover="this.style.color='#E8631A'" onmouseout="this.style.color='#B0A09A'">
+      <a class="hv-orange" href="index.html" style="font-size:0.82rem;color:#B0A09A;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:color 150ms ease;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
         Volver al inicio
       </a>
@@ -248,144 +261,21 @@
 </main>
 
 <!-- FOOTER -->
-<footer style="background:#1C1009;padding:24px;">
-  <div style="max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;">
-    <p style="color:rgba(255,255,255,0.24);font-size:0.75rem;margin:0;">© 2026 miksapropiedades SpA. Todos los derechos reservados.</p>
-    <div style="display:flex;gap:20px;">
-      <a href="#" class="footer-link">Privacidad</a>
-      <a href="#" class="footer-link">Términos</a>
+<footer class="site-footer">
+  <div class="sf-in">
+    <p>© 2026 miksapropiedades SpA. Todos los derechos reservados.</p>
+    <div class="sf-links">
+      <a href="corredores.html" class="footer-link">Corredores</a>
+      <a href="blog.html" class="footer-link">Guías</a>
+      <a href="privacidad.html" class="footer-link">Privacidad</a>
+      <a href="terminos.html" class="footer-link">Términos</a>
     </div>
   </div>
 </footer>
 
-<script>
-  // ─── TAB SWITCH ───
-  function switchTab(tab) {
-    ['login','register'].forEach(t => {
-      document.getElementById('panel-' + t).classList.toggle('active', t === tab);
-      document.getElementById('tab-' + t).className = 'tab-btn ' + (t === tab ? 'active' : 'inactive');
-    });
-    clearAlerts();
-  }
-
-  // ─── ALERTS ───
-  function showAlert(type, msg) {
-    clearAlerts();
-    const el = document.getElementById('alert-' + type);
-    el.textContent = msg;
-    el.classList.add('show');
-  }
-  function clearAlerts() {
-    ['success','error'].forEach(t => {
-      const el = document.getElementById('alert-' + t);
-      el.textContent = '';
-      el.classList.remove('show');
-    });
-  }
-
-  // ─── FIELD ERROR ───
-  function setError(id, show) {
-    const input = document.getElementById(id);
-    const err   = document.getElementById('err-' + id);
-    if (!input || !err) return;
-    input.classList.toggle('error', show);
-    err.classList.toggle('show', show);
-  }
-
-  // ─── PASSWORD TOGGLE ───
-  function togglePwd(inputId, btn) {
-    const input = document.getElementById(inputId);
-    const isText = input.type === 'text';
-    input.type = isText ? 'password' : 'text';
-    btn.innerHTML = isText
-      ? `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`
-      : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>`;
-  }
-
-  // ─── PASSWORD STRENGTH ───
-  function checkPwdStrength(val) {
-    let score = 0;
-    if (val.length >= 8)   score++;
-    if (/[A-Z]/.test(val)) score++;
-    if (/[0-9]/.test(val)) score++;
-    if (/[^A-Za-z0-9]/.test(val)) score++;
-    const colors = ['#EDE4DC','#EDE4DC','#EDE4DC','#EDE4DC'];
-    const labels = ['','Débil','Regular','Buena','Fuerte'];
-    const active = ['#DC2626','#F59E0B','#22C55E','#16A34A'];
-    for (let i = 0; i < 4; i++) {
-      document.getElementById('sb'+(i+1)).style.background = i < score ? active[score-1] : '#EDE4DC';
-    }
-    document.getElementById('strength-label').textContent = val ? labels[score] : '';
-    document.getElementById('strength-label').style.color = score > 0 ? active[score-1] : '#B0A09A';
-  }
-
-  // ─── LOGIN ───
-  function handleLogin() {
-    clearAlerts();
-    const email = document.getElementById('login-email').value.trim();
-    const pwd   = document.getElementById('login-pwd').value;
-    let valid   = true;
-
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    setError('login-email', !emailOk); if (!emailOk) valid = false;
-    setError('login-pwd', !pwd);       if (!pwd)     valid = false;
-    if (!valid) return;
-
-    // Buscar en localStorage
-    const users = JSON.parse(localStorage.getItem('miksa_users') || '[]');
-    const user  = users.find(u => u.email === email && u.pwd === pwd);
-    if (!user) {
-      showAlert('error', 'Correo o contraseña incorrectos. Verifica tus datos.');
-      return;
-    }
-
-    localStorage.setItem('miksa_session', JSON.stringify({ email: user.email, nombre: user.nombre }));
-    showAlert('success', '¡Bienvenido de vuelta, ' + user.nombre + '! Redirigiendo...');
-    setTimeout(() => { window.location.href = 'index.html'; }, 1400);
-  }
-
-  // ─── REGISTER ───
-  function handleRegister() {
-    clearAlerts();
-    const nombre  = document.getElementById('reg-nombre').value.trim();
-    const apellido= document.getElementById('reg-apellido').value.trim();
-    const email   = document.getElementById('reg-email').value.trim();
-    const pwd     = document.getElementById('reg-pwd').value;
-    const pwd2    = document.getElementById('reg-pwd2').value;
-    const terms   = document.getElementById('reg-terms').checked;
-    let valid     = true;
-
-    setError('reg-nombre',  !nombre);          if (!nombre)   valid = false;
-    setError('reg-apellido',!apellido);         if (!apellido) valid = false;
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    setError('reg-email', !emailOk);            if (!emailOk)  valid = false;
-    setError('reg-pwd',   pwd.length < 8);      if (pwd.length < 8) valid = false;
-    setError('reg-pwd2',  pwd !== pwd2);        if (pwd !== pwd2)   valid = false;
-    setError('reg-terms', !terms);              if (!terms)    valid = false;
-    if (!valid) return;
-
-    const users = JSON.parse(localStorage.getItem('miksa_users') || '[]');
-    if (users.find(u => u.email === email)) {
-      showAlert('error', 'Ya existe una cuenta con ese correo. ¿Quieres ingresar?');
-      return;
-    }
-
-    users.push({ nombre, apellido, email, pwd, tel: document.getElementById('reg-tel').value.trim(), fecha: new Date().toISOString() });
-    localStorage.setItem('miksa_users', JSON.stringify(users));
-    localStorage.setItem('miksa_session', JSON.stringify({ email, nombre }));
-
-    showAlert('success', '¡Cuenta creada con éxito! Bienvenido/a, ' + nombre + '. Redirigiendo...');
-    setTimeout(() => { window.location.href = 'index.html'; }, 1600);
-  }
-
-  // ─── INIT — check session ───
-  window.addEventListener('DOMContentLoaded', () => {
-    const session = JSON.parse(localStorage.getItem('miksa_session') || 'null');
-    if (session) {
-      showAlert('success', 'Ya estás conectado como ' + session.nombre + '. Redirigiendo...');
-      setTimeout(() => { window.location.href = 'index.html'; }, 1200);
-    }
-  });
-</script>
+<script src="js/actions.js"></script>
+<script src="js/config.js"></script>
+<script src="js/common.js"></script>
+<script src="js/ingresar.js"></script>
 </body>
 </html>
