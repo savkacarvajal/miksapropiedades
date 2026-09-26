@@ -1,6 +1,7 @@
 (async function () {
   const q = new URLSearchParams(window.location.search);
   const precio = Number(q.get('precio')); if (precio > 0) $id('s-precio').value = precio;
+  const pieQ = Number(q.get('pie')); if (pieQ >= 5 && pieQ <= 60) $id('s-pie').value = pieQ;
   const uf = await getUF();
   $id('s-uf').value = uf.valor.toFixed(2);
   $id('s-uf-src').textContent = uf.fuente === 'referencial' ? '(referencial, sin conexión)' : '(' + uf.fuente + (uf.fecha ? ', ' + new Date(uf.fecha).toLocaleDateString('es-CL') : '') + ')';

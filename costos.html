@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Simulador de crédito hipotecario — miksapropiedades</title>
+  <title>Costos de compra de una propiedad — miksapropiedades</title>
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
-  <meta name="description" content="Calcula tu dividendo mensual según el precio, el pie, el plazo y la tasa. Valor UF actualizado." />
+  <meta name="description" content="Calcula notaría, conservador de bienes raíces, timbres y tasación: cuánto dinero necesitas además del pie." />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="Simulador de crédito hipotecario — miksapropiedades" />
-  <meta property="og:description" content="Calcula tu dividendo mensual según el precio, el pie, el plazo y la tasa. Valor UF actualizado." />
+  <meta property="og:title" content="Costos de compra de una propiedad — miksapropiedades" />
+  <meta property="og:description" content="Calcula notaría, conservador de bienes raíces, timbres y tasación: cuánto dinero necesitas además del pie." />
   <meta property="og:locale" content="es_CL" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23E8631A'/%3E%3Cpath d='M7 15l9-7 9 7v9a1 1 0 01-1 1H8a1 1 0 01-1-1z' fill='white'/%3E%3C/svg%3E" />
   <meta name="theme-color" content="#E8631A" />
@@ -32,27 +32,32 @@
   <div id="mobile-menu" hidden><a href="listado.html" class="mm-link">Propiedades</a><a href="proyectos.html" class="mm-link">Proyectos</a><a href="mapa.html" class="mm-link">Mapa</a><a href="herramientas.html" class="mm-link">Herramientas</a><a href="corredores.html" class="mm-link">Corredores</a><a href="blog.html" class="mm-link">Guías</a><a href="favoritos.html" class="mm-link">Favoritos</a></div>
 </nav>
 
-<main class="wrap" style="max-width:980px">
+<main class="wrap" style="max-width:1080px">
   <div class="toolnav"><a href="simulador.html">Simulador hipotecario</a><a href="rentabilidad.html">Rentabilidad</a><a href="costos.html">Costos de compra</a><a href="arrendar-vs-comprar.html">Arrendar vs comprar</a><a href="tasacion.html">Tasación</a></div>
-  <span class="badge-soft">Simulador</span>
-  <h1 class="page-title">Simula tu crédito hipotecario</h1>
-  <p class="page-sub">Calcula el dividendo mensual y el ingreso recomendado. Referencial: no es una oferta de crédito.</p>
-  <div class="two-col">
-    <form class="panel-card" id="sim-form" novalidate>
-      <div class="fld"><label for="s-precio">Precio de la propiedad (UF)</label><input id="s-precio" type="number" min="1" value="3000" inputmode="decimal" /></div>
-      <div class="fld"><label for="s-pie">Pie: <b id="s-pie-v">20</b>%</label><input id="s-pie" type="range" min="5" max="60" step="1" value="20" /></div>
-      <div class="fld"><label for="s-plazo">Plazo: <b id="s-plazo-v">25</b> años</label><input id="s-plazo" type="range" min="5" max="30" step="1" value="25" /></div>
-      <div class="fld"><label for="s-tasa">Tasa anual (%)</label><input id="s-tasa" type="number" min="0" max="20" step="0.1" value="4.5" inputmode="decimal" /></div>
-      <div class="fld"><label for="s-uf">Valor UF (CLP) <span id="s-uf-src" style="text-transform:none;letter-spacing:0;font-weight:500"></span></label><input id="s-uf" type="number" min="1" step="0.01" /></div>
+  <span class="badge-soft">Compra</span>
+  <h1 class="page-title">¿Cuánto cuesta realmente comprar?</h1>
+  <p class="page-sub">Además del pie hay gastos de escrituras, impuestos y trámites. Calcula el dinero que necesitas al inicio.</p>
+  <div class="two-col wide">
+    <form class="panel-card" id="cost-form" novalidate>
+      <div class="fld"><label for="c-precio">Precio de la propiedad (UF)</label><input id="c-precio" type="number" value="3000" inputmode="decimal" step="any"  /></div>
+      <div class="fld"><label for="c-pie">Pie: <b id="c-pie-v">20</b>%</label><input id="c-pie" type="range" min="5" max="80" step="1" value="20" /></div>
+      <details style="margin-top:8px"><summary style="cursor:pointer;font-weight:700;color:var(--brand)">Ajustar porcentajes y valores</summary>
+        <div style="margin-top:12px">
+          <div class="two"><div class="fld"><label for="c-notaria">Notaría (% del precio)</label><input id="c-notaria" type="number" value="0.5" inputmode="decimal" step="any"  /></div><div class="fld"><label for="c-cbr">Conservador (% del precio)</label><input id="c-cbr" type="number" value="0.9" inputmode="decimal" step="any"  /></div></div>
+          <div class="two"><div class="fld"><label for="c-timbres">Timbres (% del crédito)</label><input id="c-timbres" type="number" value="0.8" inputmode="decimal" step="any"  /></div><div class="fld"><label for="c-corretaje">Corretaje (% del precio)</label><input id="c-corretaje" type="number" value="0" inputmode="decimal" step="any"  /></div></div>
+          <div class="two"><div class="fld"><label for="c-tasacion">Tasación (UF)</label><input id="c-tasacion" type="number" value="4" inputmode="decimal" step="any"  /></div><div class="fld"><label for="c-titulos">Estudio de títulos (UF)</label><input id="c-titulos" type="number" value="5" inputmode="decimal" step="any"  /></div></div>
+          <div class="fld"><label for="c-otros">Certificados y otros (UF)</label><input id="c-otros" type="number" value="3" inputmode="decimal" step="any"  /></div>
+        </div>
+      </details>
     </form>
     <aside>
       <div class="panel-card">
-        <div style="font-size:0.8rem;color:var(--muted);font-weight:700;letter-spacing:.06em;text-transform:uppercase">Dividendo mensual</div>
-        <div id="r-div" style="font-size:2.2rem;font-weight:800;color:var(--brand);letter-spacing:-0.03em"></div>
-        <div id="r-div-uf" style="color:var(--muted);font-size:0.9rem"></div>
-        <dl class="dl-grid" style="grid-template-columns:1fr;margin-top:16px" id="r-list"></dl>
+        <div class="kpi-label">Dinero necesario al inicio</div>
+        <div id="c-total" style="font-size:2.1rem;font-weight:800;color:var(--brand);letter-spacing:-0.03em"></div>
+        <div id="c-total-uf" style="color:var(--muted);font-size:0.9rem"></div>
+        <div id="c-bars" style="margin-top:16px"></div>
       </div>
-      <div class="note" style="margin-top:12px" id="r-note"></div>
+      <div class="note" style="margin-top:12px">Los porcentajes son <b>referenciales y editables</b>: los aranceles reales dependen de cada notaría, conservador y banco. Si compras a una inmobiliaria, consulta además por IVA y gastos de gestión. Las comisiones de corretaje suelen pagarlas quienes venden, pero pueden variar.</div>
     </aside>
   </div>
 </main>
@@ -72,6 +77,7 @@
 <script src="js/actions.js"></script>
 <script src="js/config.js"></script>
 <script src="js/common.js"></script>
-<script src="js/simulador.js"></script>
+<script src="js/finanzas.js"></script>
+<script src="js/costos.js"></script>
 </body>
 </html>
