@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /mis-avisos.html
+Disallow: /ingresar.html
+
+# Agrega aquí el sitemap cuando tengas dominio:
+# Sitemap: https://TU-DOMINIO/sitemap.xml

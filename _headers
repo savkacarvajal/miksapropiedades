@@ -1,0 +1,15 @@
+# Cabeceras de seguridad. Las respetan Cloudflare Pages y Netlify.
+# (GitHub Pages ignora este archivo: no permite cabeceras personalizadas.)
+/*
+  Strict-Transport-Security: max-age=31536000
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://picsum.photos https://fastly.picsum.photos https://ui-avatars.com; connect-src 'self' https://mindicador.cl; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'
+
+/styles.css
+  Cache-Control: public, max-age=3600
+/js/*
+  Cache-Control: public, max-age=3600
